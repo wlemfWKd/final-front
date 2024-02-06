@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass,faRotateLeft } from "@fortawesome/free-solid-svg-icons";
-import "./css/BookCss.css";
+import "../css/BookCss.css";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import axios from 'axios';
