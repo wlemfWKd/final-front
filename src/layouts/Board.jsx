@@ -4,7 +4,7 @@ import Footer from "../components/Footer/Footer";
 import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBullhorn,faComments,faPersonMilitaryPointing } from "@fortawesome/free-solid-svg-icons";
-import './css/BoardCss.css';
+import '../css/BoardCss.css';
 import { Link } from 'react-router-dom';
 
 const Board = () => {
