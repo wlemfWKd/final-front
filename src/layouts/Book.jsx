@@ -2,17 +2,19 @@ import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass,faRotateLeft } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import "../css/BookCss.css";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import axios from 'axios';
 
-const Lecture = () => {
+const Book = () => {
 
   const [bookData, setBookData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [originalData, setOriginalData] = useState([]);
+  // 현재 페이지 상태 및 업데이트 함수
+  const [currentPage, setCurrentPage] = useState(1);
 
   const bestData = [
     { id: 1, bookName: "책이름", bookPrice: "12900", imageName: "images/cat.jpeg" },
@@ -27,8 +29,13 @@ const Lecture = () => {
     setCurrentPage(1);  // 페이지를 1로 리셋
   };
 
-  // 현재 페이지 상태 및 업데이트 함수
-  const [currentPage, setCurrentPage] = useState(1);
+  // 엔터 키 입력 시 검색 실행
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   // 페이지당 보여줄 아이템 수
   const itemsPerPage = 10;
 
@@ -47,6 +54,12 @@ const Lecture = () => {
   }
 
 
+  // 검색어를 입력하고 엔터를 눌렀을 때 검색 실행
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch(searchTerm);
+    }
+  };
 
   //검색 결과 필터링하는 함수
   const filterResults = (data, searchTerm) => {
@@ -55,21 +68,17 @@ const Lecture = () => {
     );
   };
 
-  //검색 버튼 클릭 시 결과 업데이트
+  // 검색 버튼 클릭 혹은 엔터키 이벤트로 검색 실행
   const handleSearch = (term) => {
-    const filteredData = filterResults(bookData, term);
-    setBookData(filteredData);
+    const filteredData = filterResults(originalData, term); // originalData를 기반으로 필터링
+    setBookData(filteredData); // 필터링된 데이터로 bookData 업데이트
     setCurrentPage(1); // 검색 결과를 보여주기 위해 페이지를 1로 리셋
   };
 
-  //페이지 변경 시 검색어 유지하기
-  const handlePageChange = (pageNumber) => {
+  // 페이지 변경 시 검색어 유지하기 및 스크롤 위치 유지
+  const handlePageChange = (pageNumber, event) => {
+    event.preventDefault(); // 브라우저의 기본 동작 방지
     setCurrentPage(pageNumber);
-    // 기존 검색어가 있다면 검색 결과를 필터링하여 업데이트
-    if (searchTerm) {
-      const filteredData = filterResults(bookData, searchTerm);
-      setBookData(filteredData);
-    }
   };
 
   useEffect(() => {
@@ -77,6 +86,7 @@ const Lecture = () => {
       try {
         const response = await axios.get('/api/books');
         setBookData(response.data);
+        setOriginalData(response.data); // 데이터 로딩 시 originalData도 업데이트
       } catch (error) {
         console.error('Error fetching books:', error);
       }
@@ -84,6 +94,19 @@ const Lecture = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    // 페이지가 로드될 때 스크롤 위치를 복원합니다.
+    const scrollPosition = sessionStorage.getItem("scrollPosition");
+    if (scrollPosition) {
+      window.scrollTo(0, parseInt(scrollPosition));
+    }
+
+    return () => {
+      // 컴포넌트가 언마운트 되기 전에 스크롤 위치를 저장합니다.
+      sessionStorage.setItem("scrollPosition", window.scrollY.toString());
+    };
+  }, [currentPage]); // 의존성 배열에 currentPage를 추가하여 페이지 번호가 변경될 때마다 이펙트를 실행합니다.
 
   return (
     <>
@@ -115,14 +138,15 @@ const Lecture = () => {
               placeholder="자격증명을 입력해주세요"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
-            <button type="submit" onClick={() => handleSearch(searchTerm)}>
+            <button type="button" onClick={() => handleSearch(searchTerm)}>
               <FontAwesomeIcon id="icon" icon={faMagnifyingGlass} />
-            </button>  
+            </button>
           </div>
           <button type="button" onClick={resetSearch} className="returnBtn">
             <FontAwesomeIcon icon={faRotateLeft} />
-            </button>
+          </button>
           <div id="result">
             <div id="re_title">
               <h3>검색결과</h3>
@@ -159,7 +183,7 @@ const Lecture = () => {
                 <ul className="pagination">
                   {pageNumbers.map((number) => (
                     <li key={number} className={number === currentPage ? "active" : ""}>
-                      <a href="#" onClick={() => handlePageChange(number)}>
+                      <a onClick={(e) => handlePageChange(number, e)} href="javascript:void(0);">
                         {number}
                       </a>
                     </li>
@@ -175,4 +199,4 @@ const Lecture = () => {
   );
 };
 
-export default Lecture;
+export default Book;
