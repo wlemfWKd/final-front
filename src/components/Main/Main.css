@@ -1,0 +1,219 @@
+#main1 {
+    background-color: #f2f2f2;
+}
+
+#main1 #container {
+    padding: 0 108px 24px 108px;
+}
+
+#main1 #container .carousel {
+    padding: 24px 0;
+}
+
+#main1 #container #serve_menu {
+    width: 1100px;
+    background: #fff;
+    border-radius: 5px;
+    display: flex;
+    padding: 10px 20px;
+    gap: 50px;
+    box-shadow: 0 0 10px 10px rgba(41, 41, 41, 0.1);
+    margin: 0 auto;
+}
+
+#main1 #container #serve_menu ul {
+    width: 550px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 5px 0;
+    list-style: none;
+}
+
+#main1 #container #serve_menu ul a {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+}
+
+#main1 #container #serve_menu ul a #icon {
+    display: block;
+    margin: 0 auto 7px;
+    width: 28px;
+    font-size: 30px;
+}
+
+#main1 #container #serve_menu #notice {
+    width: 323px;
+    flex: 0 0 323px;
+    height: 70px;
+    border-left: 1px solid #bbb;
+    padding: 5px 0 5px 35px;
+}
+
+#main1 #container #serve_menu #notice div {
+    display: flex;
+    margin-bottom: 14px;
+}
+
+#main1 #container #serve_menu #notice div h3 {
+    font-weight: 500;
+    font-size: 14px;
+    color: black;
+}
+
+#main1 #container #serve_menu #notice div a {
+    font-weight: 400;
+    font-size: 12px;
+    color: #242424;
+    margin: auto;
+}
+
+#main1 #container #serve_menu #notice a {
+    font-weight: 400;
+    font-size: 14px;
+    color: #242424;
+    display: block;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+#banner1 #container {
+    padding: 0 108px;
+}
+
+#banner1 #container a {
+    text-decoration: none;
+}
+
+#banner1 #container a p {
+    height: 80px;
+    padding-top: 20px;
+    background-color: #64aee0;
+    border: 1px solid #64aee0;
+    border-radius: 5px;
+    margin-top: 24px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    color: #fff;
+}
+
+#main2 {
+    background-color: #f2f2f2;
+}
+
+#main2 #container {
+    padding: 0 108px;
+}
+
+#main2 #container #section1 h1 {
+    padding-top: 24px;
+}
+
+#main2 #container #section1 #listsearch #search #searchbox {
+    margin-bottom: 24px;
+}
+
+#main2 #container #section1 #listsearch #downlist {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 10px;
+}
+
+#main2 #container #section1 #listsearch #downlist .dropdown {
+    flex: 1;
+    margin-right: 20px;
+}
+
+#main2 #container #section1 #listsearch #downlist .dropdown #dropdown-basic {
+    background-color: #fff;
+    color: black;
+    border-color: #2d2d2d;
+}
+
+#main2 #container #section1 #listsearch #downlist .dropdown .dropdown-menu {
+    text-align: center;
+}
+
+#main2 a {
+    text-decoration: none;
+    margin: 24px auto;
+    display: flex;
+    justify-content: center;
+    color: #000;
+}
+
+#main2 a #icon {
+    padding-top: 3px;
+    padding-left: 5px;
+}
+
+#main2 #container #section2 {
+    display: flex;
+    gap: 20px;
+    padding-bottom: 24px;
+}
+
+#main2 #container #section2 .card {
+    flex: 1;
+    margin-right: 15px;
+    text-align: center;
+    height: 250px;
+}
+
+#main2 #container #section2 .card #border {
+    border-top: 1px solid #ddd;
+}
+
+#main2 #container #section2 .card #border span {
+    margin-top: 15px;
+    color: #64aee0;
+    font-size: 20px;
+}
+.quick-menu {
+    position: fixed;
+    width: 90px;
+    top: 50%;
+    margin-top: -50px;
+    right: 10px;
+    background: #fff;
+    transform: translateY(-50%);
+    transition: top 0.3s ease-in-out;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 0 0 10px 10px rgba(41, 41, 41, 0.1);
+}
+
+.quick-menu ul {
+    padding: 5px 0;
+    list-style: none;
+    margin-bottom: 0;
+}
+
+.quick-menu ul a {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-size: 11px;
+    border-bottom: 1px solid #d2d2d2;
+    margin-top: 10px;
+}
+
+.quick-menu ul a #icon{
+    display: block;
+    margin: 0 auto 7px;
+    width: 28px;
+    font-size: 30px;
+}
+
+.quick-menu ul #bdn {
+    border: none;
+}
+
+.scrolled {
+    top: 0;
+}

@@ -1,0 +1,33 @@
+#header {
+    height: 80px;
+    width: 100%;
+    margin: 24px 0;
+  
+    #container{
+        padding: 0 108px;
+    }
+  }
+  .header__logo {
+    font-size: 3rem;
+    text-align: center;
+    line-height: 1;
+  }
+  .header__nav li {
+    float: left;
+    list-style: none;
+  }
+  .header__nav li a {
+    font-size: 14px;
+    padding: 14px;
+    position: relative;
+    text-decoration: none;
+  }
+  .header_login li{
+    float: right;
+    list-style: none;
+  }
+  
+  .header_login li a {
+    padding: 14px;
+    text-decoration: none;
+  } 

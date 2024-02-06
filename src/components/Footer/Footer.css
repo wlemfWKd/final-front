@@ -1,0 +1,59 @@
+#footer {
+    background-color: #f2f2f2;
+
+	#container{
+		padding: 0 108px;
+	}
+}
+
+#footer .f-menu {
+	position: relative;
+}
+
+#footer .f-menu ul {
+	margin: 0;
+	padding: 22px 0;
+}
+
+#footer .f-menu li {
+	display: inline-block;
+	position: relative;
+}
+
+#footer .f-menu li a {
+	display: block;
+	height: 100%;
+	padding: 0 20px;
+	font-weight: 700;
+	color: #000;
+	position: relative;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+#footer .f-menu li:first-child,
+#footer .f-menu li:first-child a {
+	padding-left: 0;
+}
+
+#footer .f-menu li a:hover {
+	color: #64aee0;
+}
+
+#footer #ft_info{
+	padding-bottom: 21px;
+}
+
+#footer .sns {
+	padding: 0 0 0;
+	position: absolute;
+	top: 15px;
+	right: 120px;
+}
+
+#footer .sns img {
+	display: inline-block;
+	vertical-align: top;
+	margin: 0 0 0 6px;
+	width: 27px;
+} 

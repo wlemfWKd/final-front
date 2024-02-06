@@ -1,0 +1,39 @@
+/* calendar.css */
+
+a{
+    text-decoration: none;
+}
+
+/* 일요일 날짜: 빨간색 */
+.fc-day-sun a {
+    color: red;
+}
+  
+/* 토요일 날짜: 파란색 */
+.fc-day-sat a {
+    color: blue;
+}
+
+
+.fc-day-mon a, .fc-day-tue a, .fc-day-wed a, .fc-day-thu a, .fc-day-fri a{
+    color: #000;
+}
+
+.fc-button{
+    background-color: #fc0 !important;
+    border: rgb(187, 150, 2) !important;
+}
+
+.container {
+    padding: 0 108px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.calender {
+    width: 70%;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+
