@@ -279,10 +279,10 @@ const Main = () => {
               </Link>
             </li>
             <li>
-              <a href="#" id="bdn">
+              <Link to="/book">
                 <FontAwesomeIcon id="icon" icon={faBookOpen} />
                 교재추천
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

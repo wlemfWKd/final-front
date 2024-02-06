@@ -7,6 +7,7 @@ import Register from "./layouts/register";
 import Lecture from "./layouts/lecture";
 import Calendar from "./layouts/calendar";
 import Support from "./layouts/support";
+import Book from "./layouts/Book";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -17,6 +18,7 @@ ReactDOM.render(
       <Route path="/lecture" element={<Lecture />} />
       <Route path="/calendar" element={<Calendar />} />
       <Route path="/support" element={<Support />} />
+      <Route path="/book" element={<Book />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
