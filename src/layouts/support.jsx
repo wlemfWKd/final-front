@@ -7,6 +7,11 @@ import Dropdown from "./dropdown";
 import "../css/dropdown.css";
 import "../css/support.css";
 import axios from "axios";
+import NES from "../img/국민취업제도.jpeg";
+import NTQ from "../img/국가기술자격시험.jpeg";
+import NTLC from "../img/국민내일배움카드.jpeg";
+import YHDSA from "../img/청년주택드림청약통장.jpeg";
+import JFYSF from "../img/일자리채움청년지원금.png";
 
 const Support = () => {
   const [dropdownVisibility1, setDropdownVisibility1] = useState(false);
@@ -18,7 +23,6 @@ const Support = () => {
   const [data3, setData3] = useState(null);
   const [data4, setData4] = useState(null);
   const [data5, setData5] = useState(null);
-  const [imageData, setImageData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +33,6 @@ const Support = () => {
         setData3(response.data.section3);
         setData4(response.data.section4);
         setData5(response.data.section5);
-        setImageData(response.data.images);
       } catch (error) {
         console.error("Error : ", error);
       }
@@ -50,15 +53,13 @@ const Support = () => {
           >
             <Tab eventKey="국민취업지원제도" title="국민취업지원제도">
               <div className="img-container">
-                {imageData && (
-                  <a
-                    href="https://www.kua.go.kr/uaptm010/selectMain.do"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <img src={imageData.image_url} alt="Crawled Image" />
-                  </a>
-                )}
+                <a
+                  href="https://www.kua.go.kr/uaptm010/selectMain.do"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img src={NES} alt="국민취업지원제도" />
+                </a>
               </div>
               <button
                 id="down_btn"
@@ -206,7 +207,13 @@ const Support = () => {
               title="국가기술자격시험 응시료 지원"
             >
               <div className="img-container">
-                <img src="https://via.placeholder.com/1200x1000"></img>
+                <a
+                  href="https://www.q-net.or.kr/man001.do?gSite=Q"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img src={NTQ} alt="국가기술자격시험" />
+                </a>
               </div>
               <button
                 id="down_btn"
@@ -351,7 +358,13 @@ const Support = () => {
             </Tab>
             <Tab eventKey="청년동행카드" title="국민내일배움카드">
               <div className="img-container">
-                <img src="https://via.placeholder.com/1200x1000"></img>
+                <a
+                  href="https://www.hrd.go.kr/hrdp/gi/pgiao/PGIAO0302D.do?svcMngnId=13535&svno=P0165&pageIndex=1&lawordFormatSeqNo=&gover=1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img src={NTLC} alt="국가기술자격시험" />
+                </a>
               </div>
               <button
                 id="down_btn"
@@ -496,7 +509,13 @@ const Support = () => {
             </Tab>
             <Tab eventKey="청년추가" title="청년주택드림청약통장">
               <div className="img-container">
-                <img src="https://via.placeholder.com/1200x1000"></img>
+                <a
+                  href="https://www.jobaba.net/sprtPlcy/info/view2020.do?seq=12025&cntType=O"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img src={YHDSA} alt="청년주택드림청약통장" />
+                </a>
               </div>
               <button
                 id="down_btn"
@@ -639,9 +658,15 @@ const Support = () => {
                 </ul>
               </Dropdown>
             </Tab>
-            <Tab eventKey="지원금" title="일자치채움청년지원금">
+            <Tab eventKey="지원금" title="일자리채움청년지원금">
               <div className="img-container">
-                <img src="https://via.placeholder.com/1200x1000"></img>
+                <a
+                  href="https://www.jobaba.net/sprtPlcy/info/view2020.do?seq=12025&cntType=O"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img src={JFYSF} alt="일자리채움청년지원금" />
+                </a>
               </div>
               <button
                 id="down_btn"
