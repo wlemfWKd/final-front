@@ -4,13 +4,8 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <header id="header">
-      <div id="container">
-        <div className="header__logo">
-          <Link to="/" className="logo">
-            LOGO
-          </Link>
-        </div>
+    <header className="header">
+      <div className="header_container">
         <nav className="header__nav" role="navigation" aria-label="메인 메뉴">
           <ul>
             <li>
@@ -30,6 +25,11 @@ const Header = () => {
             </li>
           </ul>
         </nav>
+        <div className="header__logo">
+          <Link to="/" className="logo">
+            <img src="images/logo.png" alt="로고" />
+          </Link>
+        </div>
         <div className="header_login">
           <ul>
             <li>

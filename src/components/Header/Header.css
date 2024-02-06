@@ -1,26 +1,35 @@
-#header {
+.header {
     height: 80px;
     width: 100%;
     margin: 24px 0;
-  
-    #container{
-        padding: 0 108px;
-    }
   }
+
+  .header_container {
+    padding: 0 320px 0 108px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
   .header__logo {
-    font-size: 3rem;
     text-align: center;
     line-height: 1;
+  }
+
+  .header__logo img{
+    width: 230px;
   }
   .header__nav li {
     float: left;
     list-style: none;
   }
   .header__nav li a {
-    font-size: 14px;
+    font-size: 15px;
     padding: 14px;
     position: relative;
     text-decoration: none;
+    color: #000;
+    font-weight: 500;
   }
   .header_login li{
     float: right;
@@ -30,4 +39,7 @@
   .header_login li a {
     padding: 14px;
     text-decoration: none;
+    color: #000;
+    font-weight: 500;
+    font-size: 15px;
   } 
