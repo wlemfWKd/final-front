@@ -9,7 +9,7 @@ const Header = () => {
         <nav className="header__nav" role="navigation" aria-label="메인 메뉴">
           <ul>
             <li>
-              <Link to="/qualification-info">자격증정보</Link>
+              <Link to="/license">자격증정보</Link>
             </li>
             <li>
               <Link to="/data">DATA</Link>

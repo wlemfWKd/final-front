@@ -261,7 +261,7 @@ const Main = () => {
         <div className="quickmenu">
           <ul>
             <li>
-              <a href="#">
+              <a href="/license">
                 <FontAwesomeIcon id="icon" icon={faCalendarDays} />
                 자격증정보
               </a>
