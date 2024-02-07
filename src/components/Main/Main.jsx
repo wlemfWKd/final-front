@@ -261,10 +261,10 @@ const Main = () => {
         <div className="quickmenu">
           <ul>
             <li>
-              <a href="/license">
+              <Link to="/license">
                 <FontAwesomeIcon id="icon" icon={faCalendarDays} />
                 자격증정보
-              </a>
+              </Link>
             </li>
             <li>
               <a href="#">
