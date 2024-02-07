@@ -1,0 +1,111 @@
+  .menu-container {
+    background-color:#D3D3D3;
+    text-align: center;
+  }
+
+  .page-container {
+    background-color:#D3D3D3;
+    text-align: center;
+    padding-bottom: 100px;
+  }
+
+  .centered-container {
+    text-align: center;
+    margin: 50px auto;
+    padding: 0px 108px;
+  }
+  
+  .centered-container h1 {
+    margin: 50px 0px;
+  }
+
+  .search-container {
+    padding-top: 30px;
+    margin-bottom: 20px;
+  }
+  
+  .search-container input {
+    padding: 18px 40px;
+    margin-right: 5px;
+    border: 1px solid #ddd;
+    width: 750px;
+    border-radius: 4px;
+  }
+  
+  .search-container button {
+    padding: 16px 24px;
+    background-color: #64aee0;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .dropdown-container {
+    margin-bottom: 20px;
+    padding-bottom: 50px;
+  }
+  
+  .dropdown-container select {
+    padding: 20px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 300px;
+    font-size: 15px;
+  }
+  
+  .LicenseList ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .LicenseList ul li {
+    margin-bottom: 10px;
+  }
+  
+  .LicenseList ul li a {
+    display: inline-block;
+    width: 100%;
+    padding: 50px;  /* 원하는 만큼의 패딩을 추가하여 박스의 크기 조절 */
+    color: #3498db;
+    font-weight: bold;
+    font-size: 25px;
+    text-decoration: none;
+    border-bottom: 2px solid #94a7b4;  /* 밑줄 대신 공간 구분 밑줄 추가 */
+    margin-right: 10px;  /* 개별 요소 간의 간격을 주기 위해 */
+    box-sizing: border-box;
+    text-align: left;
+  }
+  
+  .link-text {
+    border-bottom: 2px solid #d5d8db;
+  }
+
+  .company {
+    font-size: 12px;
+    color: rgb(82, 85, 88);
+  }
+
+  .LicenseList ul li a p {
+    margin-top: 30px;
+    color: black;
+    font-size: 15px;
+  }
+  
+  .LicenseList button {
+    padding: 8px 12px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 50px;
+    margin-right: 5px;
+  }
+  
+  .LicenseList button:disabled {
+    background-color: #ddd;
+    color: #666;
+    cursor: not-allowed;
+  }
