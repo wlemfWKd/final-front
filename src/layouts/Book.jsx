@@ -84,7 +84,7 @@ const Book = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/api/books');
+        const response = await axios.get('/detail/books');
         setBookData(response.data);
         setOriginalData(response.data); // 데이터 로딩 시 originalData도 업데이트
       } catch (error) {
