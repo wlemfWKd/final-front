@@ -8,6 +8,9 @@ import Lecture from "./layouts/lecture";
 import Calendar from "./layouts/calendar";
 import Support from "./layouts/support";
 import Book from "./layouts/Book";
+import LicensePage from "./layouts/LicensePage"
+import DetailPage from './layouts/DetailPage'
+import DataPage from './layouts/DataPage'
 
 ReactDOM.render(
   <BrowserRouter>
@@ -19,6 +22,9 @@ ReactDOM.render(
       <Route path="/calendar" element={<Calendar />} />
       <Route path="/support" element={<Support />} />
       <Route path="/book" element={<Book />} />
+      <Route path="/license" element={<LicensePage />} />
+      <Route path="/detail/:jmfldnm" element={<DetailPage />} />
+      <Route path="/data" element={<DataPage />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
