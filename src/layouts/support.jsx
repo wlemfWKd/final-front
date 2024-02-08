@@ -27,7 +27,7 @@ const Support = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/crawl");
+        const response = await axios.get("/support");
         setData1(response.data.section1);
         setData2(response.data.section2);
         setData3(response.data.section3);
