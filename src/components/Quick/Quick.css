@@ -1,0 +1,57 @@
+.quick-menu {
+    position: fixed;
+    width: 90px;
+    top: 50%;
+    margin-top: -50px;
+    right: 10px;
+    background: #fff;
+    transform: translateY(-50%);
+    transition: top 0.3s ease-in-out;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 0 0 10px 10px rgba(41, 41, 41, 0.1);
+}
+
+.quick-menu ul {
+    padding: 5px 0;
+    list-style: none;
+    margin-bottom: 0;
+}
+
+.quick-menu ul a {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-size: 11px;
+    border-bottom: 1px solid #d2d2d2; /* 모든 아이콘에 border-bottom 추가 */
+    margin-top: 10px;
+}
+
+.quick-menu ul li:hover a {
+    color: #23256E; /* 링크 색상 변경 */
+}
+
+.quick-menu ul li:hover a #icon {
+    color: #23256E; /* 아이콘 색상 변경 */
+}
+
+/* 마지막 아이콘 요소의 바로 위에 있는 border-bottom 제거 */
+.quick-menu ul li:last-child a {
+    border-bottom: none;
+}
+
+.quick-menu ul a #icon{
+    display: block;
+    margin: 0 auto 7px;
+    width: 28px;
+    font-size: 30px;
+    color: #64aee0;
+}
+
+.quick-menu ul #bdn {
+    border: none;
+}
+
+.scrolled {
+    top: 0;
+}

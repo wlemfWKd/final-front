@@ -12,6 +12,7 @@ import NTQ from "../img/국가기술자격시험.jpeg";
 import NTLC from "../img/국민내일배움카드.jpeg";
 import YHDSA from "../img/청년주택드림청약통장.jpeg";
 import JFYSF from "../img/일자리채움청년지원금.png";
+import Quick from "../components/Quick/Quick";
 
 const Support = () => {
   const [dropdownVisibility1, setDropdownVisibility1] = useState(false);
@@ -812,6 +813,7 @@ const Support = () => {
           </Tabs>
         </div>
       </div>
+      <Quick />
       <Footer />
     </>
   );
