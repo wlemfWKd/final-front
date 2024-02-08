@@ -1,58 +1,61 @@
-#container{
+.wb_container{
     padding: 0 108px;
   }
   
-  #contents{
-    background-color: #f2f2f2;
-    padding-bottom: 24px;
+ .contents{
+  background-color: #f2f2f2;
+  padding-bottom: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
   }
   
-  #contents #title{
+  .contents .title{
     padding-top: 24px;
     text-align: center;
   }
   
-  #contents #btn{
+  .contents #btn{
   display: block;
   margin: auto;
   }
   
-  #contents #rank{
+  .contents .rank{
     display: flex;
     gap: 20px;
     justify-content: center;
     padding-top: 10px;
   }
+  .search {
+    margin-top: 20px; /* 상단 여백 설정 */
+    display: flex;
+    flex-direction: column; /* 세로 방향으로 정렬 */
+    /* 기존 CSS 내용 유지 */
+  }
   
-  #searchbox{
+  .searchbox{
     padding: 24px 0;
     display: flex;
     justify-content: center;
   }
-  #searchbox input[type="search"]{
+  .searchbox input[type="search"]{
     width: 300px;
     height: 63px;
   }
   
-  #searchbox button[type="submit"]{
+  .searchbox button[type="submit"]{
     height: 63px;
     width: 50px;
   }
   
-  .your-component {
+  .wb_list {
     list-style: none;
     padding: 0;
   }
   
-  .your-component li {
+  .wb_list li {
     display: flex;
     align-items: center;
-  }
-  
-  .left-image {
-    width: 100px;
-    height: 100px;
-    margin-right: 10px;
   }
   
   .detail-link {
