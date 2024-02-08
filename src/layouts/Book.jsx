@@ -80,6 +80,24 @@ const Book = () => {
     event.preventDefault(); // 브라우저의 기본 동작 방지
     setCurrentPage(pageNumber);
   };
+  // 검색결과 아래에 카테고리 바를 만들기 위한 카테고리 데이터
+  const categories = [
+    { id: 1, name: "yes24" },
+    { id: 2, name: "교보문고" },
+    { id: 3, name: "알라딘" },
+  ];
+
+  // 현재 선택된 카테고리 상태 및 업데이트 함수
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  // 카테고리 선택 시 호출되는 함수
+  const handleCategoryChange = (categoryId) => {
+    // 선택된 카테고리 업데이트
+    setSelectedCategory(categoryId);
+
+    // 여기에서 원하는 동작을 수행하도록 수정
+    // 예를 들어, 선택된 카테고리에 따라 데이터를 필터링하거나 다른 동작 수행 가능
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -150,8 +168,14 @@ const Book = () => {
           <div id="result">
             <div id="re_title">
               <h3>검색결과</h3>
-              <hr />
             </div>
+            {/* 카테고리 바 */}
+            <div id="category-bar">
+            <Button variant="outline-info">yes24</Button>{' '}
+            <Button variant="outline-info">교보문고</Button>{' '}
+            <Button variant="outline-info">알라딘</Button>{' '}
+            </div>
+            <hr />
             <div id="re_contents">
               <input type="hidden" value={0} />
               <ul className="your-component">
