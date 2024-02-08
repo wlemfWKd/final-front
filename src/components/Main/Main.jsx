@@ -13,16 +13,21 @@ import {
   faBriefcase,
   faComments,
   faChevronRight,
-  faMagnifyingGlass,
   faAngleRight,
 } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Dropdown from "react-bootstrap/Dropdown";
 import { Card } from "react-bootstrap";
+import Quick from "../Quick/Quick";
 
-const renderSlides = imageData.map((image) => (
-  <div key={image.alt}>
-    <img src={image.url} alt={image.alt} />
+const renderSlides = imageData.map((image, index) => (
+  <div
+    key={index}
+    onClick={() => {
+      window.location.href = image.href;
+    }}
+    style={{ cursor: "pointer" }}
+  >
+    <img src={image.src} alt={image.alt} />
   </div>
 ));
 
@@ -31,20 +36,6 @@ const Main = () => {
   function handleChange(index) {
     setCurrentIndex(index);
   }
-
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  const handleScroll = () => {
-    setIsScrolled(window.scrollY > 1000);
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   return (
     <>
@@ -113,94 +104,71 @@ const Main = () => {
       </div>
       <div id="banner1">
         <div id="container">
-          <a href="#">
+          <Link to="/test">
             <p>
               나에게 맞는 자격증은 뭐가 있을까? <span>CLICK</span>
             </p>
-          </a>
+          </Link>
         </div>
       </div>
       <div id="main2">
         <div id="container">
           <div id="section1">
-            <h1>자격증 검색</h1>
-            <div id="listsearch">
-              <div id="search">
-                <div id="searchbox">
-                  <input type="search" placeholder="자격증명을 입력해주세요" />
-                  <button type="submit">
-                    <FontAwesomeIcon id="icon" icon={faMagnifyingGlass} />
-                  </button>
-                </div>
-              </div>
-              <div id="downlist">
-                <Dropdown id="down1">
-                  <Dropdown.Toggle id="dropdown-basic">분야</Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">전체</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
-                      국가기술자격
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">
-                      국가전문자격
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-4">능력검정</Dropdown.Item>
-                    <Dropdown.Item href="#/action-5">
-                      국가공인자격
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-6">
-                      등록민간자격
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-7">국제자격</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                <Dropdown id="down2">
-                  <Dropdown.Toggle id="dropdown-basic">
-                    자격증 종류
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">전체</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
-                      국가기술자격
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">
-                      국가전문자격
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-4">능력검정</Dropdown.Item>
-                    <Dropdown.Item href="#/action-5">
-                      국가공인자격
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-6">
-                      등록민간자격
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-7">국제자격</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                <Dropdown id="down3">
-                  <Dropdown.Toggle id="dropdown-basic">
-                    일정 상태
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">전체</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">시험일</Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">접수중</Dropdown.Item>
-                    <Dropdown.Item href="#/action-4">접수예정</Dropdown.Item>
-                    <Dropdown.Item href="#/action-5">
-                      오늘접수마감
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-              <a href="#">
+            <h1>자격증 맛보기</h1>
+            <div id="morelicen">
+              <Link to="/license">
                 자격증 더보기
                 <FontAwesomeIcon id="icon" icon={faAngleRight} />
-              </a>
+              </Link>
             </div>
           </div>
           <div id="section2">
+            <Card>
+              <Card.Body>
+                <Card.Title>자격증명</Card.Title>
+                <Card.Text>시험명 | 시험이름</Card.Text>
+                <Card.Text>접수일 | 00.00.00</Card.Text>
+                <Card.Text>시험일 | 00.00.00</Card.Text>
+                <Card.Link href="#" id="border">
+                  <span>상세보기</span>
+                </Card.Link>
+              </Card.Body>
+            </Card>
+            <Card>
+              <Card.Body>
+                <Card.Title>자격증명</Card.Title>
+                <Card.Text>시험명 | 시험이름</Card.Text>
+                <Card.Text>접수일 | 00.00.00</Card.Text>
+                <Card.Text>시험일 | 00.00.00</Card.Text>
+                <Card.Link href="#" id="border">
+                  <span>상세보기</span>
+                </Card.Link>
+              </Card.Body>
+            </Card>
+            <Card>
+              <Card.Body>
+                <Card.Title>자격증명</Card.Title>
+                <Card.Text>시험명 | 시험이름</Card.Text>
+                <Card.Text>접수일 | 00.00.00</Card.Text>
+                <Card.Text>시험일 | 00.00.00</Card.Text>
+                <Card.Link href="#" id="border">
+                  <span>상세보기</span>
+                </Card.Link>
+              </Card.Body>
+            </Card>
+            <Card>
+              <Card.Body>
+                <Card.Title>자격증명</Card.Title>
+                <Card.Text>시험명 | 시험이름</Card.Text>
+                <Card.Text>접수일 | 00.00.00</Card.Text>
+                <Card.Text>시험일 | 00.00.00</Card.Text>
+                <Card.Link href="#" id="border">
+                  <span>상세보기</span>
+                </Card.Link>
+              </Card.Body>
+            </Card>
+          </div>
+          <div id="section3">
             <Card>
               <Card.Body>
                 <Card.Title>자격증명</Card.Title>
@@ -250,43 +218,14 @@ const Main = () => {
       </div>
       <div id="banner1">
         <div id="container">
-          <a href="#">
+          <Link to="/book">
             <p>
               문제집 찾기 <span>CLICK</span>
             </p>
-          </a>
+          </Link>
         </div>
       </div>
-      <div className={`quick-menu ${isScrolled ? "scrolled" : ""}`}>
-        <div className="quickmenu">
-          <ul>
-            <li>
-              <Link to="/license">
-                <FontAwesomeIcon id="icon" icon={faCalendarDays} />
-                자격증정보
-              </Link>
-            </li>
-            <li>
-              <a href="#">
-                <FontAwesomeIcon id="icon" icon={faClipboard} />
-                적성검사
-              </a>
-            </li>
-            <li>
-              <Link to="/lecture">
-                <FontAwesomeIcon id="icon" icon={faBriefcase} />
-                기출문제
-              </Link>
-            </li>
-            <li>
-              <Link to="/book">
-                <FontAwesomeIcon id="icon" icon={faBookOpen} />
-                교재추천
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <Quick />
     </>
   );
 };
