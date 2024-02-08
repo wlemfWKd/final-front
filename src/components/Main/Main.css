@@ -101,6 +101,14 @@
     color: #fff;
 }
 
+.carousel .slide img {
+    cursor: pointer;
+}
+
+.carousel .slide img:last-child{
+    height: 516px;
+}
+
 #main2 {
     background-color: #f2f2f2;
 }
@@ -111,32 +119,8 @@
 
 #main2 #container #section1 h1 {
     padding-top: 24px;
-}
-
-#main2 #container #section1 #listsearch #search #searchbox {
-    margin-bottom: 24px;
-}
-
-#main2 #container #section1 #listsearch #downlist {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    padding: 10px;
-}
-
-#main2 #container #section1 #listsearch #downlist .dropdown {
-    flex: 1;
-    margin-right: 20px;
-}
-
-#main2 #container #section1 #listsearch #downlist .dropdown #dropdown-basic {
-    background-color: #fff;
-    color: black;
-    border-color: #2d2d2d;
-}
-
-#main2 #container #section1 #listsearch #downlist .dropdown .dropdown-menu {
     text-align: center;
+    font-weight: bold;
 }
 
 #main2 a {
@@ -152,68 +136,25 @@
     padding-left: 5px;
 }
 
-#main2 #container #section2 {
+#main2 #container #section2, #main2 #container #section3 {
     display: flex;
     gap: 20px;
     padding-bottom: 24px;
 }
 
-#main2 #container #section2 .card {
+#main2 #container #section2 .card, #main2 #container #section3 .card {
     flex: 1;
     margin-right: 15px;
     text-align: center;
     height: 250px;
 }
 
-#main2 #container #section2 .card #border {
+#main2 #container #section2 .card #border, #main2 #container #section3 .card #border {
     border-top: 1px solid #ddd;
 }
 
-#main2 #container #section2 .card #border span {
+#main2 #container #section2 .card #border span, #main2 #container #section3 .card #border span {
     margin-top: 15px;
     color: #64aee0;
     font-size: 20px;
-}
-.quick-menu {
-    position: fixed;
-    width: 90px;
-    top: 50%;
-    margin-top: -50px;
-    right: 10px;
-    background: #fff;
-    transform: translateY(-50%);
-    transition: top 0.3s ease-in-out;
-    border-radius: 5px;
-    padding: 5px;
-    box-shadow: 0 0 10px 10px rgba(41, 41, 41, 0.1);
-}
-
-.quick-menu ul {
-    padding: 5px 0;
-    list-style: none;
-    margin-bottom: 0;
-}
-
-.quick-menu ul a {
-    display: block;
-    text-align: center;
-    text-decoration: none;
-    font-size: 11px;
-    border-bottom: 1px solid #d2d2d2;
-    margin-top: 10px;
-}
-
-.quick-menu ul a #icon{
-    display: block;
-    margin: 0 auto 7px;
-    width: 28px;
-    font-size: 30px;
-}
-
-.quick-menu ul #bdn {
-    border: none;
-}
-
-.scrolled {
-    top: 0;
 }
