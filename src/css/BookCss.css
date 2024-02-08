@@ -152,3 +152,31 @@
   border: 1px solid #007bff;
 }
 
+
+#category-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1px; /* 필요에 따라 마진 조절 */
+}
+
+
+
+
+.category-list {
+  list-style: none;
+  display: flex;
+  padding: 0;
+}
+
+.category-list li {
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.category-list li.active {
+  background-color: #007bff;
+  color: #fff;
+}
