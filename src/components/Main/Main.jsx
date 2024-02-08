@@ -275,7 +275,7 @@ const Main = () => {
             <li>
               <Link to="/lecture">
                 <FontAwesomeIcon id="icon" icon={faBriefcase} />
-                강의추천
+                기출문제
               </Link>
             </li>
             <li>
