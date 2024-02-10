@@ -7,6 +7,7 @@ import Footer from "../components/Footer/Footer";
 import CalendarModal from "./CalendarModal";
 import EventDetails from "./EventDetails";
 import "../css/calendar.css";
+import Quick from "../components/Quick/Quick";
 
 class MyCalendar extends Component {
   state = {
@@ -163,6 +164,7 @@ class MyCalendar extends Component {
             isEditMode={!!selectedEventId}
           />
         )} */}
+        <Quick />
         <Footer />
       </>
     );
