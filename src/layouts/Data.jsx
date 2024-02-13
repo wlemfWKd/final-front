@@ -1,66 +1,82 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 import '../css/Data.css';
 
 const Data = () => {
 
+    const [rankData, setRankData] = useState([]);
+    useEffect(() => {
+        const fetchrank = async () => {
+            try {
+                const responseRank = await axios.get('/license/rank');
+                const responseRankData = responseRank.data;
+                setRankData(responseRankData);
+            } catch (error) {
+                console.error('Error fetching info:', error);
+            }
+        };
+        
+        fetchrank();
+        }, []);
+
+        const firstData = rankData.filter(item => item.grdnm === "기사")
+                                 .sort((a, b) => b.examrecptcnt - a.examrecptcnt)
+                                 .slice(0, 10);
+
+        const secondData = rankData.filter(item => item.grdnm === "기능사")
+                                 .sort((a, b) => b.examrecptcnt - a.examrecptcnt)
+                                 .slice(0, 10);
+
+        const thirdData = rankData.filter(item => item.grdnm === "산업기사")
+                                .sort((a, b) => b.examrecptcnt - a.examrecptcnt)
+                                .slice(0, 10);
     return (
         <>
         <div className="datapage">
-        <div className="data-title"><h2>자격증 순위</h2></div>
+        <div className="data-title"><h2>자격증 접수 순위</h2></div>
         <div className="data">
+            
             <div className="data-box">
                 <div className="data-name">
-                <h3>00 자격증</h3>
+                <h3>기사 자격증</h3>
                 </div>
+                {firstData.map((item, index) => (
                 <ul>
-                    <li>1<a href="#">자격증명</a></li>
-                    <li>2<a href="#"></a></li>
-                    <li>3<a href="#"></a></li>
-                    <li>4<a href="#"></a></li>
-                    <li>5<a href="#"></a></li>
-                    <li>6<a href="#"></a></li>
-                    <li>7<a href="#"></a></li>
-                    <li>8<a href="#"></a></li>
-                    <li>9<a href="#"></a></li>
-                    <li>10<a href="#"></a></li>
+                    <li>{index + 1}<Link to={`/detail/${encodeURIComponent(item.jmfldnm)}`}>{item.jmfldnm}</Link></li>
                 </ul>
+                ))}
+            </div>
+            
+
+            <div className="data-box">
+                <div className="data-name">
+                <h3>기능사 자격증</h3>
+                </div>
+                {secondData.map((item, index) => (
+                <ul>
+                    <li>{index + 1}<Link to={`/detail/${encodeURIComponent(item.jmfldnm)}`}>{item.jmfldnm}</Link></li>
+                </ul>
+                ))}
             </div>
 
             <div className="data-box">
                 <div className="data-name">
-                <h3>11 자격증</h3>
+                <h3>산업기사 자격증</h3>
                 </div>
+                {thirdData.map((item, index) => (
                 <ul>
-                    <li>1<a href="#">자격증명</a></li>
-                    <li>2<a href="#"></a></li>
-                    <li>3<a href="#"></a></li>
-                    <li>4<a href="#"></a></li>
-                    <li>5<a href="#"></a></li>
-                    <li>6<a href="#"></a></li>
-                    <li>7<a href="#"></a></li>
-                    <li>8<a href="#"></a></li>
-                    <li>9<a href="#"></a></li>
-                    <li>10<a href="#"></a></li>
+                    <li>{index + 1}<Link to={`/detail/${encodeURIComponent(item.jmfldnm)}`}>{item.jmfldnm}</Link></li>
                 </ul>
+                ))}
             </div>
 
-            <div className="data-box">
-                <div className="data-name">
-                <h3>22 자격증</h3>
-                </div>
-                <ul>
-                    <li>1<a href="#">자격증명</a></li>
-                    <li>2<a href="#"></a></li>
-                    <li>3<a href="#"></a></li>
-                    <li>4<a href="#"></a></li>
-                    <li>5<a href="#"></a></li>
-                    <li>6<a href="#"></a></li>
-                    <li>7<a href="#"></a></li>
-                    <li>8<a href="#"></a></li>
-                    <li>9<a href="#"></a></li>
-                    <li>10<a href="#"></a></li>
-                </ul>
-            </div>
+
+
+
+
+
+
         </div>
         </div>
         </>
