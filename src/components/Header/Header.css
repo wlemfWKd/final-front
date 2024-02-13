@@ -43,3 +43,8 @@
     font-weight: 500;
     font-size: 15px;
   } 
+
+  .header_login .logout{
+    cursor: pointer;
+    text-decoration: none;
+  }

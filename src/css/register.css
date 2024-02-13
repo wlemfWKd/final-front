@@ -1,50 +1,202 @@
-.signup-container {
-    max-width: 300px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    text-align: center;
-    margin-top: 50px;
+
+.register_container {
+  margin: 50px auto;
+  max-width: 700px;
+  padding: 20px;
   }
-  
-  .signup-container h2 {
-    color: #64aee0;
-  }
-  
-  .signup-container form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .signup-container label {
-    margin-top: 10px;
-  }
-  
-  .signup-container input {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  .signup-container button {
-    width: 100%;
-    padding: 10px;
+
+.register_container input{
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    background-color: #64aee0;
-    color: #fff;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+    border-bottom: 1px solid #000;
   }
   
-  .signup-container button:hover {
-    background-color: #3388b5;
-  }
-  
+.register_container table{
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.register_container table td{
+  padding: 10px;
+}
+
+.register_container table td:first-child {
+  width: 110px;
+}
+
+.register_container .basic_input{
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.register_container .id_check{
+  display: flex;
+  position: relative;
+  margin-top: 20px;
+}
+
+.register_container .id_btn, .register_container .email_btn{
+  font-size: 0.9rem;
+  margin-top: 3px;
+  margin-left: 5px;
+  padding: 8px;
+  height: 100%;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  background-color: #64aee0;
+}
+
+.register_container .id_btn{
+  width: 25%;
+  height: 50px;
+  margin-top: 15px;
+}
+
+.register_container .star{
+  letter-spacing: 10px;
+  font-weight: bold;
+  padding-left: 10px;
+  font-size: 20px;
+  margin-right: 30px;
+  display: inline-block; 
+  vertical-align: middle;
+}
+
+.register_container .email_input{
+  width: 50%;
+  padding: 8px;
+  margin-right: 5px;
+  box-sizing: border-box;
+}
+
+
+.register_container .rrn1_input{
+  width: 55%;
+  padding: 8px;
+  margin-right: 5px;
+  box-sizing: border-box;
+  float: left;
+}
+.register_container .rrn2_input{
+  width: 8%;
+  height: 65px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.register_container select{
+  width: 46%;
+  padding: 8px;
+  box-sizing: border-box;
+  margin-top: 5px;
+  margin-left: 5px;
+  appearance: none;
+  background-image: url(../img/down_arrow.png);
+  background-position: right 10px top 50%;
+  background-size: 12px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.register_container .email_btn{
+  width: 48%;
+}
+
+.register_container .check_input{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register_container .check_btn{
+  width: 15%;
+  margin-left: 20px;
+  padding: 8px;
+  height: 100%;
+  background-color: #64aee0;
+  cursor: pointer;
+}
+
+.register_container .signup{
+  font-size: 1.2rem;
+  width: 50%;
+  padding: 5px;
+  background-color: #64aee0;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  height: 50px;
+  margin: 0 auto;
+  display: block;
+}
+
+.id_btn:hover, .email_btn:hover, .check_btn:hover, .signup:hover{
+  background: #166caa;
+}
+
+
+
+.register_container .basic_input,
+.register_container .rrn1_input,
+.register_container .email_input{
+  position: relative;
+  margin-top: 20px;
+}
+
+.register_container .basic_input:first-child,
+.register_container .rrn1_input:first-child,
+.register_container .email_input:first-child {
+  margin-top: 0;
+}
+
+.register_container  .basic_input input,
+.register_container  .rrn1_input input,
+.register_container  .email_input input {
+  width: 100%;
+  padding: 20px 10px 10px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid black;
+  font-size: 18px;
+  outline: none;
+}
+
+.register_container .basic_input label,
+.register_container .rrn1_input label,
+.register_container .email_input label {
+  position: absolute;
+  left: 10px;
+  top: 15px;
+  font-size: 18px;
+  transition: top 0.5s ease;
+}
+
+.register_container .basic_input input:focus + label,
+.register_container .basic_input input:valid + label, 
+.register_container .rrn1_input input:focus + label,
+.register_container .rrn1_input input:valid + label,
+.register_container .email_input input:focus + label,
+.register_container .email_input input:valid + label  {
+  top: -2px;
+  font-size: 13px;
+  color: #166caa;
+}
+
+.register_container .email_input {
+  width: calc(100% - 60px); /* input과 select 요소를 제외한 나머지 너비 계산 */
+  float: left; /* 왼쪽 정렬 */
+}
+
+.register_container .email_input input {
+  width: 50%; /* input 요소의 너비를 반씩 나눠줍니다. */
+  float: left; /* 왼쪽 정렬 */
+}
+
+.register_container .email_input select {
+  width: 40%; /* select 요소의 너비를 설정합니다. */
+  float: right; /* 오른쪽 정렬 */
+  margin-left: 5px; /* 왼쪽 여백 추가 */
+}
