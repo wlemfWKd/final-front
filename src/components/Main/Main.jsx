@@ -9,8 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendarDays,
   faClipboard,
-  faBookOpen,
-  faBriefcase,
+  faBookmark,
+  faIdCard,
   faComments,
   faChevronRight,
   faAngleRight,
@@ -72,13 +72,13 @@ const Main = () => {
               </li>
               <li>
                 <a href="#">
-                  <FontAwesomeIcon id="icon" icon={faBriefcase} />
-                  자격정보
+                  <FontAwesomeIcon id="icon" icon={faIdCard} />
+                  자격증정보
                 </a>
               </li>
               <li>
                 <Link to="/support">
-                  <FontAwesomeIcon id="icon" icon={faBookOpen} />
+                  <FontAwesomeIcon id="icon" icon={faBookmark} />
                   지원제도
                 </Link>
               </li>

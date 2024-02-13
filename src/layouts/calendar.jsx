@@ -8,6 +8,7 @@ import CalendarModal from "./CalendarModal";
 import EventDetails from "./EventDetails";
 import "../css/calendar.css";
 import Quick from "../components/Quick/Quick";
+import axios from "axios";
 
 class MyCalendar extends Component {
   state = {
@@ -17,9 +18,25 @@ class MyCalendar extends Component {
     modalEndDate: null,
     diff: null,
     selectedEventId: null,
-    events: this.getSavedEvents(),
+    events: [],
     selectedEventDetails: null,
+    listData: [],
   };
+
+  componentDidMount() {
+    this.fetchList();
+  }
+
+  fetchList() {
+    axios
+      .get("/license/list")
+      .then((response) => {
+        this.setState({ listData: response.data });
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }
 
   getSavedEvents() {
     const savedEvents = localStorage.getItem("events");
@@ -134,6 +151,12 @@ class MyCalendar extends Component {
         <Header />
         <div className="container">
           <div className="calender">
+            {this.state.listData.map((item) => (
+              <div key={item.jmcd}>
+                <p>자격명: {item.jmfldnm}</p>
+                <p>시리즈 코드: {item.seriescd}</p>
+              </div>
+            ))}
             <FullCalendar
               plugins={[dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
