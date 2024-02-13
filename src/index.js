@@ -12,6 +12,8 @@ import Board from "./layouts/Board";
 import LicensePage from "./layouts/LicensePage";
 import DetailPage from "./layouts/DetailPage";
 import DataPage from "./layouts/DataPage";
+import LoginCallback from "./oauth/Logincallback";
+import FindId from "./layouts/FindId";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -27,6 +29,8 @@ ReactDOM.render(
       <Route path="/license" element={<LicensePage />} />
       <Route path="/detail/:jmfldnm" element={<DetailPage />} />
       <Route path="/data" element={<DataPage />} />
+      <Route path="/login/callback" element={<LoginCallback />} />
+      <Route path="/findid" element={<FindId />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")

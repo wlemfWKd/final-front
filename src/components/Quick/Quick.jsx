@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCalendarDays,
+  faIdCard,
   faClipboard,
   faBookOpen,
-  faBriefcase,
+  faFileZipper,
 } from "@fortawesome/free-solid-svg-icons";
 import "./Quick.css";
 
@@ -31,7 +31,7 @@ const Quick = () => {
           <ul>
             <li>
               <Link to="/license">
-                <FontAwesomeIcon id="icon" icon={faCalendarDays} />
+                <FontAwesomeIcon id="icon" icon={faIdCard} />
                 자격증정보
               </Link>
             </li>
@@ -43,7 +43,7 @@ const Quick = () => {
             </li>
             <li>
               <Link to="/lecture">
-                <FontAwesomeIcon id="icon" icon={faBriefcase} />
+                <FontAwesomeIcon id="icon" icon={faFileZipper} />
                 기출문제
               </Link>
             </li>
