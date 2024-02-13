@@ -67,7 +67,7 @@
   .LicenseList ul li a {
     display: inline-block;
     width: 100%;
-    padding: 50px;  /* 원하는 만큼의 패딩을 추가하여 박스의 크기 조절 */
+    padding: 15px;  /* 원하는 만큼의 패딩을 추가하여 박스의 크기 조절 */
     color: #3498db;
     font-weight: bold;
     font-size: 25px;
