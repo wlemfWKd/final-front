@@ -17,8 +17,10 @@ const Detail = () => {
   const [isTestDatesOpen, setIsTestDatesOpen] = useState(false);
   const [isTestInfoOpen, setIsTestInfoOpen] = useState(false);
   const [isFutureOpen, setIsFutureOpen] = useState(false);
+  const [isJobOpen, setIsJobOpen] = useState(false);
   const [isWrittenChart, setIsWrittenChart] = useState(true);
-  const [infoItem, setInfoItem] = useState(null);
+  const [infoData, setInfoData] = useState(null);
+  const [originalData, setOriginalData] = useState(null);
   const { jmfldnm } = useParams();
   const serviceKey =
     "8RQmmNMbqQKZO06m6d44ZNTJv55aWC7ld4cj5de9n14a6o3tbFOrn/F3Aa5cVQzRVlpUr2nt2J9sjnqrnD2KLA==";
@@ -51,6 +53,30 @@ const Detail = () => {
   const currentYear = new Date().getFullYear();
 
   useEffect(() => {
+    const fetchinfo = async () => {
+      try {
+        const response = await axios.get('/license/info');
+        const responseData = response.data;
+  
+        // 받아온 데이터 리스트 반복
+        for (const data of responseData) {
+          // jmfldnm과 jmnm을 비교하여 일치하는 데이터 찾기
+          if (data.jmnm === decodeURIComponent(jmfldnm)) {
+            // 일치하는 데이터를 state로 설정
+            setInfoData(data);
+            setOriginalData(data); // 데이터 로딩 시 originalData도 업데이트
+            break; // 일치하는 데이터를 찾았으므로 반복문 종료
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching info:', error);
+      }
+    };
+  
+    fetchinfo();
+  }, [jmfldnm]); 
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         // 국가자격 정보 가져오기
@@ -67,20 +93,6 @@ const Detail = () => {
           (item) => item.jmfldnm === decodeURIComponent(jmfldnm)
         );
         setItem(selectedItem);
-
-        // 시험 정보 가져오기
-        const infoApiUrl = "/api/service/rest/InquiryQualInfo/getList";
-        const infoResponse = await axios.get(infoApiUrl, {
-          params: {
-            seriesCd: selectedItem.seriescd,
-            serviceKey: serviceKey,
-          },
-        });
-        const infoItems = infoResponse.data.response.body.items.item;
-        const infoItem = infoItems.find(
-          (item) => item.jmNm === decodeURIComponent(jmfldnm)
-        );
-        setInfoItem(infoItem);
 
         // 시험일정 정보 가져오기
         const testDatesApiUrl =
@@ -158,19 +170,19 @@ const Detail = () => {
     fetchData();
   }, [jmfldnm, serviceKey]);
 
-  if (!item || !testDates || !eventYearPiList || !eventYearSiList) {
-    return <p>Loading...</p>;
-  }
+  // if (!item || !testDates || !eventYearPiList || !eventYearSiList) {
+  //   return <p>Loading...</p>;
+  // }
 
   return (
     <>
       <div className="detail-centered-container">
         <div className="detail-title">
-          <h2 className="detail-header">{item.jmfldnm}</h2>
+          <h2 className="detail-header">{jmfldnm}</h2>
         </div>
 
         <div className="detail-box">
-          <p>{infoItem.summary}</p>
+           <p>{infoData && infoData.summary}</p> 
         </div>
         <div className="detail-content">
           <div className="detail-intro">
@@ -178,7 +190,8 @@ const Detail = () => {
           </div>
           <br />
           <br />
-          <div
+
+          {/* <div
             className={`test-dates-container ${isTestDatesOpen ? "open" : ""}`}
           >
             <h3 onClick={() => setIsTestDatesOpen(!isTestDatesOpen)}>
@@ -232,14 +245,6 @@ const Detail = () => {
                             </td>
                           </tr>
                           <tr>
-                            <td>원서접수 시작일</td>
-                            <td>
-                              {formatDate(
-                                testDates2[selectedTestIndex].examregstartdt
-                              )}
-                            </td>
-                          </tr>
-                          <tr>
                             <td>시험 시작일</td>
                             <td>
                               {formatDate(
@@ -286,7 +291,7 @@ const Detail = () => {
                 )}
               </>
             )}
-          </div>
+          </div> */}
 
           <div className={`test-info ${isTestInfoOpen ? "open" : ""}`}>
             <h3 onClick={() => setIsTestInfoOpen(!isTestInfoOpen)}>
@@ -295,7 +300,13 @@ const Detail = () => {
             {isTestInfoOpen && (
               <>
                 <div className="test-trend">
-                  <p>시험 트렌드</p>
+                  {infoData && infoData.trend ? (
+                    infoData.trend.split('-').map((item, index) => (
+                      <p key={index}>{item}</p>
+                    ))
+                  ) : (
+                    <p>추후 공지</p>
+                  )}
                 </div>
               </>
             )}
@@ -305,14 +316,32 @@ const Detail = () => {
             <h3 onClick={() => setIsFutureOpen(!isFutureOpen)}>미래 전망</h3>
             {isFutureOpen && (
               <div className="future-content">
-                <p>내용</p>
-              </div>
+              {infoData && infoData.career ? (
+                infoData.career.split('-').map((item, index) => (
+                  <p key={index}>{item}</p>
+                ))
+              ) : (
+                <p>추후 공지</p>
+              )}
+            </div>
             )}
           </div>
 
-          <div className="chart">
-            {/* 이벤트 연도 통계 출력 */}
-            <div className="chart-container">
+          <div className={`test-job ${isJobOpen ? "open" : ""}`}>
+            <h3 onClick={() => setIsJobOpen(!isJobOpen)}>관련 직무</h3>
+            {isJobOpen && (
+              <>
+              <div className="job-content">
+                <p>{infoData && infoData.job ? infoData.job : "추후 공지"}</p>
+              </div>
+              </>
+            )}
+          </div>
+
+              {/* 이벤트 연도 통계 출력 */}
+          {/* <div className="chart">
+            
+             <div className="chart-container">
               {isWrittenChart
                 ? eventYearPiList &&
                   eventYearPiList.map((event, index) => (
@@ -424,13 +453,15 @@ const Detail = () => {
                       )}
                       <br />
                     </div>
-                  ))}
-              <div className="chart-toggle-buttons">
+                  ))} 
+               <div className="chart-toggle-buttons">
                 <button onClick={() => setIsWrittenChart(true)}>필기</button>
                 <button onClick={() => setIsWrittenChart(false)}>실기</button>
-              </div>
-            </div>
-          </div>
+              </div> 
+             </div> 
+          </div> */}
+
+          
         </div>
       </div>
     </>

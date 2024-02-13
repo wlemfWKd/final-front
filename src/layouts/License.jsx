@@ -340,7 +340,13 @@ const License = () => {
             <ul>
               {getCurrentPageData().map(item => (
                 <li key={item.jmcd}>
-                  <Link to={`/detail/${encodeURIComponent(item.jmfldnm)}`}>
+                  <Link to={{
+                      pathname: `/detail/${encodeURIComponent(item.jmfldnm)}`,
+                      state: {
+                        jmcd: item.jmcd,
+                        seriescd: item.seriescd
+                      }
+                    }}>
                     <span className="link-text">
                     {item.jmfldnm} &nbsp;{item.jmcd && <span className="company">한국산업인력공단</span>}
                     </span>

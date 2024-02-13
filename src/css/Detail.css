@@ -46,7 +46,7 @@
   height: 200px;
   border-radius: 20px;
   display: flex;
-  justify-content: flex-start; /* 변경된 부분 */
+  justify-content: center; /* 변경된 부분 */
   align-items: center;
   flex-direction: column;
   margin: 100px 0px; /* 변경된 부분 */
@@ -55,10 +55,8 @@
 .detail-header {
   position: relative;
   text-align: center; /* 변경된 부분 */
-  padding-top: 30px;
-  width: 100%;
+  width: fit-content;
   font-size: 40px;
-  margin-bottom: 80px;
   color: #ffffff;
 }
 
@@ -72,11 +70,11 @@
     flex-direction: column;
     align-items: center;
     max-height: 100px;
-    margin-bottom: 0;
+    margin-bottom: 10px;
 }
 
 .test-dates-select {
-    width: 740px;
+    width: 700px;
     padding: 10px;
     margin-bottom: 10px;
 }
@@ -93,34 +91,40 @@
 
 .test-dates-container.open,
 .test-info.open,
-.future.open {
+.future.open,
+.test-job.open {
   max-height: 700px; /* 토글 시 높이 변경 */
 }
 
 .test-dates-container h3,
 .test-info h3,
-.future h3 {
+.future h3,
+.test-job h3 {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #9bbfd8;
   border-radius: 20px;
   width: 100%;
-  padding: 20px;
+  padding: 30px;
+  font-size: 20px;
+  font-weight: bold;
   cursor: pointer;
   text-align: left;
 }
 
 .test-dates-container h3::after,
 .test-info h3::after,
-.future h3::after {
+.future h3::after,
+.test-job h3::after {
   content: "\25BC"; /* 화살표 머리 이모티콘 */
   margin-left: 5px;
 }
 
 .test-dates-container.open h3::after,
 .test-info.open h3::after,
-.future.open h3::after {
+.future.open h3::after,
+.test-job.open h3::after {
   content: "\25B2"; /* toggle이 열려있을 때 위쪽 화살표 머리 이모티콘 */
 }
 
@@ -163,8 +167,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 10px;
 }
 
+.job-content,
+.future-content,
 .test-trend {
     border: 1px solid #ccc;
     background-color: #ffffff;
@@ -172,7 +179,7 @@
     padding: 20px;
     max-width: 500px;
     width: 100%;
-    margin-bottom: 20px;
+    margin: 20px 0px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
@@ -221,6 +228,7 @@
     text-align: center;
   }
 
+  .test-job,
   .future {
     width: 100%;
     max-height: 100px;
@@ -228,15 +236,5 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-
-  .future-content {
-    border: 1px solid #ccc;
-    background-color: #ffffff;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    width: 100%;
-    max-width: 500px;
+    margin-bottom: 10px;
   }
