@@ -15,6 +15,7 @@ import DataPage from "./layouts/DataPage";
 import LoginCallback from "./oauth/Logincallback";
 import FindId from "./layouts/FindId";
 import Test from "./layouts/test";
+import CareerTestResult from "./layouts/CareerTestResult";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -32,7 +33,8 @@ ReactDOM.render(
       <Route path="/data" element={<DataPage />} />
       <Route path="/login/callback" element={<LoginCallback />} />
       <Route path="/findid" element={<FindId />} />
-      <Route path="/testtaek" element={<Test />} />
+      <Route path="/test" element={<Test />} />
+      <Route path="/test-result" element={<CareerTestResult />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
