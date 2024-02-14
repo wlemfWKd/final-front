@@ -1,204 +1,59 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Card } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import CareerTestResult from "./CareerTestResult";
+import { Link } from "react-router-dom";
 
-const Test = () => {
+function CareerTest() {
+  const [questions, setQuestions] = useState([]);
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
 
-    const [listData, setListData] = useState([]);
-    const [testDates, setTestDates] = useState(null);
-    const serviceKey =
-    "8RQmmNMbqQKZO06m6d44ZNTJv55aWC7ld4cj5de9n14a6o3tbFOrn/F3Aa5cVQzRVlpUr2nt2J9sjnqrnD2KLA==";
+  useEffect(() => {
+    fetchCareerTestQuestions();
+  }, []);
 
-    useEffect(() => {
-        const fetchList = async () => {
-            try {
-                const responseList = await axios.get('/license/list');
-                const responseListData = responseList.data;
-                setListData(responseListData);
+  const fetchCareerTestQuestions = async () => {
+    try {
+      const response = await fetch("/career-test");
+      const data = await response.json();
+      setQuestions(data);
+    } catch (error) {
+      console.error("Error fetching career test questions:", error);
+    }
+  };
 
-            } catch (error) {
-                console.error('Error fetching info:', error);
-            }
+  const handleAnswerSelection = (questionIndex, answerScore) => {
+    // 선택한 답변의 스코어 값을 selectedAnswers에 저장
+    const updatedSelectedAnswers = [...selectedAnswers];
+    updatedSelectedAnswers[questionIndex] = answerScore;
+    setSelectedAnswers(updatedSelectedAnswers);
+  };
 
-        };    
-      
-        fetchList();
-    }, []);
+  return (
+    <div className="career-test-container">
+      <h1>Career Test</h1>
+      {questions.map((question, index) => (
+        <div key={index} className="question-container">
+          <h2>{question.question}</h2>
+          <ul>
+            {question.answers.map((answer, answerIndex) => (
+              <li key={answerIndex}>
+                <button
+                  onClick={() =>
+                    handleAnswerSelection(index, answer.answerScore)
+                  }
+                >
+                  {answer.answerText}
+                  {answer.answerScore}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      <button>
+        <Link to="/test-result">결과확인</Link>
+      </button>
+    </div>
+  );
+}
 
-
-    
-
-
-    return (
-        <>
-       <div id="section2">
-          
-          {listData && listData.map(item => {
-                if (item.jmcd === "1320") {
-                    return (
-                        <Card key={item.jmcd}>
-                            <Card.Body>
-                                <Card.Title>{item.jmfldnm}</Card.Title>
-                                <Card.Text>시험명 | 시험이름</Card.Text>
-                                <Card.Text>접수일 | 00.00.00</Card.Text>
-                                <Card.Text>시험일 | 00.00.00</Card.Text>
-                                <Card.Link href={`/detail/${encodeURIComponent(item.jmfldnm)}`} id="border">
-                                    <span>상세보기</span>
-                                </Card.Link>
-                            </Card.Body>
-                        </Card>
-                    );
-                } else {
-                    return null;
-                }
-            })}
-          
-          {listData && listData.map(item => {
-                if (item.jmcd === "0752") {
-                    return (
-                        <Card key={item.jmcd}>
-                            <Card.Body>
-                                <Card.Title>{item.jmfldnm}</Card.Title>
-                                <Card.Text>시험명 | 시험이름</Card.Text>
-                                <Card.Text>접수일 | 00.00.00</Card.Text>
-                                <Card.Text>시험일 | 00.00.00</Card.Text>
-                                <Card.Link href={`/detail/${encodeURIComponent(item.jmfldnm)}`} id="border">
-                                    <span>상세보기</span>
-                                </Card.Link>
-                            </Card.Body>
-                        </Card>
-                    );
-                } else {
-                    return null;
-                }
-            })}
-
-            {listData && listData.map(item => {
-                if (item.jmcd === "7780") {
-                    return (
-                        <Card key={item.jmcd}>
-                            <Card.Body>
-                                <Card.Title>{item.jmfldnm}</Card.Title>
-                                <Card.Text>시험명 | 시험이름</Card.Text>
-                                <Card.Text>접수일 | 00.00.00</Card.Text>
-                                <Card.Text>시험일 | 00.00.00</Card.Text>
-                                <Card.Link href={`/detail/${encodeURIComponent(item.jmfldnm)}`} id="border">
-                                    <span>상세보기</span>
-                                </Card.Link>
-                            </Card.Body>
-                        </Card>
-                    );
-                } else {
-                    return null;
-                }
-            })}
-
-            {listData && listData.map(item => {
-                if (item.jmcd === "7798") {
-                    return (
-                        <Card key={item.jmcd}>
-                            <Card.Body>
-                                <Card.Title>{item.jmfldnm}</Card.Title>
-                                <Card.Text>시험명 | 시험이름</Card.Text>
-                                <Card.Text>접수일 | 00.00.00</Card.Text>
-                                <Card.Text>시험일 | 00.00.00</Card.Text>
-                                <Card.Link href={`/detail/${encodeURIComponent(item.jmfldnm)}`} id="border">
-                                    <span>상세보기</span>
-                                </Card.Link>
-                            </Card.Body>
-                        </Card>
-                    );
-                } else {
-                    return null;
-                }
-            })}
-
-          </div>
-
-          <div id="section3">
-
-            {listData && listData.map(item => {
-                if (item.jmcd === "7795") {
-                    return (
-                        <Card key={item.jmcd}>
-                            <Card.Body>
-                                <Card.Title>{item.jmfldnm}</Card.Title>
-                                <Card.Text>시험명 | 시험이름</Card.Text>
-                                <Card.Text>접수일 | 00.00.00</Card.Text>
-                                <Card.Text>시험일 | 00.00.00</Card.Text>
-                                <Card.Link href={`/detail/${encodeURIComponent(item.jmfldnm)}`} id="border">
-                                    <span>상세보기</span>
-                                </Card.Link>
-                            </Card.Body>
-                        </Card>
-                    );
-                } else {
-                    return null;
-                }
-            })}
-
-            {listData && listData.map(item => {
-                if (item.jmcd === "2301") {
-                    return (
-                        <Card key={item.jmcd}>
-                            <Card.Body>
-                                <Card.Title>{item.jmfldnm}</Card.Title>
-                                <Card.Text>시험명 | 시험이름</Card.Text>
-                                <Card.Text>접수일 | 00.00.00</Card.Text>
-                                <Card.Text>시험일 | 00.00.00</Card.Text>
-                                <Card.Link href={`/detail/${encodeURIComponent(item.jmfldnm)}`} id="border">
-                                    <span>상세보기</span>
-                                </Card.Link>
-                            </Card.Body>
-                        </Card>
-                    );
-                } else {
-                    return null;
-                }
-            })}
-
-            {listData && listData.map(item => {
-                if (item.jmcd === "0622") {
-                    return (
-                        <Card key={item.jmcd}>
-                            <Card.Body>
-                                <Card.Title>{item.jmfldnm}</Card.Title>
-                                <Card.Text>시험명 | 시험이름</Card.Text>
-                                <Card.Text>접수일 | 00.00.00</Card.Text>
-                                <Card.Text>시험일 | 00.00.00</Card.Text>
-                                <Card.Link href={`/detail/${encodeURIComponent(item.jmfldnm)}`} id="border">
-                                    <span>상세보기</span>
-                                </Card.Link>
-                            </Card.Body>
-                        </Card>
-                    );
-                } else {
-                    return null;
-                }
-            })}
-
-            {listData && listData.map(item => {
-                if (item.jmcd === "1240") {
-                    return (
-                        <Card key={item.jmcd}>
-                            <Card.Body>
-                                <Card.Title>{item.jmfldnm}</Card.Title>
-                                <Card.Text>시험명 | 시험이름</Card.Text>
-                                <Card.Text>접수일 | 00.00.00</Card.Text>
-                                <Card.Text>시험일 | 00.00.00</Card.Text>
-                                <Card.Link href={`/detail/${encodeURIComponent(item.jmfldnm)}`} id="border">
-                                    <span>상세보기</span>
-                                </Card.Link>
-                            </Card.Body>
-                        </Card>
-                    );
-                } else {
-                    return null;
-                }
-            })}
-          </div>
-      </>
-    );
-};
-
-export default Test;
+export default CareerTest;
