@@ -18,12 +18,15 @@ const Detail = () => {
   const [isTestInfoOpen, setIsTestInfoOpen] = useState(false);
   const [isFutureOpen, setIsFutureOpen] = useState(false);
   const [isJobOpen, setIsJobOpen] = useState(false);
+  const [isAccessOpen, setIsAccessOpen] = useState(false);
   const [isWrittenChart, setIsWrittenChart] = useState(true);
   const [infoData, setInfoData] = useState(null);
+  const [acData, setAcData] = useState([]);
   const [originalData, setOriginalData] = useState(null);
+  const [originalACData, setOriginalACData] = useState(null);
   const { jmfldnm } = useParams();
   const serviceKey =
-    "0OhBU7ZCGIobDVKDeBJDpmDRqK3IRNF6jlf/JB2diFAf/fR2czYO9A4UTGcsOwppV6W2HVUeho/FPwXoL6DwqA==";
+    "8RQmmNMbqQKZO06m6d44ZNTJv55aWC7ld4cj5de9n14a6o3tbFOrn/F3Aa5cVQzRVlpUr2nt2J9sjnqrnD2KLA==";
   const boxStyle = {
     border: "1px solid #ccc",
     borderRadius: "10px",
@@ -55,9 +58,9 @@ const Detail = () => {
   useEffect(() => {
     const fetchinfo = async () => {
       try {
-        const response = await axios.get("/license/info");
+        const response = await axios.get('/license/info');
         const responseData = response.data;
-
+  
         // 받아온 데이터 리스트 반복
         for (const data of responseData) {
           // jmfldnm과 jmnm을 비교하여 일치하는 데이터 찾기
@@ -69,12 +72,13 @@ const Detail = () => {
           }
         }
       } catch (error) {
-        console.error("Error fetching info:", error);
+        console.error('Error fetching info:', error);
       }
     };
-
+  
     fetchinfo();
-  }, [jmfldnm]);
+  }, [jmfldnm]); 
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,6 +98,28 @@ const Detail = () => {
         );
         setItem(selectedItem);
 
+                    // 자격
+                const responseac = await axios.get('/license/access');
+                const responseacData = responseac.data;
+
+                // 해당 자격의 데이터를 배열로 저장
+                const acDataArray = [];
+
+                // 받아온 데이터 리스트 반복
+                for (const acdata of responseacData) {
+                  // jmfldnm과 jmnm을 비교하여 일치하는 데이터 찾기
+                  if (acdata.grdnm === selectedItem.seriesnm) {
+                    // 일치하는 데이터를 배열에 추가
+                    acDataArray.push(acdata);
+                  }
+                }
+
+                // 배열 형태로 설정
+                setAcData(acDataArray);
+                setOriginalACData(acDataArray); // 데이터 로딩 시 originalData도 업데이트
+  
+
+
         // 시험일정 정보 가져오기
         const testDatesApiUrl =
           "/api/service/rest/InquiryTestInformationNTQSVC/getJMList";
@@ -112,7 +138,7 @@ const Detail = () => {
           "/api/service/rest/InquiryTestDatesNationalProfessionalQualificationSVC/getList";
         const testDates2Response = await axios.get(testDates2Url, {
           params: {
-            serviceKey: serviceKey,
+            serviceKey: "0OhBU7ZCGIobDVKDeBJDpmDRqK3IRNF6jlf/JB2diFAf/fR2czYO9A4UTGcsOwppV6W2HVUeho/FPwXoL6DwqA==",
             seriesCd: selectedItem.seriescd, // 계열코드를 이용해서 가져옴
           },
         });
@@ -120,7 +146,7 @@ const Detail = () => {
           testDates2Response.data.response.body.items.item;
         setTestDates2(testDates2Items);
 
-        // 종목코드에 맞는 이벤트 연도 통계 데이터 가져오기
+        // 종목코드에 맞는 필기 연도 통계 데이터 가져오기
         const jmcd = selectedItem.jmcd;
         const eventYearPiListApiUrl =
           "/api/service/rest/InquiryStatSVC/getEventYearPiList";
@@ -128,7 +154,7 @@ const Detail = () => {
           params: {
             baseYY: 2022,
             jmCd: jmcd,
-            ServiceKey: serviceKey,
+            ServiceKey: "0OhBU7ZCGIobDVKDeBJDpmDRqK3IRNF6jlf/JB2diFAf/fR2czYO9A4UTGcsOwppV6W2HVUeho/FPwXoL6DwqA==",
           },
         });
 
@@ -147,7 +173,7 @@ const Detail = () => {
           "/api/service/rest/InquiryStatSVC/getEventYearSiList";
         const eventYearSiListResponse = await axios.get(eventYearSiListApiUrl, {
           params: {
-            serviceKey: serviceKey,
+            serviceKey: "0OhBU7ZCGIobDVKDeBJDpmDRqK3IRNF6jlf/JB2diFAf/fR2czYO9A4UTGcsOwppV6W2HVUeho/FPwXoL6DwqA==",
             baseYY: 2022,
             jmCd: jmcd,
           },
@@ -182,7 +208,7 @@ const Detail = () => {
         </div>
 
         <div className="detail-box">
-          <p>{infoData && infoData.summary}</p>
+           <p>{infoData && infoData.summary}</p> 
         </div>
         <div className="detail-content">
           <div className="detail-intro">
@@ -191,7 +217,7 @@ const Detail = () => {
           <br />
           <br />
 
-          <div
+           <div
             className={`test-dates-container ${isTestDatesOpen ? "open" : ""}`}
           >
             <h3 onClick={() => setIsTestDatesOpen(!isTestDatesOpen)}>
@@ -293,6 +319,21 @@ const Detail = () => {
             )}
           </div>
 
+          <div className={`test-access ${isAccessOpen ? "open" : ""}`}>
+          <h3 onClick={() => setIsAccessOpen(!isAccessOpen)}>응시 자격</h3>
+          {isAccessOpen && (
+            <>
+            <div className="test-accessn">
+            {acData && acData.map((item, index) => (
+              <p key={index}>
+                {item.emqualdispnm}
+              </p>
+            ))}
+            </div>
+            </>
+            )}
+          </div>  
+
           <div className={`test-info ${isTestInfoOpen ? "open" : ""}`}>
             <h3 onClick={() => setIsTestInfoOpen(!isTestInfoOpen)}>
               시험 출제 경향
@@ -301,9 +342,9 @@ const Detail = () => {
               <>
                 <div className="test-trend">
                   {infoData && infoData.trend ? (
-                    infoData.trend
-                      .split("-")
-                      .map((item, index) => <p key={index}>{item}</p>)
+                    infoData.trend.split('-').map((item, index) => (
+                      <p key={index}>{item}</p>
+                    ))
                   ) : (
                     <p>추후 공지</p>
                   )}
@@ -316,14 +357,14 @@ const Detail = () => {
             <h3 onClick={() => setIsFutureOpen(!isFutureOpen)}>미래 전망</h3>
             {isFutureOpen && (
               <div className="future-content">
-                {infoData && infoData.career ? (
-                  infoData.career
-                    .split("-")
-                    .map((item, index) => <p key={index}>{item}</p>)
-                ) : (
-                  <p>추후 공지</p>
-                )}
-              </div>
+              {infoData && infoData.career ? (
+                infoData.career.split('-').map((item, index) => (
+                  <p key={index}>{item}</p>
+                ))
+              ) : (
+                <p>추후 공지</p>
+              )}
+            </div>
             )}
           </div>
 
@@ -331,16 +372,18 @@ const Detail = () => {
             <h3 onClick={() => setIsJobOpen(!isJobOpen)}>관련 직무</h3>
             {isJobOpen && (
               <>
-                <div className="job-content">
-                  <p>{infoData && infoData.job ? infoData.job : "추후 공지"}</p>
-                </div>
+              <div className="job-content">
+                <p>{infoData && infoData.job ? infoData.job : "추후 공지"}</p>
+              </div>
               </>
             )}
           </div>
 
-          {/* 이벤트 연도 통계 출력 */}
-          <div className="chart">
-            <div className="chart-container">
+
+              {/* 이벤트 연도 통계 출력 */}
+           <div className="chart">
+            
+             <div className="chart-container">
               {isWrittenChart
                 ? eventYearPiList &&
                   eventYearPiList.map((event, index) => (
@@ -452,13 +495,15 @@ const Detail = () => {
                       )}
                       <br />
                     </div>
-                  ))}
-              <div className="chart-toggle-buttons">
+                  ))} 
+               <div className="chart-toggle-buttons">
                 <button onClick={() => setIsWrittenChart(true)}>필기</button>
                 <button onClick={() => setIsWrittenChart(false)}>실기</button>
-              </div>
-            </div>
-          </div>
+              </div> 
+             </div> 
+          </div> 
+
+          
         </div>
       </div>
     </>

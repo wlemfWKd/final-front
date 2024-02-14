@@ -16,6 +16,9 @@ import LoginCallback from "./oauth/Logincallback";
 import FindId from "./layouts/FindId";
 import Test from "./layouts/test";
 import CareerTestResult from "./layouts/CareerTestResult";
+import MyPage from "./layouts/MyPage";
+import NotFound from "./layouts/NotFound";
+import FindPwd from "./layouts/findpassword";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -35,6 +38,9 @@ ReactDOM.render(
       <Route path="/findid" element={<FindId />} />
       <Route path="/test" element={<Test />} />
       <Route path="/test-result" element={<CareerTestResult />} />
+      <Route path="/mypage" element={<MyPage />} />
+      <Route path="/*" element={<NotFound />} />
+      <Route path="/login/findpassword" element={<FindPwd />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")

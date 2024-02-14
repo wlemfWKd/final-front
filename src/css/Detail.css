@@ -89,13 +89,15 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
+.test-access.open,
 .test-dates-container.open,
 .test-info.open,
 .future.open,
 .test-job.open {
-  max-height: 700px; /* 토글 시 높이 변경 */
+  max-height: 1500px; /* 토글 시 높이 변경 */
 }
 
+.test-access h3,
 .test-dates-container h3,
 .test-info h3,
 .future h3,
@@ -113,6 +115,7 @@
   text-align: left;
 }
 
+.test-access h3::after,
 .test-dates-container h3::after,
 .test-info h3::after,
 .future h3::after,
@@ -121,6 +124,7 @@
   margin-left: 5px;
 }
 
+.test-access.open h3::after,
 .test-dates-container.open h3::after,
 .test-info.open h3::after,
 .future.open h3::after,
@@ -170,6 +174,7 @@
     margin-bottom: 10px;
 }
 
+.test-accessn,
 .job-content,
 .future-content,
 .test-trend {
@@ -177,10 +182,15 @@
     background-color: #ffffff;
     border-radius: 10px;
     padding: 20px;
-    max-width: 500px;
+    max-width: 800px;
     width: 100%;
     margin: 20px 0px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.test-accessn p {
+  margin-top: 30px; /* 원하는 값으로 조정 */
+  margin-bottom: 10px; /* 원하는 값으로 조정 */
 }
 
 .chart {
@@ -228,6 +238,7 @@
     text-align: center;
   }
 
+  .test-access,
   .test-job,
   .future {
     width: 100%;
