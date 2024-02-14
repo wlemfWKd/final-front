@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../css/FindId.css";
 
-const FindId = () => {
+const FindPwd = () => {
   const [inputValue, setInputValue] = useState("");
   const [searchMethod, setSearchMethod] = useState("email");
   const [foundUsername, setFoundUsername] = useState("");
@@ -22,12 +22,38 @@ const FindId = () => {
         setFoundUsername(username);
         setSearched(true);
       });
-      
   };
+
+  const checkMemberEmail = async (event) => {
+    event.preventDefault();
+    try {
+      alert(
+        "해당 이메일로 인증코드를 전송합니다.\n 최대 1분이 소요될 수 있습니다.\n 전송 완료시 전송 완료 창이 나옵니다."
+      );
+      // 적절한 엔드포인트와 데이터를 사용
+      const response = await axios.post("/checkMemberEmail", {
+        email: member.email,
+        domain: member.domain,
+      });
+      console.log(response.data);
+      if (response.data === "Success") {
+        alert(
+          "해당 이메일로 인증 코드를 전송했습니다.\n" +
+            "아래 입력칸에 입력해주세요."
+        );
+      } else {
+      }
+    } catch (error) {
+      console.log("데이터 전송 중 오류 발생: ", error);
+    }
+  };
+
+
+
 
   return (
     <div className="find-username-container">
-      <h2>아이디 찾기</h2>
+      <h2>비밀번호 찾기</h2>
       <div>
         <label>
           <input
@@ -72,4 +98,4 @@ const FindId = () => {
   );
 };
 
-export default FindId;
+export default FindPwd;
