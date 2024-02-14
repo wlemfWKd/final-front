@@ -328,9 +328,26 @@ const License = () => {
             ))}
         </select>
 
-        <select>
-          <option>날짜</option>
+        <select
+          value={categories.grade}
+          onChange={e => setCategories({ ...categories, grade: e.target.value })}
+          disabled={!categories.largeCategory || !categories.mediumCategory}
+        >
+          <option value="">등급</option>
+          {data?.response?.body?.items?.item
+            .filter(item =>
+              (!categories.largeCategory || item.obligfldnm === categories.largeCategory) &&
+              (!categories.mediumCategory || item.mdobligfldnm === categories.mediumCategory)
+            )
+            .map(item => item.seriesnm)
+            .filter((value, index, self) => self.indexOf(value) === index) // 중복 제거
+            .map(seriesnm => (
+              <option key={seriesnm} value={seriesnm}>
+                {seriesnm}
+              </option>
+            ))}
         </select>
+
       </div>
       </div>
       <div className="LicenseList">
