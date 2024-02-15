@@ -22,15 +22,18 @@ const Data = () => {
 
         const firstData = rankData.filter(item => item.grdnm === "기사")
                                  .sort((a, b) => b.examrecptcnt - a.examrecptcnt)
-                                 .slice(0, 10);
+                                 .slice(0, 10)
+                                 .map((item, index) => ({ ...item, key: `first-${index}` }));
 
         const secondData = rankData.filter(item => item.grdnm === "기능사")
                                  .sort((a, b) => b.examrecptcnt - a.examrecptcnt)
-                                 .slice(0, 10);
+                                 .slice(0, 10)
+                                 .map((item, index) => ({ ...item, key: `second-${index}` }));
 
         const thirdData = rankData.filter(item => item.grdnm === "산업기사")
                                 .sort((a, b) => b.examrecptcnt - a.examrecptcnt)
-                                .slice(0, 10);
+                                .slice(0, 10)
+                                .map((item, index) => ({ ...item, key: `third-${index}` }));
     return (
         <>
         <div className="datapage">
@@ -42,9 +45,9 @@ const Data = () => {
                 <h3>기사 자격증</h3>
                 </div>
                 {firstData.map((item, index) => (
-                <ul>
-                    <li>{index + 1}<Link to={`/detail/${encodeURIComponent(item.jmfldnm)}`}>{item.jmfldnm}</Link></li>
-                </ul>
+                    <ul key={item.key}>
+                        <li>{index + 1}<Link to={`/detail/${encodeURIComponent(item.jmfldnm)}`}>{item.jmfldnm}</Link></li>
+                    </ul>
                 ))}
             </div>
             
@@ -54,9 +57,9 @@ const Data = () => {
                 <h3>기능사 자격증</h3>
                 </div>
                 {secondData.map((item, index) => (
-                <ul>
-                    <li>{index + 1}<Link to={`/detail/${encodeURIComponent(item.jmfldnm)}`}>{item.jmfldnm}</Link></li>
-                </ul>
+                    <ul key={item.key}>
+                        <li>{index + 1}<Link to={`/detail/${encodeURIComponent(item.jmfldnm)}`}>{item.jmfldnm}</Link></li>
+                    </ul>
                 ))}
             </div>
 
@@ -65,18 +68,11 @@ const Data = () => {
                 <h3>산업기사 자격증</h3>
                 </div>
                 {thirdData.map((item, index) => (
-                <ul>
-                    <li>{index + 1}<Link to={`/detail/${encodeURIComponent(item.jmfldnm)}`}>{item.jmfldnm}</Link></li>
-                </ul>
+                    <ul key={item.key}>
+                        <li>{index + 1}<Link to={`/detail/${encodeURIComponent(item.jmfldnm)}`}>{item.jmfldnm}</Link></li>
+                    </ul>
                 ))}
             </div>
-
-
-
-
-
-
-
         </div>
         </div>
         </>
