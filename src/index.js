@@ -19,7 +19,7 @@ import CareerTestResult from "./layouts/CareerTestResult";
 import MyPage from "./layouts/MyPage";
 import NotFound from "./layouts/NotFound";
 import FindPwd from "./layouts/findpassword";
-
+import DateTest from "./layouts/datetest";
 ReactDOM.render(
   <BrowserRouter>
     <Routes>
@@ -41,6 +41,7 @@ ReactDOM.render(
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/*" element={<NotFound />} />
       <Route path="/login/findpassword" element={<FindPwd />} />
+      <Route path="/datetest" element={<DateTest />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")

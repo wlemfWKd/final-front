@@ -212,10 +212,9 @@ const Detail = () => {
         </div>
         <div className="detail-content">
           <div className="detail-intro">
-            <p>상세정보</p>
+            <p>자격증 상세정보</p>
           </div>
-          <br />
-          <br />
+
 
            <div
             className={`test-dates-container ${isTestDatesOpen ? "open" : ""}`}

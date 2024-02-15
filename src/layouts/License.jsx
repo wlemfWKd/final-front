@@ -235,7 +235,8 @@ const License = () => {
       const filteredItems = data.response.body.items.item.filter(item =>
         item.jmfldnm.includes(appliedSearchTerm) &&
         (!categories.largeCategory || item.obligfldnm === categories.largeCategory) &&
-        (!categories.mediumCategory || item.mdobligfldnm === categories.mediumCategory)
+        (!categories.mediumCategory || item.mdobligfldnm === categories.mediumCategory) &&
+        (!categories.grade || item.seriesnm === categories.grade)
       );
       setFilteredData(filteredItems);
     }
@@ -336,8 +337,8 @@ const License = () => {
           <option value="">등급</option>
           {data?.response?.body?.items?.item
             .filter(item =>
-              (!categories.largeCategory || item.obligfldnm === categories.largeCategory) &&
-              (!categories.mediumCategory || item.mdobligfldnm === categories.mediumCategory)
+              (item.obligfldnm === categories.largeCategory) &&
+              (item.mdobligfldnm === categories.mediumCategory)
             )
             .map(item => item.seriesnm)
             .filter((value, index, self) => self.indexOf(value) === index) // 중복 제거
