@@ -1,0 +1,41 @@
+.test-container{
+    padding: 0 108px;
+}
+
+.test-container h1{
+    text-align: center;
+    padding: 24px 0;
+}
+
+.test-container .test_title p{
+    font-size: 18px;
+    text-align: center;
+}
+
+.test-container .question-container h6 span{
+    background-color: #06aee0;
+    border-radius: 30px;
+    color: #fff;
+    padding: 0.2em 0.5em; /* 원하는 패딩 적용 */
+}
+
+.test-container ul{
+    display: flex;
+}
+
+.test-container ul li{
+    list-style: none;
+}
+
+.test-container ul li button{
+    background-color: #fc0;
+}
+
+.test-container .selected {
+    background-color: #64aee0; /* 선택된 버튼의 배경색 */
+    color: white;
+  }
+  
+.test-container .ps{
+    background-color: #f2f2f2;
+}
