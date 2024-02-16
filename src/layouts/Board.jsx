@@ -8,7 +8,7 @@ import {
   faComments,
   faPersonMilitaryPointing,
 } from "@fortawesome/free-solid-svg-icons";
-import "../css/BoardCss.css";
+import "../css/Board.css";
 import { Link } from "react-router-dom";
 import Quick from "../components/Quick/Quick";
 
@@ -103,16 +103,18 @@ const Board = () => {
 
   return (
     <>
-      <Header />
-      <hr />
-      <div className="container">
-        <h2>커뮤니티</h2>
-        <div className="mb-2">
+    <Header />
+    <hr />
+    <div id="community-header">
+          <h2>커뮤니티</h2>
+    </div>
+    <div id="Board">
+      <div className="container"> 
+        <div id="community-buttons" className="mb-2">
           <Button
             variant="secondary"
-            className={`custom-lg-button ${
-              selectedButton === "notice" ? "active" : ""
-            }`}
+            className={`custom-lg-button ${selectedButton === "notice" ? "active" : ""
+              }`}
             onClick={() => handleButtonClick("notice")}
           >
             <FontAwesomeIcon icon={faBullhorn} className="icon_btn" />
@@ -120,9 +122,8 @@ const Board = () => {
           </Button>{" "}
           <Button
             variant="secondary"
-            className={`custom-lg-button ${
-              selectedButton === "freeboard" ? "active" : ""
-            }`}
+            className={`custom-lg-button ${selectedButton === "freeboard" ? "active" : ""
+              }`}
             onClick={() => handleButtonClick("freeboard")}
           >
             <FontAwesomeIcon icon={faComments} className="icon_btn" />
@@ -130,9 +131,8 @@ const Board = () => {
           </Button>{" "}
           <Button
             variant="secondary"
-            className={`custom-lg-button ${
-              selectedButton === "community-report" ? "active" : ""
-            }`}
+            className={`custom-lg-button ${selectedButton === "community-report" ? "active" : ""
+              }`}
             onClick={() => handleButtonClick("community-report")}
           >
             <FontAwesomeIcon
@@ -143,9 +143,8 @@ const Board = () => {
           </Button>{" "}
           <Button
             variant="secondary"
-            className={`custom-lg-button ${
-              selectedButton === "copyright-report" ? "active" : ""
-            }`}
+            className={`custom-lg-button ${selectedButton === "copyright-report" ? "active" : ""
+              }`}
             onClick={() => handleButtonClick("copyright-report")}
           >
             <FontAwesomeIcon
@@ -156,42 +155,51 @@ const Board = () => {
           </Button>
         </div>
         <hr className="custom-line" />
-        <div id="re_contents">
-          <input type="hidden" value={0} />
-          <ul className="your-component">
-            {filteredData.map((item) => (
-              <React.Fragment key={item.id}>
-                <li className="list_container">
-                  <div className="text-container">
-                    <h3>{item.name}</h3>
-                  </div>
-                  <Link to={`/detail/${item.id}`} className="detail-link">
-                    자세히 보기
-                  </Link>
-                </li>
-                <hr />
-              </React.Fragment>
-            ))}
-          </ul>
-        </div>
-        <div id="pagination">
-          <ul className="pagination">
-            {pageNumbers.map((number) => (
-              <li
-                key={number}
-                className={number === currentPage ? "active" : ""}
-              >
-                <a href="#" onClick={() => handlePageChange(number)}>
-                  {number}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
-      <Quick />
-      <Footer />
-    </>
+    </div>
+    <div className="container">
+      <div id="re_contents">
+        <input type="hidden" value={0} />
+        <Link to="BoardWrite"> {/* Link 컴포넌트를 사용하여 페이지 전환 */}
+          <button>글쓰기</button>
+        </Link>
+        <ul className="your-component">
+          {filteredData.map((item) => (
+            <React.Fragment key={item.id}>
+              <li className="list_container">
+                <div className="text-container">
+                  <a href={`/detail/${item.id}`}>
+                  <h3>{item.name}</h3>
+                  </a>
+                </div>
+                <Link to={`/detail/${item.id}`} className="custom-detail-link">
+                  자세히 보기
+                </Link>
+              </li>
+              <hr />
+            </React.Fragment>
+          ))}
+        </ul>
+      </div>
+      <div id="pagination">
+        <ul className="pagination">
+          {pageNumbers.map((number) => (
+            <li
+              key={number}
+              className={number === currentPage ? "active" : ""}
+            >
+              <a href="#" onClick={() => handlePageChange(number)}>
+                {number}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <Quick />
+    <Footer />
+  </>
+  
   );
 };
 
