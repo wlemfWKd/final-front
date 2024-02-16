@@ -48,6 +48,7 @@
 
 #rank .card-img-top{
   padding-bottom: 10px;
+  margin-left: 50px;
 }
 
 .card-text-custom {
@@ -180,3 +181,4 @@
   background-color: #007bff;
   color: #fff;
 }
+
