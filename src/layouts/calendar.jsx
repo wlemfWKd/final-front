@@ -23,20 +23,47 @@ class MyCalendar extends Component {
     listData: [],
   };
 
+  // 아래의 모든 과정은 componentDidMount에 의해, 컴포넌트가 만들어지고 첫 렌더링을 모두 끝낸 후 실행됨
   componentDidMount() {
-    this.fetchList();
+    this._getEvents();
   }
 
-  fetchList() {
-    axios
-      .get("/license/list")
-      .then((response) => {
-        this.setState({ listData: response.data });
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }
+  // axios의 get 메소드를 통해 Back-End의 '/main' url에 정보를 요청하고, 그에 따른 res.data 응답 리턴
+  _axiosEvents = async () => {
+    try {
+      const response = await axios.get("/license/date");
+      const responseData = response.data;
+      console.log(responseData);
+      const modifiedData = responseData.flatMap((item) => [
+        {
+          title: item.description,
+          start: item.docregstartdt,
+          end: item.docregenddt,
+          backgroundColor: "rgb(255, 204, 0)", // 상위 이벤트 색상
+          borderColor: "rgb(255, 204, 0)", // 상위 이벤트 테두리 색상
+        },
+        {
+          title: item.description,
+          start: item.pracexamstartdt,
+          end: item.pracexamenddt,
+          backgroundColor: "rgb(100, 174, 224)", // 하위 이벤트 색상
+          borderColor: "rgb(100, 174, 224)", // 하위 이벤트 테두리 색상
+        },
+      ]);
+      return modifiedData;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      return [];
+    }
+  };
+
+  // _axiosEvents이 응답을 받을때까지 기다리고, 응답을 받는다면 setState 메소드를 호출하여 state 값에 events라는 데이터를 넣어줌
+  _getEvents = async () => {
+    const events = await this._axiosEvents();
+    this.setState({
+      events,
+    });
+  };
 
   getSavedEvents() {
     const savedEvents = localStorage.getItem("events");
@@ -151,27 +178,26 @@ class MyCalendar extends Component {
         <Header />
         <div className="container">
           <div className="calender">
-            {this.state.listData.map((item) => (
-              <div key={item.jmcd}>
-                <p>자격명: {item.jmfldnm}</p>
-                <p>시리즈 코드: {item.seriescd}</p>
-              </div>
-            ))}
-            <FullCalendar
-              plugins={[dayGridPlugin, interactionPlugin]}
-              initialView="dayGridMonth"
-              headerToolbar={{
-                left: "prev,next today",
-                center: "title",
-                right: "dayGridMonth,dayGridWeek,dayGridDay",
-              }}
-              events={events}
-              dateClick={this.handleDateClick}
-              eventClick={this.handleEventClick}
-              nextDayThreshold={"24:00:00"}
-              selectable={true}
-              select={this.handleSelect}
-            />
+            {events ? (
+              <FullCalendar
+                plugins={[dayGridPlugin, interactionPlugin]}
+                initialView="dayGridMonth"
+                headerToolbar={{
+                  left: "prev,next today",
+                  center: "title",
+                  right: "dayGridMonth,dayGridWeek,dayGridDay",
+                }}
+                events={this.state.events}
+                //events={events}
+                dateClick={this.handleDateClick}
+                eventClick={this.handleEventClick}
+                nextDayThreshold={"24:00:00"}
+                selectable={true}
+                select={this.handleSelect}
+              />
+            ) : (
+              "loading..."
+            )}
           </div>
           <EventDetails selectedEventDetails={selectedEventDetails} />
         </div>
