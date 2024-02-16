@@ -379,6 +379,9 @@ const Detail = () => {
           </div>
 
 
+              
+
+
               {/* 이벤트 연도 통계 출력 */}
            <div className="chart">
             

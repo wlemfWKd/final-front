@@ -31,10 +31,10 @@
     background-color: #fc0;
 }
 
-.test-container .selected {
+.test-container ul li button.selected {
     background-color: #64aee0; /* 선택된 버튼의 배경색 */
-    color: white;
-  }
+    color: white; /* 선택된 버튼의 텍스트 색상 */
+}
   
 .test-container .ps{
     background-color: #f2f2f2;
