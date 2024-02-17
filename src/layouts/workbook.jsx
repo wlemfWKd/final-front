@@ -4,20 +4,21 @@ import Card from "react-bootstrap/Card";
 import "../css/lecture.css";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
+import Quick from "../components/Quick/Quick";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMagnifyingGlass,
   faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Lecture = () => {
+const Workbook = () => {
   const [workbooks, setWorkbooks] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 추가
   const [searchResults, setSearchResults] = useState([]); // 검색 결과 상태 추가
   const [visibleCount, setVisibleCount] = useState(20); // 현재 표시된 데이터의 개수 상태 추가
 
   useEffect(() => {
-    fetch("/lecture")
+    fetch("/workbook")
       .then((response) => response.json())
       .then((data) => {
         setWorkbooks(data);
@@ -108,9 +109,10 @@ const Lecture = () => {
           </div>
         </div>
       </div>
+      <Quick />
       <Footer />
     </>
   );
 };
 
-export default Lecture;
+export default Workbook;

@@ -24,9 +24,9 @@ const Register = () => {
   const [randomInitial, setRandomInitial] = useState("");
 
   if (member.domain === "") {
-    console.log(member.email);
+    console.log(member.email + "너 누구야");
   } else {
-    console.log(member.email + member.domain);
+    console.log(member.email + member.domain + "너 누구니");
   }
   // 이메일 중복확인
   const [isEmailCheckButtonDisabled, setIsEmailCheckButtonDisabled] =
@@ -98,14 +98,17 @@ const Register = () => {
       alert("코드를 입력해주세요.");
       return;
     }
+    // 추가적인 유효성 검사가 필요하다면 여기에 추가
 
     try {
+      // 적절한 엔드포인트와 데이터를 사용
       const response = await axios.post("/checkCode", {
         email: member.email,
         domain: member.domain,
         randomInitial: randomInitial,
       });
-      if (response.data === "Success") {
+      console.log(response.data + "080");
+      if (response.data === "이메일 인증에 성공하였습니다.") {
         setIsEmailCheckButton2Disabled(true);
         setIsEmailCheckButton3Disabled(true);
         alert(
@@ -262,10 +265,10 @@ const Register = () => {
       alert("올바른 전화번호 형식이 아닙니다.");
       return;
     }
+
     try {
       // axios를 사용하여 서버로 데이터 전송
       const response = await axios.post("/join", member);
-      console.log(response.data);
       // 추가적으로 서버로부터의 응답을 처리하거나 상태를 업데이트할 수 있음
       if (response.data === "ok") {
         console.log(response.data);

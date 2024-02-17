@@ -4,7 +4,7 @@ import App from "./App";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./layouts/login";
 import Register from "./layouts/register";
-import Lecture from "./layouts/lecture";
+import Workbook from "./layouts/workbook";
 import Calendar from "./layouts/calendar";
 import Support from "./layouts/support";
 import Book from "./layouts/Book";
@@ -25,7 +25,7 @@ ReactDOM.render(
       <Route path="/" element={<App />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/lecture" element={<Lecture />} />
+      <Route path="/workbook" element={<Workbook />} />
       <Route path="/calendar" element={<Calendar />} />
       <Route path="/support" element={<Support />} />
       <Route path="/book" element={<Book />} />
