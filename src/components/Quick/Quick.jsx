@@ -42,7 +42,7 @@ const Quick = () => {
               </a>
             </li>
             <li>
-              <Link to="/lecture">
+              <Link to="/workbook">
                 <FontAwesomeIcon id="icon" icon={faFileZipper} />
                 기출문제
               </Link>
