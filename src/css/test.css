@@ -39,3 +39,31 @@
 .test-container .ps{
     background-color: #f2f2f2;
 }
+
+.result-view a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #64aee0;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  .result-view a:hover {
+    background-color: #007bff;
+  }
+
+  .result-request {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .result-request button {
+    background-color: #64aee0;
+    margin-right: 10px;
+  }
+
+  .result-request button:hover {
+    background-color: #007bff;
+  }

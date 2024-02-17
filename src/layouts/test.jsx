@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import "../css/test.css";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
-import { Link } from "react-router-dom";
 
 function Test() {
   const [questions, setQuestions] = useState([]);
@@ -174,17 +173,19 @@ function Test() {
           </div>
         ))}
       </div>
-      <div>
+      <div className="result-center">
+      <div className="result-request">
       <button onClick={handleSubmit}>결과 요청 하기</button>
       {response && (
         <div>
           {response.RESULT && (
-            <div>
-              <p><a href={response.RESULT.url} target="_blank" rel="noopener noreferrer">검사 결과 보러가기</a></p>
+            <div className="result-view">
+              <a href={response.RESULT.url} target="_blank" rel="noopener noreferrer">검사 결과 보러가기</a>
             </div>
           )}
         </div>
       )}
+    </div>
     </div>
       <Footer />   
     </>

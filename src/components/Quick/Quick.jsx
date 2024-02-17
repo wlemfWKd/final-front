@@ -36,7 +36,7 @@ const Quick = () => {
               </Link>
             </li>
             <li>
-              <a href="#">
+              <a href="/mbti">
                 <FontAwesomeIcon id="icon" icon={faClipboard} />
                 적성검사
               </a>
