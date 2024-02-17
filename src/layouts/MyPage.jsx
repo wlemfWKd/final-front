@@ -47,6 +47,7 @@ const MyPage = () => {
                         email: response.data.currentMember.email,
                         domain:"",
                         phoneNum: response.data.currentMember.phoneNum,
+                        id: response.data.currentMember.username,
                     });
                     setMember({
                         memberNum: response.data.currentMember.memberNum,
@@ -55,6 +56,7 @@ const MyPage = () => {
                         email: response.data.currentMember.email,
                         domain:"",
                         phoneNum: response.data.currentMember.phoneNum,
+                        id: response.data.currentMember.username,
                     })
                     if(response.data.currentMember.socialType === "GOOGLE" || 
                        response.data.currentMember.socialType === "KAKAO" || 
@@ -280,6 +282,7 @@ const MyPage = () => {
          email: memberInfo.email,
          phoneNum: memberInfo.phoneNum,
          password: memberInfo.password,
+         username: memberInfo.username,
      })
      setUserPasswordCheck("");
      setIsEmailCheckButtonDisabled(true);
@@ -292,9 +295,13 @@ const MyPage = () => {
   return (
     <>
       <Header />
-
+            <h1>마이페이지</h1>
         <div>
-            <h1>{member.memberName}</h1>
+            <br/><br/>
+            <h1>회원명 : {member.memberName}</h1>
+            <h1>이메일 : {member.email}</h1>
+            <h1>전화번호 : {member.phoneNum}</h1>
+            <h1>아이디 : {member.id}</h1>
         </div>
 
       <Footer />
