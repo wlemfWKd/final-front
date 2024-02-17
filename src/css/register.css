@@ -200,3 +200,13 @@
   float: right; /* 오른쪽 정렬 */
   margin-left: 5px; /* 왼쪽 여백 추가 */
 }
+
+.checkbox_label {
+  display: inline-block;
+  margin-right: 10px; /* 체크박스 간격 조정 */
+}
+
+.checkboxes_container {
+  display: flex;
+  align-items: center;
+}
