@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "../css/test.css";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
+import Quick from "../components/Quick/Quick";
 
 function Test() {
   const [questions, setQuestions] = useState([]);
@@ -187,7 +188,8 @@ function Test() {
       )}
     </div>
     </div>
-      <Footer />   
+    <Quick />
+    <Footer />   
     </>
   );
 }
