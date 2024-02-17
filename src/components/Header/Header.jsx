@@ -62,7 +62,7 @@ const Header = () => {
         </nav>
         <div className="header__logo">
           <Link to="/" className="logo">
-            <img src="images/logo.png" alt="로고" />
+            <img src={`${process.env.PUBLIC_URL}/images/logo.png`} alt="로고" />
           </Link>
         </div>
         <div className="header_login">
