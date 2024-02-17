@@ -33,10 +33,10 @@ const MyPage = () => {
         const fetchMemberInfo = async () => {
             try {
                 const token = localStorage.getItem("token");
-                console.log(token)
+                console.log(token);
                 const response = await axios.post("/getMemberInfo", null, {
                     headers: {
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`, 
                     },
                 });
                 if (response.data.result === "Success") {
