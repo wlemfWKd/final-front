@@ -5,11 +5,14 @@
 .test-container h1{
     text-align: center;
     padding: 24px 0;
+    margin: 50px 0px;
+    background-color: #06aee0;
 }
 
 .test-container .test_title p{
     font-size: 18px;
     text-align: center;
+    margin: 50px 0px;
 }
 
 .test-container .question-container h6 span{

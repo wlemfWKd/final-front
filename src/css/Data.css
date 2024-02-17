@@ -4,8 +4,9 @@
  
  .data-title {
     text-align: center;
-    margin: 30px 0px;
+    margin: 100px 0px;
     padding: 50px 0px;
+    background-color: #64aee0;
  }
  
  .data {
