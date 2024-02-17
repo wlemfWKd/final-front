@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import "../css/test.css"; // 스타일 파일 import
+import React, { useState, useEffect, useRef } from "react";
+import "../css/test.css";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import { Link } from "react-router-dom";
@@ -12,6 +12,10 @@ function Test() {
   const [selectedScores, setSelectedScores] = useState(
     Array(questions.length).fill(null)
   ); // 선택된 답변의 점수를 저장하는 배열, 초기값은 null
+  const [selectedAnswersText, setSelectedAnswersText] = useState(
+    Array(questions.length).fill("")
+  ); // "B+questionIndex" 형식으로 선택된 답변을 저장하는 배열, 초기값은 ""
+  const scrollRef = useRef(null);
 
   useEffect(() => {
     fetchTestQuestions();
@@ -21,7 +25,19 @@ function Test() {
     try {
       const response = await fetch("/career-test");
       const data = await response.json();
-      setQuestions(data);
+
+      let score = 1; // 각 질문의 처음 답변에 대해서만 1씩 증가하는 변수
+      const updatedQuestions = data.map(question => ({
+        ...question,
+        answers: question.answers.map((answer, index) => ({
+          ...answer,
+          answerScore: index < 2 ? score++ : answer.answerScore // 처음 두 개의 답변에 대해서만 1씩 증가하는 로직
+        }))
+      }));
+  
+      setQuestions(updatedQuestions);
+      setSelectedAnswers(Array(updatedQuestions.length).fill(-1));
+      setSelectedScores(Array(updatedQuestions.length).fill(null));
     } catch (error) {
       console.error("Error fetching career test questions:", error);
     }
@@ -32,13 +48,18 @@ function Test() {
       "Selected answer:",
       questions[questionIndex].answers[answerIndex]
     );
-    const newSelectedAnswers = [...selectedAnswers];
-    newSelectedAnswers[questionIndex] = answerIndex;
-    setSelectedAnswers(newSelectedAnswers);
+      setSelectedAnswersText(prevState => {
+      const newState = [...prevState];
+      newState[questionIndex] = `B${questionIndex + 1}`;
+      return newState;
+    });
 
-    const newSelectedScores = [...selectedScores];
-    newSelectedScores[questionIndex] = answerScore;
-    setSelectedScores(newSelectedScores);
+    setSelectedScores(prevState => {
+      const newState = [...prevState];
+      newState[questionIndex] = answerScore;
+      return newState;
+    });
+    
   };
 
   const submitTest = async () => {
@@ -58,6 +79,50 @@ function Test() {
     }
   };
 
+  const selectedAnswersLineArray = selectedScores.map((score, index) => (
+    `${selectedAnswersText[index]}=${score}`
+  ));
+
+  const selectedAnswersLine = selectedAnswersLineArray.join(" ");
+
+  const [response, setResponse] = useState(null);
+
+  const handleSubmit = async () => {
+
+    const unansweredQuestionIndex = selectedScores.findIndex(score => score === null);
+    if (unansweredQuestionIndex !== -1) {
+      alert(`선택되지 않은 질문이 있습니다. 질문 ${unansweredQuestionIndex + 1}으로 이동합니다.`);
+      const unansweredQuestionRef = document.getElementById(`question${unansweredQuestionIndex}`);
+      if (unansweredQuestionRef) {
+        unansweredQuestionRef.scrollIntoView({ behavior: "smooth" });
+      }
+      return;
+    }
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        apikey: "92a66e624117c92a3fd4ee8379ee5a00",
+        qestrnSeq: "6",
+        trgetSe: "100208",
+        gender: "100323",
+        grade: "2",
+        startDtm: Date.now(),
+        answers:
+          `${selectedAnswersLine}`,
+      }),
+    };
+
+    try {
+      const response = await fetch("/submit-career-test", requestOptions);
+      const data = await response.json();
+      setResponse(data);
+    } catch (error) {
+      console.error("Error submitting career test result:", error);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -72,7 +137,7 @@ function Test() {
           </p>
         </div>
         {questions.map((question, index) => (
-          <div key={index} className="question-container">
+          <div key={`question${index}`} id={`question${index}`} className="question-container">
             <h6>
               <span>{index + 1}</span> {question.question}
             </h6>{" "}
@@ -82,7 +147,7 @@ function Test() {
                 <li key={answerIndex}>
                   <button
                     className={
-                      selectedAnswers[index] === answerIndex ? "selected" : ""
+                      selectedScores[index] === answer.answerScore ? "selected" : ""
                     }
                     onClick={() =>
                       handleAnswerSelection(
@@ -92,7 +157,7 @@ function Test() {
                       )
                     } // 버튼 클릭 시 해당 답변의 점수 전달
                   >
-                    {answer.answerText} {answer.answerScore}
+                   {answer.answerText}
                   </button>
                 </li>
               ))}
@@ -109,9 +174,19 @@ function Test() {
           </div>
         ))}
       </div>
-      <Link to="/test-result">우아아ㅣ러ㅏ이ㅓ린아ㅓ린아ㅓ리</Link>
-      <button onClick={submitTest}>결과보기</button> {/* 결과 요청 버튼 추가 */}
-      <Footer />
+      <div>
+      <button onClick={handleSubmit}>결과 요청 하기</button>
+      {response && (
+        <div>
+          {response.RESULT && (
+            <div>
+              <p><a href={response.RESULT.url} target="_blank" rel="noopener noreferrer">검사 결과 보러가기</a></p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+      <Footer />   
     </>
   );
 }
