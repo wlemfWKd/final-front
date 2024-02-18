@@ -1,4 +1,4 @@
-.find-username-container {
+.findid-container {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
@@ -7,18 +7,18 @@
     background-color: #f9f9f9;
   }
   
-  .find-username-container h2 {
+  .findid-container h2 {
     text-align: center;
     margin-bottom: 20px;
   }
   
-  .find-username-container label {
+  .findid-container label {
     margin-right: 10px;
   }
   
-  .find-username-container input[type="text"],
-  .find-username-container input[type="email"],
-  .find-username-container input[type="tel"] {
+  .findid-container input[type="text"],
+  .findid-container input[type="email"],
+  .findid-container input[type="tel"] {
     width: 70%;
     padding: 10px;
     margin-bottom: 10px;
@@ -27,11 +27,11 @@
     box-sizing: border-box;
   }
   
-  .find-username-container input[type="radio"] {
+  .findid-container input[type="radio"] {
     margin-right: 5px;
   }
   
-  .find-username-container button {
+  .findid-container button {
     padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
@@ -40,13 +40,56 @@
     cursor: pointer;
   }
   
-  .find-username-container button:hover {
+  .findid-container button:hover {
     background-color: #0056b3;
   }
   
-  .find-username-container p {
+  .findid-container p {
     margin-top: 20px;
     font-size: 1.2rem;
     font-weight: bold;
+  }
+
+  .findid-container input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+  }
+  
+  .findid-container .checkbox-label {
+    display: block;
+    position: relative;
+    padding-left: 30px; /* 체크 박스의 가로 크기 + 여유 공간 */
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-size: 18px; /* 텍스트 크기 조정 */
+    cursor: pointer;
+  }
+  
+  /* 체크 박스 모양 */
+  .findid-container .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 15px; /* 체크 박스의 세로 크기 */
+    width: 15px; /* 체크 박스의 가로 크기 */
+    background-color: #fff; /* 체크 박스의 배경색 */
+    border-radius: 5px; /* 체크 박스의 둥근 모서리 */
+    border: 1px solid #000;
+  }
+  
+  /* 체크 박스 체크 시 체크 모양 */
+  .findid-container input[type="checkbox"]:checked + .checkmark:after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 15px; /* 체크 모양의 가로 크기 */
+    height: 15px; /* 체크 모양의 세로 크기 */
+    background: blue; /* 체크 모양의 색상 */
+    border-radius: 5px; /* 체크 박스의 둥근 모서리 */
+  }
+  
+  /* 텍스트 클릭 시에도 체크 박스가 토글되도록 */
+  .findid-container input[type="radio"]:checked ~ .checkmark {
+    background-color: #2196F3; /* 체크 박스 선택 시의 배경색 */
   }
   

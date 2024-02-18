@@ -1,18 +1,18 @@
+import { getAccessCookie } from "../Cookie/cookie";
 
-const GetTokenToHeader = () =>{
+const GetTokenToHeader = () => {
+  const getAccessToken = () => {
+    return getAccessCookie();
+  };
 
-    const accessToken = getAccessToken();
-    console.log(accessToken);
+  const accessToken = getAccessToken();
 
-    return {
-      headers:{
-        Authorization: `Bearer ${accessToken}`,
-      },
-    };
-}
-
-const getAccessToken = () =>{
-  return localStorage.getItem('token');
-}
+  console.log(accessToken);
+  return {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+};
 
 export default GetTokenToHeader;
