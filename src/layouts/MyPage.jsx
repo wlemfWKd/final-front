@@ -7,6 +7,7 @@ import { useNavigate, Link } from "react-router-dom";
 
 const MyPage = () => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [member, setMember] = useState({
     memberNum: "",
     memberName: "",
@@ -74,6 +75,30 @@ const MyPage = () => {
     fetchMemberInfo();
     setUserPasswordCheck("");
   }, []);
+
+  const [listStar, setListStar] = useState([]);
+  useEffect(() => {
+    const fetchStar = async () => {
+      try {
+        const responseList = await axios.get("/license/star");
+        const responseListData = responseList.data;
+        setListStar(responseListData);
+      } catch (error) {
+        console.error("Error fetching info:", error);
+      }
+    };
+
+    fetchStar();
+  }, []);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // 모달 창 닫기 함수
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const handleChange = (field, value) => {
     if (field === "password") {
@@ -190,6 +215,9 @@ const MyPage = () => {
   return (
     <>
       <Header />
+      <button className="bookmark_btn" onClick={openModal}>
+        자격증 즐겨찾기
+      </button>
       <div className="mypagee_container">
         <form onSubmit={handleSubmit}>
           <table>
@@ -277,6 +305,35 @@ const MyPage = () => {
           </button>
         </form>
       </div>
+
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal_content">
+            <span className="close_btn" onClick={closeModal}>
+              &times;
+            </span>
+            <h2>나의 즐겨찾기 목록</h2>
+            {listStar.filter(star => star.username === member.id).length === 0 ? (
+              <p>즐겨찾기한 자격증이 없습니다.</p>
+            ) : (
+              <ul>
+                {listStar.map((star) => {
+                  // username이 MyPage의 member.id와 일치하는 경우에만 출력
+                  if (star.username === member.id) {
+                    return (
+                      <li key={star.id}>
+                        <Link to={`/detail/${star.jmnm}`}>{star.jmnm}</Link>
+                      </li>
+                    );
+                  }
+                  return null;
+                })}
+              </ul>
+            )}
+          </div>
+        </div>
+      )}
+      
       <Footer />
     </>
   );
