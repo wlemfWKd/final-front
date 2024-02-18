@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client"; // react-dom/client에서 createRoot 가져오기
 import App from "./App";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./layouts/login";
@@ -17,11 +18,16 @@ import FindId from "./layouts/FindId";
 import Test from "./layouts/test";
 import MyPage from "./layouts/MyPage";
 import NotFound from "./layouts/NotFound";
-import FindPwd from "./layouts/findpassword";
+import FindPwd from "./layouts/FindPwd";
 import DateTest from "./layouts/datetest";
 import MbtiPage from "./layouts/MbtiPage";
+import AdminRoute from "./roleRoute/AdminRoute";
 
-ReactDOM.render(
+const root = document.getElementById("root");
+
+// createRoot를 사용하여 렌더링 시작
+const rootElement = createRoot(root); // react-dom/client에서 createRoot 사용
+rootElement.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />} />
@@ -43,7 +49,8 @@ ReactDOM.render(
       <Route path="/login/findpassword" element={<FindPwd />} />
       <Route path="/datetest" element={<DateTest />} />
       <Route path="/mbti" element={<MbtiPage />} />
+      {/* admin */}
+      <Route path="/admin" element={<AdminRoute />} />
     </Routes>
-  </BrowserRouter>,
-  document.getElementById("root")
+  </BrowserRouter>
 );
