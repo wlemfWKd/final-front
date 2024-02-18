@@ -1,0 +1,38 @@
+.checkbox-label {
+    display: block;
+    position: relative;
+    padding-left: 35px; /* 체크 박스의 가로 크기 + 여유 공간 */
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-size: 18px; /* 텍스트 크기 조정 */
+  }
+  
+  /* 체크 박스 모양 */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px; /* 체크 박스의 세로 크기 */
+    width: 25px; /* 체크 박스의 가로 크기 */
+    background-color: #eee; /* 체크 박스의 배경색 */
+    border-radius: 5px; /* 체크 박스의 둥근 모서리 */
+  }
+  
+  /* 체크 박스 체크 시 체크 모양 */
+  input[type="radio"]:checked + .checkmark:after {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 5px; /* 체크 모양의 위치 조정 */
+    left: 5px; /* 체크 모양의 위치 조정 */
+    width: 15px; /* 체크 모양의 가로 크기 */
+    height: 15px; /* 체크 모양의 세로 크기 */
+    border-radius: 50%; /* 체크 모양을 원 모양으로 만듦 */
+    background: blue; /* 체크 모양의 색상 */
+  }
+  
+  /* 텍스트 클릭 시에도 체크 박스가 토글되도록 */
+  input[type="radio"]:checked ~ .checkmark {
+    background-color: #2196F3; /* 체크 박스 선택 시의 배경색 */
+  }
+  
