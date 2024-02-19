@@ -428,7 +428,7 @@ const Main = () => {
       </div>
       <div id="banner1">
         <div id="container">
-          <Link to="/book">
+          <Link to="/RecommendBook">
             <p>
               문제집 찾기 <span>CLICK</span>
             </p>
