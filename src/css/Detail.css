@@ -249,3 +249,15 @@
     align-items: center;
     margin-bottom: 10px;
   }
+
+  .star-icon {
+    cursor: pointer;
+    position: absolute;
+    left: 600px;
+  }
+
+  .star-icon.yellow {
+    color: yellow; /* 노란색 아이콘 스타일 */
+    cursor: pointer;
+    
+  }

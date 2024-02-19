@@ -245,13 +245,112 @@ const Detail = () => {
     window.location.href = `/book/${jmfldnm}`;
   };
 
+  const [isStarYellow, setIsStarYellow] = useState(false); // 상태 변수 추가
+  const handleStarClick = async () => {
+    try {
+      if(isStarYellow){
+        fetch(`/license/starDelete?jmfldnm=${jmfldnm}&username=${member.id}`);
+      } else {
+        fetch(`/license/starInsert?jmfldnm=${jmfldnm}&username=${member.id}`);
+      }
+      
+    } catch (error) {
+      console.error('Error:', error);
+      
+    }
+    
+    // isStarYellow 상태를 반전시킴으로써 아이콘 색상 변경
+    setIsStarYellow(!isStarYellow);
+  };
+
+  const [member, setMember] = useState({
+    memberNum: "",
+    memberName: "",
+    username: "",
+    password: "",
+    email: "",
+    domain: "",
+    phoneNum: "",
+    socialNum1: "",
+    socialNum2: "",
+  });
+
+  useEffect(() => {
+    const fetchMemberInfo = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        console.log(token);
+        const response = await axios.post("/getMemberInfo", null, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.data.result === "Success") {
+          setMember({
+            memberNum: response.data.currentMember.memberNum,
+            memberName: response.data.currentMember.memberName,
+            password: "",
+            email: response.data.currentMember.email,
+            domain: "",
+            phoneNum: response.data.currentMember.phoneNum,
+            id: response.data.currentMember.username,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching member info:", error);
+      }
+    };
+    fetchMemberInfo();
+  }, []);
+
+  const [listStar, setListStar] = useState([]);
+  useEffect(() => {
+    const fetchStar = async () => {
+      try {
+        const responseList = await axios.get("/license/star");
+        const responseListData = responseList.data;
+        setListStar(responseListData);
+      } catch (error) {
+        console.error("Error fetching info:", error);
+      }
+    };
+
+    fetchStar();
+  }, []);
+
+  useEffect(() => {
+    const findMatchingStar = () => {
+      if (listStar && listStar.length > 0 && member.id) {
+        listStar.forEach(star => {
+          if (star.jmnm === jmfldnm && star.username === member.id) {
+            setIsStarYellow(true);
+            return;
+          }
+        });
+      }
+    };
+    
+    findMatchingStar();
+  }, [listStar, jmfldnm, member.id]);
 
   return (
     <>
       <div className="detail-centered-container">
         <div className="detail-title">
-          <h2 className="detail-header">{jmfldnm}</h2>
-        </div>
+        <h2 className="detail-header">
+          {jmfldnm}
+          {member.id && (
+            <span className="star-icon-container">
+              <span
+                className={`star-icon ${isStarYellow ? "yellow" : ""}`}
+                onClick={handleStarClick}
+              >
+                &#9733;
+              </span>
+            </span>
+          )}
+        </h2>
+      </div>
 
         <div className="detail-box">
           <p>{infoData && infoData.summary}</p>
