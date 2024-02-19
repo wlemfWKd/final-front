@@ -3,9 +3,317 @@ import axios from "axios";
 import styled from "styled-components";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import "../css/FindPwd.css";
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
+
+const FormContainer = styled.div`
+  margin: 10px auto 0 auto;
+  width: 30%; /* 또는 다른 값을 설정하여 원하는 넓이로 조절 */
+  padding: 10px;
+  position: absolute;
+  zindex: 1000;
+  top: 30%;
+  background-color: white;
+  z-index: 9999;
+`;
+
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+`;
+
+const StyledInput = styled.input`
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 4px; /* 테두리 둥글게 설정 */
+`;
+const StyledButton = styled.input`
+  width: 100%;
+  padding: 10px;
+  background-color: pink;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+`;
 
 const FindPwd = () => {
-  return <></>;
+  const [isChecked1, setIsChecked1] = useState(false);
+  const [isChecked2, setIsChecked2] = useState(false);
+
+  const toggleTable1 = () => {
+    setIsChecked1(!isChecked1);
+    setIsChecked2(false); // 첫 번째 체크박스를 선택하면 두 번째 체크박스 선택 해제
+  };
+
+  const toggleTable2 = () => {
+    setIsChecked2(!isChecked2);
+    setIsChecked1(false); // 두 번째 체크박스를 선택하면 첫 번째 체크박스 선택 해제
+  };
+
+  const navigate = useNavigate();
+
+  const [editNewPassword, setEditNewPassword] = useState(false); // editNewPassword 모달 열기/닫기 상태
+  const toggleShowEditNewPassword = () => {
+    setEditNewPassword(!editNewPassword);
+  };
+
+  const [findPwdInfo, setFindPwdInfo] = useState({
+    memberName: "",
+    birthday: "",
+    phoneNum: "",
+    email: "",
+    username: "",
+  });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFindPwdInfo({
+      ...findPwdInfo,
+      [name]: value,
+    });
+  };
+
+  const handleDropdownToggle1 = () => {
+    setFindPwdInfo({
+      memberName: "",
+      birthday: "",
+      phoneNum: "",
+      email: "",
+      username: "",
+    });
+  };
+  const handleDropdownToggle2 = () => {
+    setFindPwdInfo({
+      memberName: "",
+      birthday: "",
+      phoneNum: "",
+      email: "",
+      username: "",
+    });
+  };
+  const formatPhoneNumber = (phoneNumber) => {
+    // 전화번호 형식 변환 (000-0000-0000)
+    return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+  };
+  const handlePhoneNumChange = (event) => {
+    // 입력된 값에서 숫자만 추출
+    const newValue = event.target.value.replace(/[^0-9]/g, "");
+    // 최대 11자리까지만 받음
+    const truncatedValue = newValue.slice(0, 11);
+    // 형식 적용하여 state 업데이트
+    setFindPwdInfo({
+      ...findPwdInfo,
+      phoneNum: formatPhoneNumber(truncatedValue),
+    });
+  };
+  // 비밀번호 찾기
+  const handlePwdSubmit = async () => {
+    // 전화번호 유효성 검사
+    if (isChecked1) {
+      const phoneRegex = /^(010|011)\d{8}$/;
+      if (!phoneRegex.test(findPwdInfo.phoneNum.replace(/-/g, ""))) {
+        alert("올바른 전화번호 형식이 아닙니다.");
+        return;
+      }
+    }
+    try {
+      const response = await axios.post("/findPwd", findPwdInfo);
+      if (response.data.result === "Success") {
+        toggleShowEditNewPassword();
+        setNewPassword({ ...newPassword, username: findPwdInfo.username });
+      } else {
+        alert("해당 정보로 가입된 회원이 존재하지 않습니다.");
+        return;
+      }
+    } catch (error) {}
+  };
+  // 비밀번호 재설정
+  const [newPassword, setNewPassword] = useState({
+    password: "",
+    username: "",
+  });
+  console.log(newPassword);
+  const [newCheckPassword, setCheckNewPassword] = useState("");
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const handleChange = (field, value) => {
+    if (field === "password") {
+      const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$/;
+      setIsPasswordValid(passwordRegex.test(value));
+    }
+    setNewPassword({ ...newPassword, password: value });
+  };
+  const handleEditPwdSubmit = async (event) => {
+    event.preventDefault();
+    if (newPassword.password !== newCheckPassword) {
+      alert("비밀번호를 확인해주세요.");
+      return;
+    }
+    if (!isPasswordValid) {
+      alert(
+        "비밀번호는 최소 8자리, 대문자1, 소문자1, 숫자1로 이루어져야 합니다. (!@#$%^&* 만 가능)"
+      );
+      return;
+    }
+    try {
+      const response = await axios.post("/editPassword", newPassword);
+      console.log(response.data);
+      if (response.data === "Success") {
+        toggleShowEditNewPassword();
+        alert("비밀번호가 재설정되었습니다.\n로그인 페이지로 이동합니다.");
+        navigate("/login");
+      } else {
+        alert("전과 동일한 비밀번호 입니다.");
+        return;
+      }
+    } catch (error) {}
+  };
+
+  const openNewWindow = () => {
+    const newWindow = window.open("", "_blank", "width=600,height=400");
+    newWindow.document.body.innerHTML = `
+      <div>
+        <h2>비밀번호 재설정</h2>
+        <form id="editPasswordForm" onSubmit="window.opener.handleEditPwdSubmit(event)">
+          <label>새 비밀번호</label>
+          <input type="password" name="password" />
+          <br />
+          <label>비밀번호 확인</label>
+          <input type="password" />
+          <br />
+          <button type="submit">재설정</button>
+        </form>
+      </div>
+    `;
+  };
+
+  return (
+    <>
+      <Header />
+      <div className="findpwd-container">
+        <h2>비밀번호찾기</h2>
+        <div className="findpwdbox">
+          <div onClick={handleDropdownToggle1}>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={isChecked1}
+                onChange={toggleTable1}
+              />
+              <span className="checkmark"></span>
+              휴대전화 번호로 비밀번호 찾기
+            </label>
+          </div>
+          {isChecked1 && (
+            <div className="findpwd-wrap">
+              <label>아이디</label>
+              <input
+                type="text"
+                name="username"
+                value={findPwdInfo.username}
+                onChange={handleInputChange}
+              />
+              <label>이름</label>
+              <input
+                type="text"
+                name="memberName"
+                value={findPwdInfo.memberName}
+                onChange={handleInputChange}
+              />
+              <label>휴대폰번호</label>
+              <input
+                type="tel"
+                name="phoneNum"
+                value={findPwdInfo.phoneNum}
+                onChange={handlePhoneNumChange}
+              />
+              <button onClick={handlePwdSubmit}>확인</button>
+            </div>
+          )}
+          <div onClick={handleDropdownToggle2}>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={isChecked2}
+                onChange={toggleTable2}
+              />
+              <span className="checkmark"></span>
+              이메일로 아이디 찾기
+            </label>
+          </div>
+          {isChecked2 && (
+            <div className="findpwd-wrap">
+              <label>아이디</label>
+              <input
+                type="text"
+                name="username"
+                value={findPwdInfo.username}
+                onChange={handleInputChange}
+              />
+              <label>이름</label>
+              <input
+                type="text"
+                name="memberName"
+                value={findPwdInfo.memberName}
+                onChange={handleInputChange}
+              />
+              <lable>이메일</lable>
+              <input
+                type="text"
+                name="email"
+                value={findPwdInfo.email}
+                onChange={handleInputChange}
+              />
+              <button onClick={handlePwdSubmit}>확인</button>
+            </div>
+          )}
+        </div>
+        {editNewPassword && (
+          <>
+            <div className="modal_background"></div>
+            <div className="modal_container">
+              <h2>비밀번호 재설정</h2>
+              <form onSubmit={handleEditPwdSubmit}>
+                <label>새 비밀번호</label>
+                <span
+                  className="close_button"
+                  onClick={toggleShowEditNewPassword}
+                >
+                  X
+                </span>
+                <input
+                  type="password"
+                  onChange={(event) =>
+                    handleChange("password", event.target.value)
+                  }
+                  value={newPassword.password}
+                  placeholder="8자리 이상, 대문자, 숫자. (!@#$%^&* 가능)"
+                />
+
+                <br />
+                <label>비밀번호 확인</label>
+                <input
+                  type="password"
+                  onChange={(event) => setCheckNewPassword(event.target.value)}
+                  value={newCheckPassword}
+                  placeholder="비밀번호를 재입력해주세요"
+                />
+
+                <br />
+                <button type="submit">재설정</button>
+              </form>
+            </div>
+          </>
+        )}
+      </div>
+      <Footer />
+    </>
+  );
 };
 
 export default FindPwd;

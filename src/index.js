@@ -23,8 +23,8 @@ import DateTest from "./layouts/datetest";
 import MbtiPage from "./layouts/MbtiPage";
 import AdminRoute from "./roleRoute/AdminRoute";
 import RecommendBook from "./layouts/RecommendBook";
-import RecommendBookDetail from './layouts/RecommendBookDetail';
-
+import RecommendBookDetail from "./layouts/RecommendBookDetail";
+import EditMember from "./layouts/EditMember";
 
 const root = document.getElementById("root");
 
@@ -54,6 +54,7 @@ rootElement.render(
       <Route path="/mbti" element={<MbtiPage />} />
       {/* admin */}
       <Route path="/admin" element={<AdminRoute />} />
+      <Route path="/editMember/:username" element={<EditMember />} />
       <Route path="/book/:jmfldnm" element={<Book />} />
       <Route path="/RecommendBook" element={<RecommendBook />} />
       <Route path="/RecommendBookDetail" element={<RecommendBookDetail />} />

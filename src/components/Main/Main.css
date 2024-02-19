@@ -1,5 +1,5 @@
 #main1 {
-    background-color: #f2f2f2;
+    background-color: rgb(242, 242, 242, 0.5);
 }
 
 #main1 #container {
@@ -110,7 +110,7 @@
 }
 
 #main2 {
-    background-color: #f2f2f2;
+    background-color: rgb(242, 242, 242, 0.5);
 }
 
 #main2 #container {
@@ -135,6 +135,12 @@
     padding-top: 3px;
     padding-left: 5px;
 }
+
+  /* 각 카드에 대한 스타일 */
+  #main2 #container #section2 > div,
+  #main2 #container #section3 > div {
+    width: 100%; /* 카드의 너비를 100%로 설정하여 각 카드가 그리드 셀에 꽉 차도록 함 */
+  }
 
 #main2 #container #section2, #main2 #container #section3 {
     display: flex;
