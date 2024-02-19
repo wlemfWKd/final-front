@@ -1,6 +1,5 @@
 import React from "react";
 import "./Header.css";
-import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -28,16 +27,6 @@ const Header = () => {
     navigate("/");
   };
 
-  const LogoutLink = styled.div`
-    cursor: pointer;
-    text-decoration: none;
-    color: #a191a1;
-    font-weight: bold;
-    &:hover {
-      color: #ff5573;
-    }
-  `;
-
   return (
     <header className="header">
       <div className="header_container">
@@ -47,16 +36,16 @@ const Header = () => {
               <Link to="/license">자격증정보</Link>
             </li>
             <li>
-              <Link to="/data">DATA</Link>
+              <Link to="/support">지원제도</Link>
+            </li>
+            <li>
+              <Link to="/data">RANKING</Link>
             </li>
             <li>
               <Link to="/test">TEST</Link>
             </li>
             <li>
               <Link to="/community">커뮤니티</Link>
-            </li>
-            <li>
-              <Link to="/support">지원제도</Link>
             </li>
           </ul>
         </nav>

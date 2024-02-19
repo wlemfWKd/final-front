@@ -1,0 +1,26 @@
+
+.memberlist_controller {
+    padding: 0 108px;
+  }
+
+  .memberlist_controller h1{
+    text-align: center;
+  }
+  
+  .memberlist_controller table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+  }
+  
+  .memberlist_controller table th, .memberlist_controller table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .memberlist_controllertable th {
+    background-color: #f2f2f2;
+  }
+  
+  
