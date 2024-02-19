@@ -313,7 +313,8 @@ const MyPage = () => {
               &times;
             </span>
             <h2>나의 즐겨찾기 목록</h2>
-            {listStar.filter(star => star.username === member.id).length === 0 ? (
+            {listStar.filter((star) => star.username === member.id).length ===
+            0 ? (
               <p>즐겨찾기한 자격증이 없습니다.</p>
             ) : (
               <ul>
@@ -333,7 +334,7 @@ const MyPage = () => {
           </div>
         </div>
       )}
-      
+
       <Footer />
     </>
   );

@@ -26,6 +26,13 @@ class MyCalendar extends Component {
   // 아래의 모든 과정은 componentDidMount에 의해, 컴포넌트가 만들어지고 첫 렌더링을 모두 끝낸 후 실행됨
   componentDidMount() {
     this._getEvents();
+    // EventDetails 컴포넌트를 초기에 렌더링하기 위해 초기값 설정
+    this.setState({
+      selectedEventDetails: {
+        date: "",
+        content: "",
+      },
+    });
   }
 
   // axios의 get 메소드를 통해 Back-End의 '/main' url에 정보를 요청하고, 그에 따른 res.data 응답 리턴
@@ -199,20 +206,10 @@ class MyCalendar extends Component {
               "loading..."
             )}
           </div>
-          <EventDetails selectedEventDetails={selectedEventDetails} />
+          {selectedEventDetails && (
+            <EventDetails selectedEventDetails={selectedEventDetails} />
+          )}
         </div>
-        {/* {showModal && (
-          <CalendarModal
-            date={modalDate}
-            onClose={this.handleCloseModal}
-            startDate={modalStartDate}
-            endDate={modalEndDate}
-            diff={diff}
-            onAddEvent={this.handleAddEvent}
-            onDeleteEvent={this.handleDeleteEvent}
-            isEditMode={!!selectedEventId}
-          />
-        )} */}
         <Quick />
         <Footer />
       </>
