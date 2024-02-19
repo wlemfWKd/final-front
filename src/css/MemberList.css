@@ -23,4 +23,10 @@
     background-color: #f2f2f2;
   }
   
+  .page-container {
+    display: center;
+  }
   
+  .page-container button {
+    margin-right: 5px;
+  }
