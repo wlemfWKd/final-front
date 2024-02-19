@@ -1,95 +1,118 @@
 .findid-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-  }
-  
-  .findid-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .findid-container label {
-    margin-right: 10px;
-  }
-  
-  .findid-container input[type="text"],
-  .findid-container input[type="email"],
-  .findid-container input[type="tel"] {
-    width: 70%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  .findid-container input[type="radio"] {
-    margin-right: 5px;
-  }
-  
-  .findid-container button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .findid-container button:hover {
-    background-color: #0056b3;
-  }
-  
-  .findid-container p {
-    margin-top: 20px;
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
+  padding: 0 108px;
+}
 
-  .findid-container input[type="checkbox"] {
-    position: absolute;
-    opacity: 0;
-  }
+.findid-container h2 {
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 30px 0;
+}
   
-  .findid-container .checkbox-label {
-    display: block;
-    position: relative;
-    padding-left: 30px; /* 체크 박스의 가로 크기 + 여유 공간 */
-    margin-bottom: 15px;
-    cursor: pointer;
-    font-size: 18px; /* 텍스트 크기 조정 */
-    cursor: pointer;
-  }
+.findid-container .findidbox {
+  width: 80%; /* 넓이를 조정할 수 있습니다. */
+  max-width: 800px; /* 최대 넓이를 설정합니다. */
+  margin: 0 auto;
+  border: 2px solid #f2f2f2; /* 테두리 색을 변경합니다. */
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자를 추가합니다. */
+  margin-bottom: 30px;
+}
+
+.findid-container .findidbox > div {
+  margin: 30px 0;
+}
+
   
-  /* 체크 박스 모양 */
-  .findid-container .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 15px; /* 체크 박스의 세로 크기 */
-    width: 15px; /* 체크 박스의 가로 크기 */
-    background-color: #fff; /* 체크 박스의 배경색 */
-    border-radius: 5px; /* 체크 박스의 둥근 모서리 */
-    border: 1px solid #000;
-  }
+.findid-container .checkbox-label {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+
   
-  /* 체크 박스 체크 시 체크 모양 */
-  .findid-container input[type="checkbox"]:checked + .checkmark:after {
-    content: '';
-    position: absolute;
-    display: block;
-    width: 15px; /* 체크 모양의 가로 크기 */
-    height: 15px; /* 체크 모양의 세로 크기 */
-    background: blue; /* 체크 모양의 색상 */
-    border-radius: 5px; /* 체크 박스의 둥근 모서리 */
-  }
+.findid-container .checkbox-label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
   
-  /* 텍스트 클릭 시에도 체크 박스가 토글되도록 */
-  .findid-container input[type="radio"]:checked ~ .checkmark {
-    background-color: #2196F3; /* 체크 박스 선택 시의 배경색 */
-  }
+.findid-container .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 4px;
+}
   
+.findid-container   .checkbox-label input:checked ~ .checkmark {
+  background-color: #2196f3;
+}
+  
+.findid-container .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+  
+.findid-container .checkbox-label input:checked ~ .checkmark:after {
+  display: block;
+}
+  
+.findid-container .checkbox-label .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+  
+.findid-container .findid-wrap.show {
+  display: block;
+}
+  
+.findid-container .findid-wrap label {
+  display: block;
+  margin-bottom: 5px;
+}
+  
+.findid-container .findid-wrap input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+  
+.findid-container .findid-wrap button {
+  width: 100%;
+  padding: 10px;
+  background-color: #64aee0;
+  color: #fff;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+  
+.findid-container .findid-wrap button:hover, .findid-container .btnpwd .pwdbtn:hover {
+  background-color: #166caa;
+}
+
+.findid-container .btnpwd{
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.findid-container .btnpwd .pwdbtn{
+  background-color: #64aee0;
+}
