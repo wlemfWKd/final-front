@@ -6,6 +6,11 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import ChartComponent from "./ChartComponent";
 import "../css/Detail.css";
+import "../css/DetailBook.css";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+
+
 
 const Detail = () => {
   const [item, setItem] = useState(null);
@@ -33,6 +38,16 @@ const Detail = () => {
     padding: "10px",
     width: "500px",
   };
+ 
+  // 각 도서 목록의 현재 상태와 필터된 상태 설정
+  const [yes24Data, setYes24Data] = useState([]);
+  const [filteredYes24Data, setFilteredYes24Data] = useState([]);
+
+  const [kyoboData, setKyoboData] = useState([]);
+  const [filteredKyoboData, setFilteredKyoboData] = useState([]);
+
+  const [aladinData, setAladinData] = useState([]);
+  const [filteredAladinData, setFilteredAladinData] = useState([]);
 
   const formatDate = (dateString) => {
     // 문자열이 아닌 경우 처리
@@ -60,7 +75,7 @@ const Detail = () => {
       try {
         const response = await axios.get('/license/info');
         const responseData = response.data;
-  
+
         // 받아온 데이터 리스트 반복
         for (const data of responseData) {
           // jmfldnm과 jmnm을 비교하여 일치하는 데이터 찾기
@@ -75,9 +90,9 @@ const Detail = () => {
         console.error('Error fetching info:', error);
       }
     };
-  
+
     fetchinfo();
-  }, [jmfldnm]); 
+  }, [jmfldnm]);
 
 
   useEffect(() => {
@@ -98,26 +113,26 @@ const Detail = () => {
         );
         setItem(selectedItem);
 
-                    // 자격
-                const responseac = await axios.get('/license/access');
-                const responseacData = responseac.data;
+        // 자격
+        const responseac = await axios.get('/license/access');
+        const responseacData = responseac.data;
 
-                // 해당 자격의 데이터를 배열로 저장
-                const acDataArray = [];
+        // 해당 자격의 데이터를 배열로 저장
+        const acDataArray = [];
 
-                // 받아온 데이터 리스트 반복
-                for (const acdata of responseacData) {
-                  // jmfldnm과 jmnm을 비교하여 일치하는 데이터 찾기
-                  if (acdata.grdnm === selectedItem.seriesnm) {
-                    // 일치하는 데이터를 배열에 추가
-                    acDataArray.push(acdata);
-                  }
-                }
+        // 받아온 데이터 리스트 반복
+        for (const acdata of responseacData) {
+          // jmfldnm과 jmnm을 비교하여 일치하는 데이터 찾기
+          if (acdata.grdnm === selectedItem.seriesnm) {
+            // 일치하는 데이터를 배열에 추가
+            acDataArray.push(acdata);
+          }
+        }
 
-                // 배열 형태로 설정
-                setAcData(acDataArray);
-                setOriginalACData(acDataArray); // 데이터 로딩 시 originalData도 업데이트
-  
+        // 배열 형태로 설정
+        setAcData(acDataArray);
+        setOriginalACData(acDataArray); // 데이터 로딩 시 originalData도 업데이트
+
 
 
         // 시험일정 정보 가져오기
@@ -200,6 +215,37 @@ const Detail = () => {
   //   return <p>Loading...</p>;
   // }
 
+  // 도서 목록 가져오는 useEffect
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/detail/books/${jmfldnm}`);
+        const data = response.data;
+
+        // 도서 정보를 defaultColumn 값으로 분류하여 상태에 추가
+        const yes24Books = data.filter((book) => book.defaultColumn === "YES24");
+        setYes24Data(yes24Books);
+
+        const kyoboBooks = data.filter((book) => book.defaultColumn === "KYOBO");
+        setKyoboData(kyoboBooks);
+
+        const aladinBooks = data.filter((book) => book.defaultColumn === "ALADIN");
+        setAladinData(aladinBooks);
+      } catch (error) {
+        console.error("Error fetching book data:", error);
+      }
+    };
+
+    fetchData();
+  }, [jmfldnm]);;
+
+  const handleButtonClick = () => {
+    // 버튼 클릭 시 Book 페이지로 이동
+    // 여기서 `/book/${slug}`로 이동하도록 설정
+    window.location.href = `/book/${jmfldnm}`;
+  };
+
+
   return (
     <>
       <div className="detail-centered-container">
@@ -208,7 +254,7 @@ const Detail = () => {
         </div>
 
         <div className="detail-box">
-           <p>{infoData && infoData.summary}</p> 
+          <p>{infoData && infoData.summary}</p>
         </div>
         <div className="detail-content">
           <div className="detail-intro">
@@ -216,7 +262,7 @@ const Detail = () => {
           </div>
 
 
-           <div
+          <div
             className={`test-dates-container ${isTestDatesOpen ? "open" : ""}`}
           >
             <h3 onClick={() => setIsTestDatesOpen(!isTestDatesOpen)}>
@@ -319,19 +365,19 @@ const Detail = () => {
           </div>
 
           <div className={`test-access ${isAccessOpen ? "open" : ""}`}>
-          <h3 onClick={() => setIsAccessOpen(!isAccessOpen)}>응시 자격</h3>
-          {isAccessOpen && (
-            <>
-            <div className="test-accessn">
-            {acData && acData.map((item, index) => (
-              <p key={index}>
-                {item.emqualdispnm}
-              </p>
-            ))}
-            </div>
-            </>
+            <h3 onClick={() => setIsAccessOpen(!isAccessOpen)}>응시 자격</h3>
+            {isAccessOpen && (
+              <>
+                <div className="test-accessn">
+                  {acData && acData.map((item, index) => (
+                    <p key={index}>
+                      {item.emqualdispnm}
+                    </p>
+                  ))}
+                </div>
+              </>
             )}
-          </div>  
+          </div>
 
           <div className={`test-info ${isTestInfoOpen ? "open" : ""}`}>
             <h3 onClick={() => setIsTestInfoOpen(!isTestInfoOpen)}>
@@ -356,14 +402,14 @@ const Detail = () => {
             <h3 onClick={() => setIsFutureOpen(!isFutureOpen)}>미래 전망</h3>
             {isFutureOpen && (
               <div className="future-content">
-              {infoData && infoData.career ? (
-                infoData.career.split('-').map((item, index) => (
-                  <p key={index}>{item}</p>
-                ))
-              ) : (
-                <p>추후 공지</p>
-              )}
-            </div>
+                {infoData && infoData.career ? (
+                  infoData.career.split('-').map((item, index) => (
+                    <p key={index}>{item}</p>
+                  ))
+                ) : (
+                  <p>추후 공지</p>
+                )}
+              </div>
             )}
           </div>
 
@@ -371,141 +417,199 @@ const Detail = () => {
             <h3 onClick={() => setIsJobOpen(!isJobOpen)}>관련 직무</h3>
             {isJobOpen && (
               <>
-              <div className="job-content">
-                <p>{infoData && infoData.job ? infoData.job : "추후 공지"}</p>
-              </div>
+                <div className="job-content">
+                  <p>{infoData && infoData.job ? infoData.job : "추후 공지"}</p>
+                </div>
               </>
             )}
           </div>
 
+          <div className="recomend_book">
+            <h3>추천도서</h3>
+          </div>
+          <div className="bookMore">
+          <Button variant="info" onClick={handleButtonClick}>more</Button>{' '}
+          </div>
+          <div id="rank">
+  {/* YES24 도서 목록의 첫 번째 도서 출력 */}
+  {yes24Data.length > 0 && (
+    <div className="card-container">
+      <Card key={1} style={{ width: "18rem" }}>
+      <Card.Title className="card-category">YES24</Card.Title>
+        <Card.Img variant="top" src={yes24Data[0].imageName} style={{ width: '180px', height: '200px' }} />
+        <Card.Body>
+          <Card.Title>
+            <span>{yes24Data[0].bookName}</span>
+          </Card.Title>
+          <Card.Text className="card-text-custom">{yes24Data[0].bookPrice} <span className="small">원</span></Card.Text>
+          <Button variant="primary">자세히보기</Button>
+        </Card.Body>
+      </Card>
+    </div>
+  )}
 
-              
+  {/* Kyobo 도서 목록의 첫 번째 도서 출력 */}
+  {kyoboData.length > 0 && (
+    <div className="card-container">
+      <Card key={2} style={{ width: "18rem" }}>
+      <Card.Title className="card-category">KYOBO</Card.Title>
+        <Card.Img variant="top" src={kyoboData[0].imageName} style={{ width: '180px', height: '200px' }} />
+        <Card.Body>
+          <Card.Title>
+            <span>{kyoboData[0].bookName}</span>
+          </Card.Title>
+          <Card.Text className="card-text-custom">{kyoboData[0].bookPrice} <span className="small">원</span></Card.Text>
+          <Button variant="primary">자세히보기</Button>
+        </Card.Body>
+      </Card>
+    </div>
+  )}
+
+  {/* Aladin 도서 목록의 첫 번째 도서 출력 */}
+  {aladinData.length > 0 && (
+    <div className="card-container">
+      <Card key={3} style={{ width: "18rem" }}>
+      <Card.Title className="card-category">ALADIN</Card.Title>
+        <Card.Img variant="top" src={aladinData[0].imageName} style={{ width: '180px', height: '200px' }} />
+        <Card.Body>
+          <Card.Title>
+            <span>{aladinData[0].bookName}</span>
+          </Card.Title>
+          <Card.Text className="card-text-custom">{aladinData[0].bookPrice} <span className="small">원</span></Card.Text>
+          <Button variant="primary">자세히보기</Button>
+        </Card.Body>
+      </Card>
+    </div>
+  )}
+</div>
 
 
-              {/* 이벤트 연도 통계 출력 */}
-           <div className="chart">
-            
-             <div className="chart-container">
+
+          {/* 이벤트 연도 통계 출력 */}
+          <div className="chart">
+
+            <div className="chart-container">
               {isWrittenChart
                 ? eventYearPiList &&
-                  eventYearPiList.map((event, index) => (
-                    <div key={index} className="chart-box">
-                      {event && event.jmnm && (
-                        <h4>
-                          {event.jmnm} 필기시험 연도별 통계
-                          <br />
-                        </h4>
-                      )}
-                      {event && event.ilrcnt1 !== undefined && (
-                        <>
-                          <br />
-                          <br />
-                          <div className="chart-inner-box">
-                            {event.ilrcnt1 !== undefined && (
-                              <ChartComponent
-                                data={[
-                                  {
-                                    name: "2022년",
-                                    "접수자 수": event.ilrcnt1,
-                                    "응시자 수": event.ilecnt1,
-                                    "합격자 수": event.ilpcnt1,
-                                  },
-                                  {
-                                    name: "2021년",
-                                    "접수자 수": event.ilrcnt2,
-                                    "응시자 수": event.ilecnt2,
-                                    "합격자 수": event.ilpcnt2,
-                                  },
-                                  {
-                                    name: "2020년",
-                                    "접수자 수": event.ilrcnt3,
-                                    "응시자 수": event.ilecnt3,
-                                    "합격자 수": event.ilpcnt3,
-                                  },
-                                  {
-                                    name: "2019년",
-                                    "접수자 수": event.ilrcnt4,
-                                    "응시자 수": event.ilecnt4,
-                                    "합격자 수": event.ilpcnt4,
-                                  },
-                                  {
-                                    name: "2018년",
-                                    "접수자 수": event.ilrcnt5,
-                                    "응시자 수": event.ilecnt5,
-                                    "합격자 수": event.ilpcnt5,
-                                  },
-                                ]}
-                              />
-                            )}
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  ))
-                : eventYearSiList &&
-                  eventYearSiList.map((event, index) => (
-                    <div key={index} className="chart-box">
-                      {event && event.jmnm && (
-                        <h4>
-                          {event.jmnm} 실기시험 연도별 통계
-                          <br />
-                        </h4>
-                      )}
-                      {event && event.ilrcnt1 !== undefined && (
-                        <div>
-                          <br />
-                          <br />
-                          <div className="chart-inner-box">
-                            {event.ilrcnt1 !== undefined && (
-                              <ChartComponent
-                                data={[
-                                  {
-                                    name: "2022년",
-                                    "접수자 수": event.ilrcnt1,
-                                    "응시자 수": event.ilecnt1,
-                                    "합격자 수": event.ilpcnt1,
-                                  },
-                                  {
-                                    name: "2021년",
-                                    "접수자 수": event.ilrcnt2,
-                                    "응시자 수": event.ilecnt2,
-                                    "합격자 수": event.ilpcnt2,
-                                  },
-                                  {
-                                    name: "2020년",
-                                    "접수자 수": event.ilrcnt3,
-                                    "응시자 수": event.ilecnt3,
-                                    "합격자 수": event.ilpcnt3,
-                                  },
-                                  {
-                                    name: "2019년",
-                                    "접수자 수": event.ilrcnt4,
-                                    "응시자 수": event.ilecnt4,
-                                    "합격자 수": event.ilpcnt4,
-                                  },
-                                  {
-                                    name: "2018년",
-                                    "접수자 수": event.ilrcnt5,
-                                    "응시자 수": event.ilecnt5,
-                                    "합격자 수": event.ilpcnt5,
-                                  },
-                                ]}
-                              />
-                            )}
-                          </div>
+                eventYearPiList.map((event, index) => (
+                  <div key={index} className="chart-box">
+                    {event && event.jmnm && (
+                      <h4>
+                        {event.jmnm} 필기시험 연도별 통계
+                        <br />
+                      </h4>
+                    )}
+                    {event && event.ilrcnt1 !== undefined && (
+                      <>
+                        <br />
+                        <br />
+                        <div className="chart-inner-box">
+                          {event.ilrcnt1 !== undefined && (
+                            <ChartComponent
+                              data={[
+                                {
+                                  name: "2022년",
+                                  "접수자 수": event.ilrcnt1,
+                                  "응시자 수": event.ilecnt1,
+                                  "합격자 수": event.ilpcnt1,
+                                },
+                                {
+                                  name: "2021년",
+                                  "접수자 수": event.ilrcnt2,
+                                  "응시자 수": event.ilecnt2,
+                                  "합격자 수": event.ilpcnt2,
+                                },
+                                {
+                                  name: "2020년",
+                                  "접수자 수": event.ilrcnt3,
+                                  "응시자 수": event.ilecnt3,
+                                  "합격자 수": event.ilpcnt3,
+                                },
+                                {
+                                  name: "2019년",
+                                  "접수자 수": event.ilrcnt4,
+                                  "응시자 수": event.ilecnt4,
+                                  "합격자 수": event.ilpcnt4,
+                                },
+                                {
+                                  name: "2018년",
+                                  "접수자 수": event.ilrcnt5,
+                                  "응시자 수": event.ilecnt5,
+                                  "합격자 수": event.ilpcnt5,
+                                },
+                              ]}
+                            />
+                          )}
                         </div>
-                      )}
-                      <br />
-                    </div>
-                  ))} 
-               <div className="chart-toggle-buttons">
+                      </>
+                    )}
+                  </div>
+                ))
+                : eventYearSiList &&
+                eventYearSiList.map((event, index) => (
+                  <div key={index} className="chart-box">
+                    {event && event.jmnm && (
+                      <h4>
+                        {event.jmnm} 실기시험 연도별 통계
+                        <br />
+                      </h4>
+                    )}
+                    {event && event.ilrcnt1 !== undefined && (
+                      <div>
+                        <br />
+                        <br />
+                        <div className="chart-inner-box">
+                          {event.ilrcnt1 !== undefined && (
+                            <ChartComponent
+                              data={[
+                                {
+                                  name: "2022년",
+                                  "접수자 수": event.ilrcnt1,
+                                  "응시자 수": event.ilecnt1,
+                                  "합격자 수": event.ilpcnt1,
+                                },
+                                {
+                                  name: "2021년",
+                                  "접수자 수": event.ilrcnt2,
+                                  "응시자 수": event.ilecnt2,
+                                  "합격자 수": event.ilpcnt2,
+                                },
+                                {
+                                  name: "2020년",
+                                  "접수자 수": event.ilrcnt3,
+                                  "응시자 수": event.ilecnt3,
+                                  "합격자 수": event.ilpcnt3,
+                                },
+                                {
+                                  name: "2019년",
+                                  "접수자 수": event.ilrcnt4,
+                                  "응시자 수": event.ilecnt4,
+                                  "합격자 수": event.ilpcnt4,
+                                },
+                                {
+                                  name: "2018년",
+                                  "접수자 수": event.ilrcnt5,
+                                  "응시자 수": event.ilecnt5,
+                                  "합격자 수": event.ilpcnt5,
+                                },
+                              ]}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    <br />
+                  </div>
+                ))}
+              <div className="chart-toggle-buttons">
                 <button onClick={() => setIsWrittenChart(true)}>필기</button>
                 <button onClick={() => setIsWrittenChart(false)}>실기</button>
-              </div> 
-             </div> 
-          </div> 
-
+              </div>
+            </div>
+          </div>
           
+
+
         </div>
       </div>
     </>
