@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,56 +11,55 @@ import axios from 'axios';
 
 const Book = () => {
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [kyoboData, setKyoboData] = useState([]);
-  const [yes24Data, setYes24Data] = useState([]);
-  const [aladinData, setAladinData] = useState([]);
+  const { jmfldnm } = useParams();
+  // 초기 상태 설정
   const [originalAladinData, setOriginalAladinData] = useState([]);
   const [originalKyoboData, setOriginalKyoboData] = useState([]);
   const [originalYes24Data, setOriginalYes24Data] = useState([]);
-  // 현재 선택된 카테고리 상태 및 업데이트 함수
-  const [selectedCategory, setSelectedCategory] = useState('YES24')
-  // 현재 페이지 상태 및 업데이트 함수
+  // 검색어 관련 상태 설정
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+
+  // 각 도서 목록의 현재 상태와 필터된 상태 설정
+  const [yes24Data, setYes24Data] = useState([]);
+  const [filteredYes24Data, setFilteredYes24Data] = useState([]);
+
+  const [kyoboData, setKyoboData] = useState([]);
+  const [filteredKyoboData, setFilteredKyoboData] = useState([]);
+
+  const [aladinData, setAladinData] = useState([]);
+  const [filteredAladinData, setFilteredAladinData] = useState([]);
+  // 현재 선택된 카테고리 상태 및 업데이트 함수
+  const [selectedCategory, setSelectedCategory] = useState('YES24');
+  // 현재 페이지 상태 및 업데이트 함수
+
 
 
 
   // 검색어 초기화 및 페이지 리셋 함수
   const resetSearch = async () => {
-    setSearchTerm("");  // 검색어 초기화
-    setCurrentPage(1);  // 페이지를 1로 리셋
-  
-    // 선택된 카테고리에 따라 데이터를 불러오거나 필터링하여 업데이트
-    switch (selectedCategory) {
-      case 'YES24':
-        try {
-          const responseYes24 = await axios.get('/detail/books');
-          setYes24Data(responseYes24.data);
-          setOriginalYes24Data(responseYes24.data);
-        } catch (error) {
-          console.error('Error fetching books from YES24:', error);
-        }
-        break;
-      case 'KYOBO':
-        try {
-          const responseKyobo = await axios.get('/detail/kyoboBooks');
-          setKyoboData(responseKyobo.data);
-          setOriginalKyoboData(responseKyobo.data);
-        } catch (error) {
-          console.error('Error fetching books from Kyobo:', error);
-        }
-        break;
-      case 'ALADIN':
-        try {
-          const responseAladin = await axios.get('/detail/aladinBooks');
-          setAladinData(responseAladin.data);
-          setOriginalAladinData(responseAladin.data);
-        } catch (error) {
-          console.error('Error fetching books from Aladin:', error);
-        }
-        break;
-      default:
-        break;
+    setSearchTerm("");
+    setCurrentPage(1);
+
+    try {
+      switch (selectedCategory) {
+        case 'YES24':
+          const yes24Books = originalYes24Data.filter(book => book.defaultColumn === 'YES24');
+          setYes24Data(yes24Books);
+          break;
+        case 'KYOBO':
+          const kyoboBooks = originalKyoboData.filter(book => book.defaultColumn === 'KYOBO');
+          setKyoboData(kyoboBooks);
+          break;
+        case 'ALADIN':
+          const aladinBooks = originalAladinData.filter(book => book.defaultColumn === 'ALADIN');
+          setAladinData(aladinBooks);
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      console.error('Error filtering books:', error);
     }
   };
 
@@ -69,6 +69,7 @@ const Book = () => {
   // 검색어를 입력하고 엔터를 눌렀을 때 검색 실행
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
+      console.log('Enter key pressed. Calling handleSearch...');
       handleSearch(searchTerm);
     }
   };
@@ -81,18 +82,54 @@ const Book = () => {
   };
 
   const handleSearch = (term) => {
-    if (selectedCategory === 'YES24') {
-      const filteredData = filterResults(originalYes24Data, term);
-      setYes24Data(filteredData);
-    } else if (selectedCategory === 'KYOBO') { // 수정된 부분
-      const filteredData = filterResults(originalKyoboData, term);
-      setKyoboData(filteredData);
-    } else if (selectedCategory === 'ALADIN') { // 수정된 부분
-      const filteredData = filterResults(originalAladinData, term);
-      setAladinData(filteredData);
+    try {
+      setCurrentPage(1);
+
+      // Filter data based on the selected category
+      switch (selectedCategory) {
+        case 'YES24':
+          const filteredYes24Data = originalYes24Data.filter((book) =>
+            book.bookName.toLowerCase().includes(term.toLowerCase())
+          );
+          setYes24Data(filteredYes24Data);
+          break;
+        case 'KYOBO':
+          const filteredKyoboData = originalKyoboData.filter((book) =>
+            book.bookName.toLowerCase().includes(term.toLowerCase())
+          );
+          setKyoboData(filteredKyoboData);
+          break;
+        case 'ALADIN':
+          const filteredAladinData = originalAladinData.filter((book) =>
+            book.bookName.toLowerCase().includes(term.toLowerCase())
+          );
+          setAladinData(filteredAladinData);
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      console.error('Error filtering books:', error);
     }
-    setCurrentPage(1);
   };
+
+  // 검색어 또는 페이지 변경 시 도서 목록 필터링 useEffect
+  useEffect(() => {
+    const filterData = (data, setSearchData) => {
+      const filteredData = data.filter((book) =>
+        book.bookName.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setSearchData(filteredData);
+    };
+
+    // 검색어 또는 페이지 변경 시 각 도서 목록 필터링
+    filterData(originalYes24Data, setFilteredYes24Data);
+    filterData(originalKyoboData, setFilteredKyoboData);
+    filterData(originalAladinData, setFilteredAladinData);
+
+    // 페이지 변경 시 현재 페이지로 돌아오도록 설정
+    setCurrentPage(1);
+  }, [searchTerm, originalYes24Data, originalKyoboData, originalAladinData]);
 
   // 페이지 변경 시 검색어 유지하기 및 스크롤 위치 유지
   const handlePageChange = (pageNumber, event) => {
@@ -116,93 +153,65 @@ const Book = () => {
 
 
 
+  // 카테고리 변경 시 호출되는 함수
+  const handleCategoryChange = async (categoryId) => {
+    setSelectedCategory(categoryId);
 
-  // 카테고리 선택 시 호출되는 함수
-const handleCategoryChange = async (categoryId) => {
-  // 선택된 카테고리 업데이트
-  setSelectedCategory(categoryId);
+    try {
+      const response = await axios.get(`/detail/books/${jmfldnm}`);
+      const data = response.data;
 
-  // 검색어 초기화
-  setSearchTerm("");
+      // 도서 정보를 defaultColumn 값으로 분류하여 상태에 추가
+      const yes24Books = data.filter((book) => book.defaultColumn === 'YES24');
+      setYes24Data(yes24Books);
 
-  // 카테고리에 따라 데이터를 불러오거나 필터링하여 업데이트
-  switch (categoryId) {
-    case 'YES24':
-      console.log('예스24 접속됨')
-      try {
-        const responseYes24 = await axios.get('/detail/books');
-        setYes24Data(responseYes24.data);
-        setOriginalYes24Data(responseYes24.data);
-        console.log(responseYes24.data);
-      } catch (error) {
-        console.error('Error fetching books from YES24:', error);
-      } 
-      break;
-    case 'KYOBO':
-      console.log('교보 접속됨')
-      try {
-        const responseKyobo = await axios.get('/detail/kyoboBooks');
-        setKyoboData(responseKyobo.data);
-        setOriginalKyoboData(responseKyobo.data);
-        console.log(responseKyobo.data);
-      } catch (error) {
-        console.error('Error fetching books from Kyobo:', error);
-      }
-      break;
-    case 'ALADIN':
-      console.log('알라딘 접속됨')
-      try {
-        const responseAladin = await axios.get('/detail/aladinBooks');
-        setAladinData(responseAladin.data);
-        setOriginalAladinData(responseAladin.data);
-        console.log(responseAladin.data);
-      } catch (error) {
-        console.error('Error fetching books from Aladin:', error);
-      }
-      break;
-    default:
-      break;
-  }
-  setCurrentPage(1); // 페이지 초기화
-};
+      const kyoboBooks = data.filter((book) => book.defaultColumn === 'KYOBO');
+      setKyoboData(kyoboBooks);
+
+      const aladinBooks = data.filter((book) => book.defaultColumn === 'ALADIN');
+      setAladinData(aladinBooks);
+    } catch (error) {
+      console.error('Error fetching book data:', error);
+    }
+
+    setCurrentPage(1); // 페이지 초기화
+  };
 
 
+  // 
 
+  // 도서 목록 가져오는 useEffect
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseYes24 = await axios.get('/detail/books');
-        setYes24Data(responseYes24.data);
-        setOriginalYes24Data(responseYes24.data);
-      } catch (error) {
-        console.error('Error fetching books from YES24:', error);
-      }
-    };
+        const response = await axios.get(`/detail/books/${jmfldnm}`);
+        const data = response.data;
 
-    const fetchDataFromKyobo = async () => {
-      try {
-        const responseKyobo = await axios.get('/detail/kyoboBooks');
-        setKyoboData(responseKyobo.data);
-        setOriginalKyoboData(responseKyobo.data);
-      } catch (error) {
-        console.error('Error fetching books from Kyobo:', error);
-      }
-    };
+        // 도서 정보를 defaultColumn 값으로 분류하여 상태에 추가
+        const yes24Books = data.filter((book) => book.defaultColumn === "YES24");
+        setOriginalYes24Data(yes24Books);
+        setYes24Data(yes24Books);
+        setFilteredYes24Data(yes24Books);
 
-    const fetchDataFromAladin = async () => {
-      try {
-        const responseAladin = await axios.get('/detail/aladinBooks');
-        setAladinData(responseAladin.data);
-        setOriginalAladinData(responseAladin.data);
+        const kyoboBooks = data.filter((book) => book.defaultColumn === "KYOBO");
+        setOriginalKyoboData(kyoboBooks);
+        setKyoboData(kyoboBooks);
+        setFilteredKyoboData(kyoboBooks);
+
+        const aladinBooks = data.filter((book) => book.defaultColumn === "ALADIN");
+        setOriginalAladinData(aladinBooks);
+        setAladinData(aladinBooks);
+        setFilteredAladinData(aladinBooks);
       } catch (error) {
-        console.error('Error fetching books from Aladin:', error);
+        console.error("Error fetching book data:", error);
       }
     };
 
     fetchData();
-    fetchDataFromKyobo();
-    fetchDataFromAladin();
-  }, []);
+  }, [jmfldnm]);
+
+
+
 
   useEffect(() => {
     // 페이지가 로드될 때 스크롤 위치를 복원합니다.
@@ -227,16 +236,24 @@ const handleCategoryChange = async (categoryId) => {
   // 현재 페이지에 해당하는 데이터 추출
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  //const currentData = selectedCategory === 'YES24' ? yes24Data.slice(indexOfFirstItem, indexOfLastItem) : kyoboData.slice(indexOfFirstItem, indexOfLastItem) : aladinData;
-  const currentData =
-  selectedCategory === 'YES24'
-    ? yes24Data.slice(indexOfFirstItem, indexOfLastItem)
-    : selectedCategory === 'KYOBO'
-    ? kyoboData.slice(indexOfFirstItem, indexOfLastItem)
-    : aladinData.slice(indexOfFirstItem, indexOfLastItem);
 
+
+
+  const getCurrentData = () => {
+    switch (selectedCategory) {
+      case 'YES24':
+        return filteredYes24Data;
+      case 'KYOBO':
+        return filteredKyoboData;
+      case 'ALADIN':
+        return filteredAladinData;
+      default:
+        return [];
+    }
+  };
+  const currentData = getCurrentData().slice(indexOfFirstItem, indexOfLastItem);
   // 총 페이지 수 계산
-const totalPages = Math.ceil((selectedCategory === 'YES24' ? yes24Data.length : (selectedCategory === 'KYOBO' ? kyoboData.length : aladinData.length)) / itemsPerPage);
+  const totalPages = Math.ceil(getCurrentData().length / itemsPerPage);
   // 페이지 번호 배열 생성
   const pageRange = 5; // 좌우에 몇 페이지까지 보여줄 것인지 설정
   const middlePage = Math.ceil(pageRange / 2);
@@ -267,6 +284,8 @@ const totalPages = Math.ceil((selectedCategory === 'YES24' ? yes24Data.length : 
     pageNumbers.push(i);
   }
 
+
+
   return (
     <>
       <Header />
@@ -279,6 +298,7 @@ const totalPages = Math.ceil((selectedCategory === 'YES24' ? yes24Data.length : 
             {/* YES24 도서 목록의 첫 번째 도서 출력 */}
             {yes24Data.length > 0 && (
               <Card key={1} style={{ width: "18rem" }}>
+                <Card.Title className="card-category">YES24</Card.Title>
                 <Card.Img variant="top" src={yes24Data[0].imageName} style={{ width: '180px', height: '200px' }} />
                 <Card.Body>
                   <Card.Title>
@@ -293,6 +313,7 @@ const totalPages = Math.ceil((selectedCategory === 'YES24' ? yes24Data.length : 
             {/* Kyobo 도서 목록의 첫 번째 도서 출력 */}
             {kyoboData.length > 0 && (
               <Card key={2} style={{ width: "18rem" }}>
+                <Card.Title className="card-category">KYOBO</Card.Title>
                 <Card.Img variant="top" src={kyoboData[0].imageName} style={{ width: '180px', height: '200px' }} />
                 <Card.Body>
                   <Card.Title>
@@ -307,6 +328,7 @@ const totalPages = Math.ceil((selectedCategory === 'YES24' ? yes24Data.length : 
             {/* Aladin 도서 목록의 첫 번째 도서 출력 */}
             {aladinData.length > 0 && (
               <Card key={3} style={{ width: "18rem" }}>
+                <Card.Title className="card-category">ALADIN</Card.Title>
                 <Card.Img variant="top" src={aladinData[0].imageName} style={{ width: '180px', height: '200px' }} />
                 <Card.Body>
                   <Card.Title>
@@ -363,32 +385,34 @@ const totalPages = Math.ceil((selectedCategory === 'YES24' ? yes24Data.length : 
             <hr />
             <div id="re_contents">
               <input type="hidden" value={0} />
-              <ul className="your-component">
-                {currentData.map((item) => (
-                  <React.Fragment key={item.id}>
-                    <li>
-                      <a href={item.viewDetail} target="_blank" rel="noopener noreferrer">
-                        <img
-                          src={item.imageName}
-                          alt="이미지 설명"
-                          className="left-image"
-                        />
-                      </a>
-                      <div className="text-container">
-                        <h3>{item.bookName}</h3>
-                        <p>
-                          Price : <span>{item.bookPrice} 원 </span>
-                        </p>
-                      </div>
-                      <a href={item.viewDetail} className="detail-link" target="_blank" rel="noopener noreferrer">
-                        자세히 보기
-                      </a>
-                    </li>
-                    <hr />
-                  </React.Fragment>
-                ))}
-              </ul>
-           
+              {currentData.length === 0 && searchTerm !== '' ? (
+                <div id="no-results-message">
+                  <p>검색 결과가 없습니다.</p>
+                </div>
+              ) : (
+                <ul className="your-component">
+                  {currentData.map((item) => (
+                    <React.Fragment key={item.id}>
+                      <li>
+                        <a href={item.viewDetail} target="_blank" rel="noopener noreferrer">
+                          <img src={item.imageName} alt="이미지 설명" className="left-image" />
+                        </a>
+                        <div className="text-container">
+                          <h3>{item.bookName}</h3>
+                          <p>
+                            Price : <span>{item.bookPrice} 원 </span>
+                          </p>
+                        </div>
+                        <a href={item.viewDetail} className="detail-link" target="_blank" rel="noopener noreferrer">
+                          자세히 보기
+                        </a>
+                      </li>
+                      <hr />
+                    </React.Fragment>
+                  ))}
+                </ul>
+              )}
+
               <div id="pagination">
                 <ul className="pagination">
                   {/* 이전(prev) 버튼 */}
