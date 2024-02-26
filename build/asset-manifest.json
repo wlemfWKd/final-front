@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/static/css/main.8c40aee7.css",
+    "main.js": "/static/js/main.0e0e4f2c.js",
+    "static/media/일자리채움청년지원금.png": "/static/media/일자리채움청년지원금.548f46655966e9481c99.png",
+    "static/media/국가기술자격시험.jpeg": "/static/media/국가기술자격시험.baea15f8c7cec52eaa42.jpeg",
+    "static/media/국민취업제도.jpeg": "/static/media/국민취업제도.22996fed8763c9f1c16b.jpeg",
+    "static/media/국민내일배움카드.jpeg": "/static/media/국민내일배움카드.d46393292b011616f297.jpeg",
+    "static/media/banner2.png": "/static/media/banner2.9942a1b0656a53588e0d.png",
+    "static/media/청년주택드림청약통장.jpeg": "/static/media/청년주택드림청약통장.531132ebce45848716e0.jpeg",
+    "static/media/banner4.png": "/static/media/banner4.ea9d35712148eb997116.png",
+    "static/media/banner1.png": "/static/media/banner1.e8fd6b292a0338b37ce2.png",
+    "index.html": "/index.html",
+    "main.8c40aee7.css.map": "/static/css/main.8c40aee7.css.map",
+    "main.0e0e4f2c.js.map": "/static/js/main.0e0e4f2c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8c40aee7.css",
+    "static/js/main.0e0e4f2c.js"
+  ]
+}
