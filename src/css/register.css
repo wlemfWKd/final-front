@@ -29,6 +29,11 @@
   padding: 8px;
   box-sizing: border-box;
 }
+.register_container .check_input{
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
 
 .register_container .id_check{
   display: flex;
@@ -145,6 +150,9 @@
   position: relative;
   margin-top: 20px;
 }
+.register_container .check_input{
+  position: relative;
+}
 
 .register_container .basic_input:first-child,
 .register_container .rrn1_input:first-child,
@@ -153,6 +161,7 @@
 }
 
 .register_container  .basic_input input,
+.register_container  .check_input input,
 .register_container  .rrn1_input input,
 .register_container  .email_input input {
   width: 100%;
@@ -165,6 +174,7 @@
 }
 
 .register_container .basic_input label,
+.register_container .check_input label,
 .register_container .rrn1_input label,
 .register_container .email_input label {
   position: absolute;
@@ -174,10 +184,23 @@
   transition: top 0.5s ease;
 }
 
+.register_container .basic_input label span,
+.register_container .rrn1_input label span{
+  font-size: 10px;
+}
+
 .register_container .basic_input input:focus + label,
-.register_container .basic_input input:valid + label, 
+.register_container .basic_input input:valid + label,
+.register_container .basic_input.error-message label,
+.register_container .basic_input.nameerror-message label,
+.register_container .basic_input.phoneerror-message label,
+.register_container .check_input input:focus + label,
+.register_container .check_input input:valid + label,
+.register_container .check_input.checkerror-message label,
 .register_container .rrn1_input input:focus + label,
 .register_container .rrn1_input input:valid + label,
+.register_container .rrn1_input.socialNum1error-message label,
+.register_container .rrn1_input.socialNum2error-message label,
 .register_container .email_input input:focus + label,
 .register_container .email_input input:valid + label  {
   top: -2px;
@@ -210,3 +233,24 @@
   display: flex;
   align-items: center;
 }
+.error-message, .checkerror-message, .nameerror-message, .phoneerror-message, .socialNum1error-message{
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  padding-left: 10px;
+  font-size: 12px;
+  color: red;
+  }
+
+  .socialNum2error-message {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    padding-left: 10px;
+    font-size: 12px;
+    color: red;
+  }
+  
+  .bottom-adjusted {
+    bottom: -15px; /* socialNum1error-message가 있을 때만 조건적으로 위치 조정 */
+  }

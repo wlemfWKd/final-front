@@ -23,6 +23,13 @@ const Register = () => {
   const [isNameValid, setIsNameValid] = useState(true);
   const [randomInitial, setRandomInitial] = useState("");
 
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [passwordMatchError, setPasswordMatchError] = useState("");
+  const [nameErrorMessae, setNameErrorMessage] = useState("");
+  const [phoneErrorMessage, setPhoneErrorMessage] = useState("");
+  const [socialNum1ErrorMessage, setSocialNum1ErrorMessage] = useState("");
+  const [socialNum2ErrorMessage, setSocialNum2ErrorMessage] = useState("");
+
   // 이메일 중복확인
   const [isEmailCheckButtonDisabled, setIsEmailCheckButtonDisabled] =
     useState(false);
@@ -48,6 +55,7 @@ const Register = () => {
         alert("이메일을 입력하세요.");
       } else {
         alert(response.data);
+        console.log("중복확인된 이메일: " + member.email + member.domain);
         setIsEmailCheckButtonDisabled(true);
       }
     } catch (error) {
@@ -62,8 +70,6 @@ const Register = () => {
       alert("이메일 중복확인 해주세요.");
       return;
     }
-    // 추가적인 유효성 검사가 필요하다면 여기에 추가
-
     try {
       alert(
         "해당 이메일로 인증코드를 전송합니다.\n 최대 1분이 소요될 수 있습니다.\n 전송 완료시 전송 완료 창이 나옵니다."
@@ -79,7 +85,7 @@ const Register = () => {
           "해당 이메일로 인증 코드를 전송했습니다.\n" +
             "아래 입력칸에 입력해주세요."
         );
-      } else {
+        setIsEmailCheckButton2Disabled(true);
       }
     } catch (error) {
       console.log("데이터 전송 중 오류 발생: ", error);
@@ -93,7 +99,6 @@ const Register = () => {
       alert("코드를 입력해주세요.");
       return;
     }
-    // 추가적인 유효성 검사가 필요하다면 여기에 추가
 
     try {
       // 적절한 엔드포인트와 데이터를 사용
@@ -102,7 +107,7 @@ const Register = () => {
         domain: member.domain,
         randomInitial: randomInitial,
       });
-      console.log(response.data + "080");
+      console.log(response.data);
       if (response.data === "이메일 인증에 성공하였습니다.") {
         setIsEmailCheckButton2Disabled(true);
         setIsEmailCheckButton3Disabled(true);
@@ -125,13 +130,43 @@ const Register = () => {
     }
     if (field === "password") {
       const passwordRegex =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$/;
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,12}$/;
       setIsPasswordValid(passwordRegex.test(value));
+
+      if (!passwordRegex.test(value)) {
+        setPasswordErrorMessage(
+          "비밀번호는 8~12자리, 대문자1, 소문자1, 숫자1로 이루어져야 합니다. (!@#$%^&* 만 가능)"
+        );
+      } else {
+        setPasswordErrorMessage("");
+      }
+    } else if (field === "userPasswordCheck") {
+      // 비밀번호 확인란 입력값 변경 시 비밀번호와 비교하여 일치 여부 확인
+      setUserPasswordCheck(value);
+      if (member.password !== value) {
+        setPasswordMatchError("비밀번호가 일치하지 않습니다.");
+      } else {
+        setPasswordMatchError("");
+      }
     }
+
     if (field === "memberName") {
       // 이름은 한글로만 이루어지고, 2~5글자
       const nameRegex = /^[가-힣]{2,5}$/;
       setIsNameValid(nameRegex.test(value));
+
+      if (!nameRegex.test(value)) {
+        setNameErrorMessage("이름은 한글로 2~5글자 사이여야 합니다.");
+      } else {
+        setNameErrorMessage("");
+      }
+    }
+
+    if (field === "email") {
+      setIsEmailCheckButtonDisabled(false);
+      setIsEmailCheckButton2Disabled(false);
+      setIsEmailCheckButton3Disabled(false);
+      console.log("현재 입력된 이메일:", value + member.domain);
     }
 
     setMember({ ...member, [field]: value });
@@ -139,7 +174,9 @@ const Register = () => {
 
   const handleDomainChange = (event) => {
     const selectedDomain = event.target.value;
+    console.log("현재 선택된 도메인 : " + selectedDomain);
     setMember({ ...member, domain: selectedDomain });
+    setIsEmailCheckButtonDisabled(false);
   };
 
   const formatPhoneNumber = (phoneNumber) => {
@@ -154,7 +191,16 @@ const Register = () => {
     const truncatedValue = newValue.slice(0, 11);
     // 형식 적용하여 state 업데이트
     setMember({ ...member, phoneNum: formatPhoneNumber(truncatedValue) });
+
+    // 전화번호 유효성 검사
+    const phoneRegex = /^(010|011)\d{8}$/;
+    if (!phoneRegex.test(truncatedValue)) {
+      setPhoneErrorMessage("올바른 전화번호 형식이 아닙니다.(010,011만 가능)");
+    } else {
+      setPhoneErrorMessage("");
+    }
   };
+
   // 주민번호 유효성검사
   const handleSocialNum1Change = (event) => {
     // 입력된 값에서 숫자만 추출
@@ -170,20 +216,19 @@ const Register = () => {
 
       // 연도는 00~99 사이의 값이어야 함
       if (year < 0 || year > 99) {
-        alert("올바른 연도 형식이 아닙니다.");
-        return;
+        setSocialNum1ErrorMessage("올바른 년도 형식이 아닙니다.");
       }
-
       // 월은 1~12 사이의 값이어야 함
-      if (month < 1 || month > 12) {
-        alert("올바른 월 형식이 아닙니다.");
-        return;
+      else if (month < 1 || month > 12) {
+        setSocialNum1ErrorMessage("올바른 월 형식이 아닙니다.");
       }
-
       // 일은 1~31 사이의 값이어야 함 (해당 월에 따라 조정 필요)
-      if (day < 1 || day > 31) {
-        alert("올바른 일 형식이 아닙니다.");
-        return;
+      else if (day < 1 || day > 31) {
+        setSocialNum1ErrorMessage("올바른 일 형식이 아닙니다.");
+      }
+      // 모든 조건을 만족하는 경우 오류 메시지를 초기화
+      else {
+        setSocialNum1ErrorMessage("");
       }
     }
 
@@ -203,8 +248,11 @@ const Register = () => {
 
       // 첫 번째 숫자는 1~4 사이의 값이어야 함
       if (firstDigit < 1 || firstDigit > 4) {
-        alert("뒷자리 첫 번째 숫자는 1~4까지만 가능합니다.");
-        return;
+        setSocialNum2ErrorMessage(
+          "뒷자리 첫 번째 숫자는 1~4까지만 가능합니다."
+        );
+      } else {
+        setSocialNum2ErrorMessage("");
       }
     }
 
@@ -214,29 +262,12 @@ const Register = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // 이름 유효성 검사
-    if (!isNameValid) {
-      alert("이름은 한글로 2~5글자 사이여야 합니다.");
-      return;
-    }
     if (!isCheckButtonDisabled) {
       alert("ID 중복확인 해주세요.");
       return;
     }
     if (!isEmailCheckButtonDisabled) {
       alert("이메일 중복확인 해주세요.");
-      return;
-    }
-    // 비밀번호 일치 여부 확인
-    if (member.password !== userPasswordCheck) {
-      alert("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-
-    if (!isPasswordValid) {
-      alert(
-        "비밀번호는 최소 8자리, 대문자1, 소문자1, 숫자1로 이루어져야 합니다. (!@#$%^&* 만 가능)"
-      );
       return;
     }
     if (!isEmailCheckButton3Disabled) {
@@ -254,20 +285,14 @@ const Register = () => {
       return;
     }
 
-    // 전화번호 유효성 검사
-    const phoneRegex = /^(010|011)\d{8}$/;
-    if (!phoneRegex.test(member.phoneNum.replace(/-/g, ""))) {
-      alert("올바른 전화번호 형식이 아닙니다.");
-      return;
-    }
-
     try {
       // axios를 사용하여 서버로 데이터 전송
       const response = await axios.post("/join", member);
       // 추가적으로 서버로부터의 응답을 처리하거나 상태를 업데이트할 수 있음
-      if (response.data === "ok") {
+      if (response.data === "회원가입이 완료되었습니다.") {
         console.log(response.data);
         alert(response.data);
+        // 가입 성공 시 메인 화면으로 이동
         navigate("/");
       } else {
         alert(response.data);
@@ -333,11 +358,7 @@ const Register = () => {
                     />
                     <label>아이디를 입력하세요</label>
                   </div>
-                  <button
-                    className="id_btn"
-                    onClick={checkId}
-                    disabled={isCheckButtonDisabled}
-                  >
+                  <button className="id_btn" onClick={checkId}>
                     중복확인
                   </button>
                 </div>
@@ -345,7 +366,11 @@ const Register = () => {
             </tr>
             <tr>
               <td>
-                <div className="basic_input">
+                <div
+                  className={`basic_input ${
+                    passwordErrorMessage ? "error-message" : ""
+                  }`}
+                >
                   <input
                     type="password"
                     onChange={(event) =>
@@ -354,28 +379,46 @@ const Register = () => {
                     value={member.password}
                     required
                   />
+                  {passwordErrorMessage && (
+                    <span className="error-message">
+                      {passwordErrorMessage}
+                    </span>
+                  )}
                   <label>비밀번호를 입력하세요</label>
                 </div>
               </td>
             </tr>
             <tr>
               <td>
-                <div className="basic_input">
+                <div
+                  className={`check_input ${
+                    passwordMatchError ? "checkerror-message" : ""
+                  }`}
+                >
                   <input
                     type="password"
                     onChange={(event) =>
-                      setUserPasswordCheck(event.target.value)
+                      handleChange("userPasswordCheck", event.target.value)
                     }
                     value={userPasswordCheck}
                     required
                   />
+                  {passwordMatchError && (
+                    <span className="checkerror-message">
+                      {passwordMatchError}
+                    </span>
+                  )}
                   <label>비밀번호 확인</label>
                 </div>
               </td>
             </tr>
             <tr>
               <td>
-                <div className="basic_input">
+                <div
+                  className={`basic_input ${
+                    nameErrorMessae ? "nameerror-message" : ""
+                  }`}
+                >
                   <input
                     type="text"
                     onChange={(event) =>
@@ -384,20 +427,43 @@ const Register = () => {
                     value={member.memberName}
                     required
                   />
+                  {nameErrorMessae && (
+                    <span className="nameerror-message">{nameErrorMessae}</span>
+                  )}
                   <label>이름을 입력하세요</label>
                 </div>
               </td>
             </tr>
             <tr>
               <td>
-                <div className="rrn1_input">
+                <div
+                  className={`rrn1_input ${
+                    socialNum1ErrorMessage ? "socialNum1error-message" : ""
+                  } ${socialNum2ErrorMessage ? "socialNum2error-message" : ""}`}
+                >
                   <input
                     type="text"
                     onChange={handleSocialNum1Change}
                     value={member.socialNum1}
                     required
                   />
-                  <label>주민번호를 입력하세요</label>
+                  {socialNum1ErrorMessage && (
+                    <span className="socialNum1error-message">
+                      {socialNum1ErrorMessage}
+                    </span>
+                  )}
+                  {socialNum2ErrorMessage && (
+                    <span
+                      className={`socialNum2error-message ${
+                        socialNum1ErrorMessage ? "bottom-adjusted" : ""
+                      }`}
+                    >
+                      {socialNum2ErrorMessage}
+                    </span>
+                  )}
+                  <label>
+                    주민번호를 입력하세요<span>*(숫자만 가능합니다)</span>
+                  </label>
                 </div>
                 <span style={{ fontWeight: "bold" }}>-&nbsp;</span>
                 <input
@@ -412,14 +478,25 @@ const Register = () => {
             </tr>
             <tr>
               <td>
-                <div className="basic_input">
+                <div
+                  className={`basic_input ${
+                    phoneErrorMessage ? "phoneerror-message" : ""
+                  }`}
+                >
                   <input
                     type="text"
                     onChange={handlePhoneNumChange}
                     value={member.phoneNum}
                     required
                   />
-                  <label>전화번호를 입력하세요</label>
+                  {phoneErrorMessage && (
+                    <span className="phoneerror-message">
+                      {phoneErrorMessage}
+                    </span>
+                  )}
+                  <label>
+                    전화번호를 입력하세요<span>*(숫자만 가능합니다)</span>
+                  </label>
                 </div>
               </td>
             </tr>
@@ -447,11 +524,7 @@ const Register = () => {
                     <option value="@daum.net">daum.net</option>
                   </select>
                 </div>
-                <button
-                  className="email_btn"
-                  onClick={checkEmail}
-                  disabled={isEmailCheckButtonDisabled}
-                >
+                <button className="email_btn" onClick={checkEmail}>
                   이메일 중복확인
                 </button>
                 <button
