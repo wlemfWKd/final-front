@@ -1,46 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import styled from "styled-components";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import "../css/FindPwd.css";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
-
-const FormContainer = styled.div`
-  margin: 10px auto 0 auto;
-  width: 30%; /* 또는 다른 값을 설정하여 원하는 넓이로 조절 */
-  padding: 10px;
-  position: absolute;
-  zindex: 1000;
-  top: 30%;
-  background-color: white;
-  z-index: 9999;
-`;
-
-const StyledTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  text-align: center;
-`;
-
-const StyledInput = styled.input`
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  border: 1px solid #ddd;
-  border-radius: 4px; /* 테두리 둥글게 설정 */
-`;
-const StyledButton = styled.input`
-  width: 100%;
-  padding: 10px;
-  background-color: pink;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 20px;
-  font-weight: bold;
-`;
 
 const FindPwd = () => {
   const [isChecked1, setIsChecked1] = useState(false);
@@ -59,7 +22,18 @@ const FindPwd = () => {
   const navigate = useNavigate();
 
   const [editNewPassword, setEditNewPassword] = useState(false); // editNewPassword 모달 열기/닫기 상태
+
+  // 모달이 열릴 때마다 입력값을 초기화하는 함수
+  const resetModalInputs = () => {
+    setNewPassword({ password: "", username: "" });
+    setCheckNewPassword("");
+    setIsPasswordValid(true);
+    setPasswordErrorMessage("");
+    setPasswordMatchError("");
+  };
+
   const toggleShowEditNewPassword = () => {
+    resetModalInputs(); // 모달이 열릴 때마다 입력값 초기화
     setEditNewPassword(!editNewPassword);
   };
 
@@ -140,13 +114,34 @@ const FindPwd = () => {
   console.log(newPassword);
   const [newCheckPassword, setCheckNewPassword] = useState("");
   const [isPasswordValid, setIsPasswordValid] = useState(true);
+
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [passwordMatchError, setPasswordMatchError] = useState("");
+
   const handleChange = (field, value) => {
     if (field === "password") {
       const passwordRegex =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$/;
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,12}$/;
       setIsPasswordValid(passwordRegex.test(value));
+
+      if (!passwordRegex.test(value)) {
+        setPasswordErrorMessage(
+          "비밀번호는 최소 8자리, 대문자1, 소문자1, 숫자1로 이루어져야 합니다. (!@#$%^&* 만 가능)"
+        );
+      } else {
+        setPasswordErrorMessage("");
+      }
+      setNewPassword({ ...newPassword, password: value });
+    } else if (field === "checkPassword") {
+      setCheckNewPassword(value);
+      if (value !== newPassword.password) {
+        setPasswordMatchError("비밀번호가 일치하지 않습니다.");
+      } else {
+        setPasswordMatchError("");
+      }
+    } else {
+      setNewPassword({ ...newPassword, [field]: value });
     }
-    setNewPassword({ ...newPassword, password: value });
   };
   const handleEditPwdSubmit = async (event) => {
     event.preventDefault();
@@ -172,24 +167,6 @@ const FindPwd = () => {
         return;
       }
     } catch (error) {}
-  };
-
-  const openNewWindow = () => {
-    const newWindow = window.open("", "_blank", "width=600,height=400");
-    newWindow.document.body.innerHTML = `
-      <div>
-        <h2>비밀번호 재설정</h2>
-        <form id="editPasswordForm" onSubmit="window.opener.handleEditPwdSubmit(event)">
-          <label>새 비밀번호</label>
-          <input type="password" name="password" />
-          <br />
-          <label>비밀번호 확인</label>
-          <input type="password" />
-          <br />
-          <button type="submit">재설정</button>
-        </form>
-      </div>
-    `;
   };
 
   return (
@@ -293,17 +270,29 @@ const FindPwd = () => {
                   }
                   value={newPassword.password}
                   placeholder="8자리 이상, 대문자, 숫자. (!@#$%^&* 가능)"
+                  maxLength={12}
                 />
-
+                {passwordErrorMessage && (
+                  <span className="error-message">{passwordErrorMessage}</span>
+                )}
+                <br />
                 <br />
                 <label>비밀번호 확인</label>
                 <input
                   type="password"
-                  onChange={(event) => setCheckNewPassword(event.target.value)}
+                  onChange={(event) =>
+                    handleChange("checkPassword", event.target.value)
+                  }
                   value={newCheckPassword}
                   placeholder="비밀번호를 재입력해주세요"
+                  maxLength={12}
                 />
-
+                {passwordMatchError && (
+                  <span className="checkerror-message">
+                    {passwordMatchError}
+                  </span>
+                )}
+                <br />
                 <br />
                 <button type="submit">재설정</button>
               </form>

@@ -224,6 +224,33 @@
   margin-left: 5px; /* 왼쪽 여백 추가 */
 }
 
+
+.register_container .error-message,
+.register_container .checkerror-message,
+.register_container .nameerror-message,
+.register_container .phoneerror-message,
+.register_container .socialNum1error-message{
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  padding-left: 10px;
+  font-size: 12px;
+  color: red;
+  }
+
+  .register_container .socialNum2error-message {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    padding-left: 10px;
+    font-size: 12px;
+    color: red;
+  }
+  
+  .register_container .bottom-adjusted {
+    bottom: -15px; /* socialNum1error-message가 있을 때만 조건적으로 위치 조정 */
+  }
+
 .checkbox_label {
   display: inline-block;
   margin-right: 10px; /* 체크박스 간격 조정 */
@@ -233,24 +260,4 @@
   display: flex;
   align-items: center;
 }
-.error-message, .checkerror-message, .nameerror-message, .phoneerror-message, .socialNum1error-message{
-  position: absolute;
-  left: 0px;
-  bottom: 0px;
-  padding-left: 10px;
-  font-size: 12px;
-  color: red;
-  }
 
-  .socialNum2error-message {
-    position: absolute;
-    left: 0px;
-    bottom: 0px;
-    padding-left: 10px;
-    font-size: 12px;
-    color: red;
-  }
-  
-  .bottom-adjusted {
-    bottom: -15px; /* socialNum1error-message가 있을 때만 조건적으로 위치 조정 */
-  }
