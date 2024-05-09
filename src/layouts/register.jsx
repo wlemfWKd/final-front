@@ -310,7 +310,7 @@ const Register = () => {
     event.preventDefault();
     // 아이디 유효성 검사
     if (!isUsernameValid) {
-      alert("아이디는 영문과 숫자로 이루어진 6~12글자여야 합니다.");
+      alert("아이디는 영문과 숫자로 이루어진 6-12글자여야 합니다.");
       return;
     }
     try {
