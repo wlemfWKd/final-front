@@ -26,6 +26,9 @@ const MyPage = () => {
   const [isPasswordDisabled, setIsPasswordDisabled] = useState(false);
   const [userId, setUserId] = useState("");
 
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [passwordMatchError, setPasswordMatchError] = useState("");
+
   useEffect(() => {
     const fetchMemberInfo = async () => {
       try {
@@ -103,9 +106,25 @@ const MyPage = () => {
   const handleChange = (field, value) => {
     if (field === "password") {
       const passwordRegex =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$/;
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,12}$/;
       setIsPasswordValid(passwordRegex.test(value));
+
+      if (!passwordRegex.test(value)) {
+        setPasswordErrorMessage(
+          "비밀번호는 8~12자리, 대문자1, 소문자1, 숫자1로 이루어져야 합니다. (!@#$%^&* 만 가능)"
+        );
+      } else {
+        setPasswordErrorMessage("");
+      }
+    } else if (field === "userPasswordCheck") {
+      setUserPasswordCheck(value);
+      if (member.password !== value) {
+        setPasswordMatchError("비밀번호가 일치하지 않습니다.");
+      } else {
+        setPasswordMatchError("");
+      }
     }
+
     if (field === "memberName") {
       if (!value.trim()) {
         // 이름이 공백인 경우
@@ -136,20 +155,24 @@ const MyPage = () => {
     event.preventDefault();
     // 이름 유효성 검사
 
-    if (member.password !== "" || userPasswordCheck !== "") {
-      if (!isPasswordDisabled) {
-        if (!isPasswordValid) {
-          alert(
-            "비밀번호는 최소 8자리, 대문자1, 소문자1, 숫자1로 이루어져야 합니다. (!@#$%^&* 만 가능)"
-          );
-          return;
-        }
-        // 비밀번호 일치 여부 확인
-        if (member.password !== userPasswordCheck) {
-          alert("비밀번호가 일치하지 않습니다.");
-          return;
-        }
-      }
+    // if (member.password !== "" || userPasswordCheck !== "") {
+    //   if (!isPasswordDisabled) {
+    //     if (!isPasswordValid) {
+    //       alert(
+    //         "비밀번호는 최소 8자리, 대문자1, 소문자1, 숫자1로 이루어져야 합니다. (!@#$%^&* 만 가능)"
+    //       );
+    //       return;
+    //     }
+    //     // 비밀번호 일치 여부 확인
+    //     if (member.password !== userPasswordCheck) {
+    //       alert("비밀번호가 일치하지 않습니다.");
+    //       return;
+    //     }
+    //   }
+    // }
+    if (member.password !== userPasswordCheck) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
     }
     if (memberInfo.memberName !== member.memberName) {
       console.log(memberInfo.memberName);
@@ -199,19 +222,6 @@ const MyPage = () => {
     console.log("폼 제출됨:", member);
   };
 
-  const resetEdit = () => {
-    setMember({
-      memberName: memberInfo.memberName,
-      email: memberInfo.email,
-      phoneNum: memberInfo.phoneNum,
-      password: memberInfo.password,
-      username: memberInfo.username,
-    });
-    setUserPasswordCheck("");
-    setIsEmailCheckButtonDisabled(true);
-    setIsEmailCheckButton2Disabled(true);
-  };
-
   return (
     <>
       <Header />
@@ -235,30 +245,48 @@ const MyPage = () => {
               </tr>
               <tr>
                 <td>
-                  <div className="basic_input">
+                  <div
+                    className={`basic_input ${
+                      passwordErrorMessage ? "error-message" : ""
+                    }`}
+                  >
                     <input
                       type="password"
                       onChange={(event) =>
                         handleChange("password", event.target.value)
                       }
                       value={member.password}
-                      required
+                      //required
                     />
+                    {passwordErrorMessage && (
+                      <span className="error-message">
+                        {passwordErrorMessage}
+                      </span>
+                    )}
                     <label>비밀번호</label>
                   </div>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <div className="basic_input">
+                  <div
+                    className={`basic_input ${
+                      passwordMatchError ? "checkerror-message" : ""
+                    }`}
+                  >
                     <input
                       type="password"
                       onChange={(event) =>
-                        setUserPasswordCheck(event.target.value)
+                        handleChange("userPasswordCheck", event.target.value)
                       }
                       value={userPasswordCheck}
-                      required
+                      //required
                     />
+                    {passwordMatchError && (
+                      <span className="checkerror-message">
+                        {passwordMatchError}
+                      </span>
+                    )}
                     <label>비밀번호 확인</label>
                   </div>
                 </td>

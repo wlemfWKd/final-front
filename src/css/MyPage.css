@@ -14,7 +14,6 @@
   .mypagee_container table{
     width: 100%;
     border-collapse: collapse;
-    text-align: center;
   }
   
   .mypagee_container table td{
@@ -102,11 +101,18 @@
   
   .mypagee_container .basic_input input:focus + label,
   .mypagee_container .basic_input input:valid + label,
+  .mypagee_container .basic_input.error-message label,
+  .mypagee_container .basic_input.checkerror-message label,
   .mypagee_container .email_input input:focus + label,
   .mypagee_container .email_input input:valid + label  {
     top: -2px;
     font-size: 13px;
     color: #166caa;
+  }
+
+  .mypagee_container .error-message, .mypagee_container .checkerror-message{
+    font-size: 12px;
+    color: red;
   }
   
   .checkbox_label {
