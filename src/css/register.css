@@ -121,6 +121,9 @@
   height: 100%;
   background-color: #64aee0;
   cursor: pointer;
+  border: none;
+  color: #fff;
+  border-radius: 5px;
 }
 
 .register_container .signup{

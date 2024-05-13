@@ -9,8 +9,8 @@ import "../css/Detail.css";
 import "../css/DetailBook.css";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 const Detail = () => {
@@ -39,7 +39,7 @@ const Detail = () => {
     padding: "10px",
     width: "500px",
   };
- 
+
   // 각 도서 목록의 현재 상태와 필터된 상태 설정
   const [yes24Data, setYes24Data] = useState([]);
   const [filteredYes24Data, setFilteredYes24Data] = useState([]);
@@ -74,7 +74,7 @@ const Detail = () => {
   useEffect(() => {
     const fetchinfo = async () => {
       try {
-        const response = await axios.get('/license/info');
+        const response = await axios.get("/license/info");
         const responseData = response.data;
 
         // 받아온 데이터 리스트 반복
@@ -88,13 +88,12 @@ const Detail = () => {
           }
         }
       } catch (error) {
-        console.error('Error fetching info:', error);
+        console.error("Error fetching info:", error);
       }
     };
 
     fetchinfo();
   }, [jmfldnm]);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -115,7 +114,7 @@ const Detail = () => {
         setItem(selectedItem);
 
         // 자격
-        const responseac = await axios.get('/license/access');
+        const responseac = await axios.get("/license/access");
         const responseacData = responseac.data;
 
         // 해당 자격의 데이터를 배열로 저장
@@ -133,8 +132,6 @@ const Detail = () => {
         // 배열 형태로 설정
         setAcData(acDataArray);
         setOriginalACData(acDataArray); // 데이터 로딩 시 originalData도 업데이트
-
-
 
         // 시험일정 정보 가져오기
         const testDatesApiUrl =
@@ -154,7 +151,8 @@ const Detail = () => {
           "/api/service/rest/InquiryTestDatesNationalProfessionalQualificationSVC/getList";
         const testDates2Response = await axios.get(testDates2Url, {
           params: {
-            serviceKey: "0OhBU7ZCGIobDVKDeBJDpmDRqK3IRNF6jlf/JB2diFAf/fR2czYO9A4UTGcsOwppV6W2HVUeho/FPwXoL6DwqA==",
+            serviceKey:
+              "0OhBU7ZCGIobDVKDeBJDpmDRqK3IRNF6jlf/JB2diFAf/fR2czYO9A4UTGcsOwppV6W2HVUeho/FPwXoL6DwqA==",
             seriesCd: selectedItem.seriescd, // 계열코드를 이용해서 가져옴
           },
         });
@@ -170,7 +168,8 @@ const Detail = () => {
           params: {
             baseYY: 2022,
             jmCd: jmcd,
-            ServiceKey: "0OhBU7ZCGIobDVKDeBJDpmDRqK3IRNF6jlf/JB2diFAf/fR2czYO9A4UTGcsOwppV6W2HVUeho/FPwXoL6DwqA==",
+            ServiceKey:
+              "0OhBU7ZCGIobDVKDeBJDpmDRqK3IRNF6jlf/JB2diFAf/fR2czYO9A4UTGcsOwppV6W2HVUeho/FPwXoL6DwqA==",
           },
         });
 
@@ -189,7 +188,8 @@ const Detail = () => {
           "/api/service/rest/InquiryStatSVC/getEventYearSiList";
         const eventYearSiListResponse = await axios.get(eventYearSiListApiUrl, {
           params: {
-            serviceKey: "0OhBU7ZCGIobDVKDeBJDpmDRqK3IRNF6jlf/JB2diFAf/fR2czYO9A4UTGcsOwppV6W2HVUeho/FPwXoL6DwqA==",
+            serviceKey:
+              "0OhBU7ZCGIobDVKDeBJDpmDRqK3IRNF6jlf/JB2diFAf/fR2czYO9A4UTGcsOwppV6W2HVUeho/FPwXoL6DwqA==",
             baseYY: 2022,
             jmCd: jmcd,
           },
@@ -224,13 +224,19 @@ const Detail = () => {
         const data = response.data;
 
         // 도서 정보를 defaultColumn 값으로 분류하여 상태에 추가
-        const yes24Books = data.filter((book) => book.defaultColumn === "YES24");
+        const yes24Books = data.filter(
+          (book) => book.defaultColumn === "YES24"
+        );
         setYes24Data(yes24Books);
 
-        const kyoboBooks = data.filter((book) => book.defaultColumn === "KYOBO");
+        const kyoboBooks = data.filter(
+          (book) => book.defaultColumn === "KYOBO"
+        );
         setKyoboData(kyoboBooks);
 
-        const aladinBooks = data.filter((book) => book.defaultColumn === "ALADIN");
+        const aladinBooks = data.filter(
+          (book) => book.defaultColumn === "ALADIN"
+        );
         setAladinData(aladinBooks);
       } catch (error) {
         console.error("Error fetching book data:", error);
@@ -238,7 +244,7 @@ const Detail = () => {
     };
 
     fetchData();
-  }, [jmfldnm]);;
+  }, [jmfldnm]);
 
   const handleButtonClick = () => {
     // 버튼 클릭 시 Book 페이지로 이동
@@ -249,17 +255,15 @@ const Detail = () => {
   const [isStarYellow, setIsStarYellow] = useState(false); // 상태 변수 추가
   const handleStarClick = async () => {
     try {
-      if(isStarYellow){
+      if (isStarYellow) {
         fetch(`/license/starDelete?jmfldnm=${jmfldnm}&username=${member.id}`);
       } else {
         fetch(`/license/starInsert?jmfldnm=${jmfldnm}&username=${member.id}`);
       }
-      
     } catch (error) {
-      console.error('Error:', error);
-      
+      console.error("Error:", error);
     }
-    
+
     // isStarYellow 상태를 반전시킴으로써 아이콘 색상 변경
     setIsStarYellow(!isStarYellow);
   };
@@ -322,7 +326,7 @@ const Detail = () => {
   useEffect(() => {
     const findMatchingStar = () => {
       if (listStar && listStar.length > 0 && member.id) {
-        listStar.forEach(star => {
+        listStar.forEach((star) => {
           if (star.jmnm === jmfldnm && star.username === member.id) {
             setIsStarYellow(true);
             return;
@@ -330,7 +334,7 @@ const Detail = () => {
         });
       }
     };
-    
+
     findMatchingStar();
   }, [listStar, jmfldnm, member.id]);
 
@@ -338,20 +342,20 @@ const Detail = () => {
     <>
       <div className="detail-centered-container">
         <div className="detail-title">
-        <h2 className="detail-header">
-          {jmfldnm}
-          {member.id && (
-            <span className="star-icon-container">
-              <span
-                className={`star-icon ${isStarYellow ? "yellow" : ""}`}
-                onClick={handleStarClick}
-              >
-                <FontAwesomeIcon icon={faStar} />
+          <h2 className="detail-header">
+            {jmfldnm}
+            {member.id && (
+              <span className="star-icon-container">
+                <span
+                  className={`star-icon ${isStarYellow ? "yellow" : ""}`}
+                  onClick={handleStarClick}
+                >
+                  <FontAwesomeIcon icon={faStar} />
+                </span>
               </span>
-            </span>
-          )}
-        </h2>
-      </div>
+            )}
+          </h2>
+        </div>
 
         <div className="detail-box">
           <p>{infoData && infoData.summary}</p>
@@ -360,7 +364,6 @@ const Detail = () => {
           <div className="detail-intro">
             <p>자격증 상세정보</p>
           </div>
-
 
           <div
             className={`test-dates-container ${isTestDatesOpen ? "open" : ""}`}
@@ -469,11 +472,10 @@ const Detail = () => {
             {isAccessOpen && (
               <>
                 <div className="test-accessn">
-                  {acData && acData.map((item, index) => (
-                    <p key={index}>
-                      {item.emqualdispnm}
-                    </p>
-                  ))}
+                  {acData &&
+                    acData.map((item, index) => (
+                      <p key={index}>{item.emqualdispnm}</p>
+                    ))}
                 </div>
               </>
             )}
@@ -487,9 +489,9 @@ const Detail = () => {
               <>
                 <div className="test-trend">
                   {infoData && infoData.trend ? (
-                    infoData.trend.split('-').map((item, index) => (
-                      <p key={index}>{item}</p>
-                    ))
+                    infoData.trend
+                      .split("-")
+                      .map((item, index) => <p key={index}>{item}</p>)
                   ) : (
                     <p>추후 공지</p>
                   )}
@@ -503,9 +505,9 @@ const Detail = () => {
             {isFutureOpen && (
               <div className="future-content">
                 {infoData && infoData.career ? (
-                  infoData.career.split('-').map((item, index) => (
-                    <p key={index}>{item}</p>
-                  ))
+                  infoData.career
+                    .split("-")
+                    .map((item, index) => <p key={index}>{item}</p>)
                 ) : (
                   <p>추후 공지</p>
                 )}
@@ -528,24 +530,57 @@ const Detail = () => {
             <h3>추천도서</h3>
           </div>
           <div className="bookMore">
-          <button style={{ backgroundColor: "white", color: "black" }} onClick={handleButtonClick}>&nbsp;자격증 더보기 &nbsp;
-          <FontAwesomeIcon id="icon" icon={faAngleRight} />
-          </button>{' '}
+            <button
+              style={{
+                backgroundColor: "white",
+                color: "black",
+                border: "none",
+              }}
+              onClick={handleButtonClick}
+            >
+              &nbsp;자격증 더보기 &nbsp;
+              <FontAwesomeIcon id="icon" icon={faAngleRight} />
+            </button>{" "}
           </div>
           <div id="rank">
             {/* YES24 도서 목록의 첫 번째 도서 출력 */}
             {yes24Data.length > 0 && (
               <div className="card-container">
-                <Card key={1} style={{ width: "18rem", backgroundColor: "#a8cfeb", borderColor: "#7a95a8"}}>
+                <Card
+                  key={1}
+                  style={{
+                    width: "18rem",
+                    backgroundColor: "#a8cfeb",
+                    borderColor: "#7a95a8",
+                  }}
+                >
                   <Card.Title className="card-category">YES24</Card.Title>
-                  <Card.Img variant="top" src={yes24Data[0].imageName} style={{ width: '180px', height: '200px' }} />
+                  <Card.Img
+                    variant="top"
+                    src={yes24Data[0].imageName}
+                    style={{ width: "180px", height: "200px" }}
+                  />
                   <Card.Body>
                     <Card.Title>
                       <span>{yes24Data[0].bookName}</span>
                     </Card.Title>
-                    <Card.Text className="card-text-custom">{yes24Data[0].bookPrice} <span className="small">원</span></Card.Text>
-                    <a href={yes24Data[0].viewDetail} target="_blank" rel="noopener noreferrer">
-                      <button style={{ backgroundColor:"#7a95a8" }}>
+                    <Card.Text className="card-text-custom">
+                      {yes24Data[0].bookPrice} <span className="small">원</span>
+                    </Card.Text>
+                    <a
+                      href={yes24Data[0].viewDetail}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <button
+                        style={{
+                          backgroundColor: "#7a95a8",
+                          border: "none",
+                          color: "#fff",
+                          padding: "10px",
+                          borderRadius: "5px",
+                        }}
+                      >
                         자세히보기
                       </button>
                     </a>
@@ -557,16 +592,41 @@ const Detail = () => {
             {/* Kyobo 도서 목록의 첫 번째 도서 출력 */}
             {kyoboData.length > 0 && (
               <div className="card-container">
-                <Card key={2} style={{ width: "18rem", backgroundColor: "#a8cfeb", borderColor: "#7a95a8" }}>
+                <Card
+                  key={2}
+                  style={{
+                    width: "18rem",
+                    backgroundColor: "#a8cfeb",
+                    borderColor: "#7a95a8",
+                  }}
+                >
                   <Card.Title className="card-category">KYOBO</Card.Title>
-                  <Card.Img variant="top" src={kyoboData[0].imageName} style={{ width: '180px', height: '200px' }} />
+                  <Card.Img
+                    variant="top"
+                    src={kyoboData[0].imageName}
+                    style={{ width: "180px", height: "200px" }}
+                  />
                   <Card.Body>
                     <Card.Title>
                       <span>{kyoboData[0].bookName}</span>
                     </Card.Title>
-                    <Card.Text className="card-text-custom">{kyoboData[0].bookPrice} <span className="small">원</span></Card.Text>
-                    <a href={kyoboData[0].viewDetail} target="_blank" rel="noopener noreferrer">
-                      <button style={{ backgroundColor:"#7a95a8" }}>
+                    <Card.Text className="card-text-custom">
+                      {kyoboData[0].bookPrice} <span className="small">원</span>
+                    </Card.Text>
+                    <a
+                      href={kyoboData[0].viewDetail}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <button
+                        style={{
+                          backgroundColor: "#7a95a8",
+                          border: "none",
+                          color: "#fff",
+                          padding: "10px",
+                          borderRadius: "5px",
+                        }}
+                      >
                         자세히보기
                       </button>
                     </a>
@@ -578,16 +638,42 @@ const Detail = () => {
             {/* Aladin 도서 목록의 첫 번째 도서 출력 */}
             {aladinData.length > 0 && (
               <div className="card-container">
-                <Card key={3} style={{ width: "18rem", backgroundColor: "#a8cfeb", borderColor: "#7a95a8" }}>
+                <Card
+                  key={3}
+                  style={{
+                    width: "18rem",
+                    backgroundColor: "#a8cfeb",
+                    borderColor: "#7a95a8",
+                  }}
+                >
                   <Card.Title className="card-category">ALADIN</Card.Title>
-                  <Card.Img variant="top" src={aladinData[0].imageName} style={{ width: '180px', height: '200px' }} />
+                  <Card.Img
+                    variant="top"
+                    src={aladinData[0].imageName}
+                    style={{ width: "180px", height: "200px" }}
+                  />
                   <Card.Body>
                     <Card.Title>
                       <span>{aladinData[0].bookName}</span>
                     </Card.Title>
-                    <Card.Text className="card-text-custom">{aladinData[0].bookPrice} <span className="small">원</span></Card.Text>
-                    <a href={aladinData[0].viewDetail} target="_blank" rel="noopener noreferrer">
-                      <button style={{ backgroundColor:"#7a95a8" }}>
+                    <Card.Text className="card-text-custom">
+                      {aladinData[0].bookPrice}{" "}
+                      <span className="small">원</span>
+                    </Card.Text>
+                    <a
+                      href={aladinData[0].viewDetail}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <button
+                        style={{
+                          backgroundColor: "#7a95a8",
+                          border: "none",
+                          color: "#fff",
+                          padding: "10px",
+                          borderRadius: "5px",
+                        }}
+                      >
                         자세히보기
                       </button>
                     </a>
@@ -597,133 +683,127 @@ const Detail = () => {
             )}
           </div>
 
-
-
           {/* 이벤트 연도 통계 출력 */}
           <div className="chart">
-
             <div className="chart-container">
               {isWrittenChart
                 ? eventYearPiList &&
-                eventYearPiList.map((event, index) => (
-                  <div key={index} className="chart-box">
-                    {event && event.jmnm && (
-                      <h4>
-                        {event.jmnm} 필기시험 연도별 통계
-                        <br />
-                      </h4>
-                    )}
-                    {event && event.ilrcnt1 !== undefined && (
-                      <>
-                        <br />
-                        <br />
-                        <div className="chart-inner-box">
-                          {event.ilrcnt1 !== undefined && (
-                            <ChartComponent
-                              data={[
-                                {
-                                  name: "2022년",
-                                  "접수자 수": event.ilrcnt1,
-                                  "응시자 수": event.ilecnt1,
-                                  "합격자 수": event.ilpcnt1,
-                                },
-                                {
-                                  name: "2021년",
-                                  "접수자 수": event.ilrcnt2,
-                                  "응시자 수": event.ilecnt2,
-                                  "합격자 수": event.ilpcnt2,
-                                },
-                                {
-                                  name: "2020년",
-                                  "접수자 수": event.ilrcnt3,
-                                  "응시자 수": event.ilecnt3,
-                                  "합격자 수": event.ilpcnt3,
-                                },
-                                {
-                                  name: "2019년",
-                                  "접수자 수": event.ilrcnt4,
-                                  "응시자 수": event.ilecnt4,
-                                  "합격자 수": event.ilpcnt4,
-                                },
-                                {
-                                  name: "2018년",
-                                  "접수자 수": event.ilrcnt5,
-                                  "응시자 수": event.ilecnt5,
-                                  "합격자 수": event.ilpcnt5,
-                                },
-                              ]}
-                            />
-                          )}
-                        </div>
-                      </>
-                    )}
-                  </div>
-                ))
+                  eventYearPiList.map((event, index) => (
+                    <div key={index} className="chart-box">
+                      {event && event.jmnm && (
+                        <h4>
+                          {event.jmnm} 필기시험 연도별 통계
+                          <br />
+                        </h4>
+                      )}
+                      {event && event.ilrcnt1 !== undefined && (
+                        <>
+                          <br />
+                          <br />
+                          <div className="chart-inner-box">
+                            {event.ilrcnt1 !== undefined && (
+                              <ChartComponent
+                                data={[
+                                  {
+                                    name: "2022년",
+                                    "접수자 수": event.ilrcnt1,
+                                    "응시자 수": event.ilecnt1,
+                                    "합격자 수": event.ilpcnt1,
+                                  },
+                                  {
+                                    name: "2021년",
+                                    "접수자 수": event.ilrcnt2,
+                                    "응시자 수": event.ilecnt2,
+                                    "합격자 수": event.ilpcnt2,
+                                  },
+                                  {
+                                    name: "2020년",
+                                    "접수자 수": event.ilrcnt3,
+                                    "응시자 수": event.ilecnt3,
+                                    "합격자 수": event.ilpcnt3,
+                                  },
+                                  {
+                                    name: "2019년",
+                                    "접수자 수": event.ilrcnt4,
+                                    "응시자 수": event.ilecnt4,
+                                    "합격자 수": event.ilpcnt4,
+                                  },
+                                  {
+                                    name: "2018년",
+                                    "접수자 수": event.ilrcnt5,
+                                    "응시자 수": event.ilecnt5,
+                                    "합격자 수": event.ilpcnt5,
+                                  },
+                                ]}
+                              />
+                            )}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  ))
                 : eventYearSiList &&
-                eventYearSiList.map((event, index) => (
-                  <div key={index} className="chart-box">
-                    {event && event.jmnm && (
-                      <h4>
-                        {event.jmnm} 실기시험 연도별 통계
-                        <br />
-                      </h4>
-                    )}
-                    {event && event.ilrcnt1 !== undefined && (
-                      <div>
-                        <br />
-                        <br />
-                        <div className="chart-inner-box">
-                          {event.ilrcnt1 !== undefined && (
-                            <ChartComponent
-                              data={[
-                                {
-                                  name: "2022년",
-                                  "접수자 수": event.ilrcnt1,
-                                  "응시자 수": event.ilecnt1,
-                                  "합격자 수": event.ilpcnt1,
-                                },
-                                {
-                                  name: "2021년",
-                                  "접수자 수": event.ilrcnt2,
-                                  "응시자 수": event.ilecnt2,
-                                  "합격자 수": event.ilpcnt2,
-                                },
-                                {
-                                  name: "2020년",
-                                  "접수자 수": event.ilrcnt3,
-                                  "응시자 수": event.ilecnt3,
-                                  "합격자 수": event.ilpcnt3,
-                                },
-                                {
-                                  name: "2019년",
-                                  "접수자 수": event.ilrcnt4,
-                                  "응시자 수": event.ilecnt4,
-                                  "합격자 수": event.ilpcnt4,
-                                },
-                                {
-                                  name: "2018년",
-                                  "접수자 수": event.ilrcnt5,
-                                  "응시자 수": event.ilecnt5,
-                                  "합격자 수": event.ilpcnt5,
-                                },
-                              ]}
-                            />
-                          )}
+                  eventYearSiList.map((event, index) => (
+                    <div key={index} className="chart-box">
+                      {event && event.jmnm && (
+                        <h4>
+                          {event.jmnm} 실기시험 연도별 통계
+                          <br />
+                        </h4>
+                      )}
+                      {event && event.ilrcnt1 !== undefined && (
+                        <div>
+                          <br />
+                          <br />
+                          <div className="chart-inner-box">
+                            {event.ilrcnt1 !== undefined && (
+                              <ChartComponent
+                                data={[
+                                  {
+                                    name: "2022년",
+                                    "접수자 수": event.ilrcnt1,
+                                    "응시자 수": event.ilecnt1,
+                                    "합격자 수": event.ilpcnt1,
+                                  },
+                                  {
+                                    name: "2021년",
+                                    "접수자 수": event.ilrcnt2,
+                                    "응시자 수": event.ilecnt2,
+                                    "합격자 수": event.ilpcnt2,
+                                  },
+                                  {
+                                    name: "2020년",
+                                    "접수자 수": event.ilrcnt3,
+                                    "응시자 수": event.ilecnt3,
+                                    "합격자 수": event.ilpcnt3,
+                                  },
+                                  {
+                                    name: "2019년",
+                                    "접수자 수": event.ilrcnt4,
+                                    "응시자 수": event.ilecnt4,
+                                    "합격자 수": event.ilpcnt4,
+                                  },
+                                  {
+                                    name: "2018년",
+                                    "접수자 수": event.ilrcnt5,
+                                    "응시자 수": event.ilecnt5,
+                                    "합격자 수": event.ilpcnt5,
+                                  },
+                                ]}
+                              />
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    )}
-                    <br />
-                  </div>
-                ))}
+                      )}
+                      <br />
+                    </div>
+                  ))}
               <div className="chart-toggle-buttons">
                 <button onClick={() => setIsWrittenChart(true)}>필기</button>
                 <button onClick={() => setIsWrittenChart(false)}>실기</button>
               </div>
             </div>
           </div>
-          
-
-
         </div>
       </div>
     </>
