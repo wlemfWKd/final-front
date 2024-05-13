@@ -1,8 +1,8 @@
-
 .register_container {
   margin: 50px auto;
   max-width: 700px;
   padding: 20px;
+  position: relative;
   }
 
 .register_container input{
@@ -13,7 +13,6 @@
 .register_container table{
   width: 100%;
   border-collapse: collapse;
-  text-align: center;
 }
 
 .register_container table td{
@@ -150,9 +149,6 @@
   position: relative;
   margin-top: 20px;
 }
-.register_container .check_input{
-  position: relative;
-}
 
 .register_container .basic_input:first-child,
 .register_container .rrn1_input:first-child,
@@ -161,7 +157,6 @@
 }
 
 .register_container  .basic_input input,
-.register_container  .check_input input,
 .register_container  .rrn1_input input,
 .register_container  .email_input input {
   width: 100%;
@@ -174,7 +169,6 @@
 }
 
 .register_container .basic_input label,
-.register_container .check_input label,
 .register_container .rrn1_input label,
 .register_container .email_input label {
   position: absolute;
@@ -194,9 +188,7 @@
 .register_container .basic_input.error-message label,
 .register_container .basic_input.nameerror-message label,
 .register_container .basic_input.phoneerror-message label,
-.register_container .check_input input:focus + label,
-.register_container .check_input input:valid + label,
-.register_container .check_input.checkerror-message label,
+.register_container .basic_input.checkerror-message label,
 .register_container .rrn1_input input:focus + label,
 .register_container .rrn1_input input:valid + label,
 .register_container .rrn1_input.socialNum1error-message label,
@@ -229,27 +221,21 @@
 .register_container .checkerror-message,
 .register_container .nameerror-message,
 .register_container .phoneerror-message,
-.register_container .socialNum1error-message{
-  position: absolute;
+.register_container .socialNum1error-message,
+.register_container .socialNum2error-message {
+  /* position: absolute;
   left: 0px;
-  bottom: 0px;
-  padding-left: 10px;
+  bottom: 0px; */
+  /* padding-left: 10px; */
   font-size: 12px;
   color: red;
   }
-
-  .register_container .socialNum2error-message {
-    position: absolute;
-    left: 0px;
-    bottom: 0px;
-    padding-left: 10px;
-    font-size: 12px;
-    color: red;
-  }
   
-  .register_container .bottom-adjusted {
-    bottom: -15px; /* socialNum1error-message가 있을 때만 조건적으로 위치 조정 */
-  }
+.register_container .bottom-adjusted {
+  position: absolute;
+  bottom: -5px; /* socialNum1error-message가 있을 때만 조건적으로 위치 조정 */
+  left: 8px;
+}
 
 .checkbox_label {
   display: inline-block;

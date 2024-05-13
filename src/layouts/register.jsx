@@ -391,7 +391,7 @@ const Register = () => {
             <tr>
               <td>
                 <div
-                  className={`check_input ${
+                  className={`basic_input ${
                     passwordMatchError ? "checkerror-message" : ""
                   }`}
                 >
