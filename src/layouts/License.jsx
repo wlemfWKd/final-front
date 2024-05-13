@@ -1,5 +1,3 @@
-// 페이징 처리해서 하는 법
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -65,7 +63,10 @@ const License = () => {
     ) {
       const filteredItems = data.response.body.items.item.filter(
         (item) =>
-          item.jmfldnm.includes(appliedSearchTerm) &&
+          (appliedSearchTerm.trim() === "" ||
+            appliedSearchTerm
+              .split("")
+              .every((char) => item.jmfldnm.includes(char))) &&
           (!categories.largeCategory ||
             item.obligfldnm === categories.largeCategory) &&
           (!categories.mediumCategory ||
@@ -240,7 +241,7 @@ const License = () => {
               ) : (
                 <p>검색 결과가 없습니다.</p>
               )}
-              <div class="page-container">
+              <div className="page-container">
                 {currentPage > pagingBlock && (
                   <button onClick={handlePrev}>이전</button>
                 )}
