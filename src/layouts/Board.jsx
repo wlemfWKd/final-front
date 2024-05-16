@@ -61,7 +61,11 @@ const Board = () => {
     const fetchBoardList = async () => {
       try {
         const response = await axios.get("/board/boardList");
-        setBoardList(response.data);
+        // 게시글을 내림차순으로 정렬하여 가져오기
+        const sortedBoardList = response.data.sort(
+          (a, b) => new Date(b.boardDate) - new Date(a.boardDate)
+        );
+        setBoardList(sortedBoardList);
       } catch (error) {
         console.error("Error fetching board list:", error);
       }

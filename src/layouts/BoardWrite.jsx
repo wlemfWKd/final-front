@@ -31,7 +31,7 @@ const BoardWrite = () => {
 
       // 회원 정보도 FormData에 추가
       formData.append("memberId", member.id);
-      formData.append("comment", member.memberName);
+      formData.append("writer", member.memberName);
 
       // BoardWrite API로 데이터 전송
       const response = await axios.post("/board/boardWrite", formData, {

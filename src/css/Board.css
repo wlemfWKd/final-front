@@ -94,7 +94,7 @@ text-decoration: underline;
   color: #757df6;
   text-decoration: none;
   font-weight: bold;
-  margin-left: 700px; /* 버튼과의 간격 조절 */
+  /* margin-left: 700px; 버튼과의 간격 조절 */
 }
 
 .Board-bottom .custom-detail-link:hover {

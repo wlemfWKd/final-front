@@ -9,6 +9,11 @@ import { useParams } from "react-router-dom";
 const BoardView = () => {
   const { boardSeq } = useParams();
   const [board, setBoard] = useState(null);
+  const [boardWriter, setBoardWriter] = useState(""); // 작성자 정보 상태 추가
+
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+
   console.log(boardSeq);
 
   const [member, setMember] = useState({
@@ -55,6 +60,8 @@ const BoardView = () => {
       try {
         const response = await axios.get(`/board/boardView/${boardSeq}`);
         setBoard(response.data);
+        // 게시글 작성자 정보 설정
+        setBoardWriter(response.data.boardUsername);
       } catch (error) {
         console.error("Error fetching board details", error);
       }
@@ -63,13 +70,59 @@ const BoardView = () => {
     fetchBoardDetails();
   }, [boardSeq]);
 
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await axios.get(`/board/getComments/${boardSeq}`);
+        setComments(response.data);
+      } catch (error) {
+        console.error("Error fetching comments", error);
+      }
+    };
+
+    fetchComments();
+  }, [boardSeq]);
+
+  const handleCommentSubmit = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const formData = new FormData();
+      formData.append("boardSeq", boardSeq);
+      formData.append("replyContent", newComment);
+      formData.append("replyWriter", member.id);
+
+      await axios.post(`/board/replyForm`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // 새로 작성한 댓글 객체 생성
+      const newCommentObj = {
+        replyContent: newComment,
+        replyWriter: member.id,
+      };
+
+      // 기존 댓글 목록에 새로운 댓글을 추가하여 새로운 배열을 생성
+      const updatedComments = [newCommentObj, ...comments];
+
+      // 새로운 댓글 목록으로 상태 업데이트
+      setComments(updatedComments);
+
+      // 새로 작성한 댓글 입력창 비우기
+      setNewComment("");
+    } catch (error) {
+      console.error("Error adding comment", error);
+    }
+  };
+
   if (!board) {
     return <div>Loading...</div>;
   }
   const handleDelete = async () => {
     try {
       await axios.get(`/board/board_delete/${boardSeq}`);
-      // 게시글 삭제 후 이전 페이지로 이동하거나 다른 작업을 수행할 수 있습니다.
       window.location.href = "/community";
     } catch (error) {
       console.error("Error deleting board", error);
@@ -96,12 +149,12 @@ const BoardView = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="comment">작성자</label>
+            <label htmlFor="writer">작성자</label>
             <input
               type="text"
-              id="comment"
-              name="comment"
-              value={board.boardComment}
+              id="writer"
+              name="writer"
+              value={board.boardWriter}
               readOnly
               className="styled-input"
             />
@@ -135,7 +188,7 @@ const BoardView = () => {
             </button>
           </Link>
 
-          {(isSameUser || member.id === "admin123") && (
+          {(isSameUser || member.username === "admin123") && (
             <Link to={`/BoardModify/${board.boardSeq}`}>
               <button type="button" className="button-modify">
                 수정
@@ -143,7 +196,7 @@ const BoardView = () => {
             </Link>
           )}
 
-          {(isSameUser || member.id === "admin123") && (
+          {(isSameUser || member.username === "admin123") && (
             <button
               type="button"
               className="button-delete"
@@ -152,6 +205,24 @@ const BoardView = () => {
               삭제
             </button>
           )}
+        </div>
+        <div className="comment-form">
+          <textarea
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            placeholder="댓글을 작성해주세요..."
+          ></textarea>
+          <button onClick={handleCommentSubmit}>댓글 작성</button>
+        </div>
+
+        <div className="comments-section">
+          <h3>댓글</h3>
+          {comments.map((comment, index) => (
+            <div key={index} className="comment">
+              <p>작성자: {comment.replyWriter}</p>
+              <p>{comment.replyContent}</p>
+            </div>
+          ))}
         </div>
       </div>
       <Footer />
