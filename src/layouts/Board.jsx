@@ -159,13 +159,20 @@ const Board = () => {
         <div className="Board-bottom">
           <div id="re_contents">
             <input type="hidden" value={0} />
-            <div className="button-container">
-              {member.id && (
+            {selectedButton === "notice" && member.id === "admin123" && (
+              <div className="button-container">
                 <Link to="/BoardWrite">
                   <button>글쓰기</button>
                 </Link>
-              )}
-            </div>
+              </div>
+            )}
+            {selectedButton === "freeboard" && (
+              <div className="button-container">
+                <Link to="/BoardWrite">
+                  <button>글쓰기</button>
+                </Link>
+              </div>
+            )}
             <ul className="your-component">
               {currentData.map((board) => (
                 <React.Fragment key={board.boardSeq}>

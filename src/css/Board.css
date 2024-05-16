@@ -108,7 +108,12 @@ text-decoration: underline;
 }
 
 .Board-bottom .button-container button{
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
   background-color: #64aee0;
+  color: #fff;
 }
 
 .pagination-container {

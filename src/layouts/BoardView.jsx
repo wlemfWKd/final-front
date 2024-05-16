@@ -206,23 +206,32 @@ const BoardView = () => {
             </button>
           )}
         </div>
-        <div className="comment-form">
-          <textarea
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            placeholder="댓글을 작성해주세요..."
-          ></textarea>
-          <button onClick={handleCommentSubmit}>댓글 작성</button>
-        </div>
 
-        <div className="comments-section">
-          <h3>댓글</h3>
-          {comments.map((comment, index) => (
-            <div key={index} className="comment">
-              <p>작성자: {comment.replyWriter}</p>
-              <p>{comment.replyContent}</p>
+        <div className="comment-container">
+          {member.id && (
+            <div className="comment-form">
+              <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="댓글을 작성해주세요..."
+              ></textarea>
+              <button onClick={handleCommentSubmit}>댓글 작성</button>
             </div>
-          ))}
+          )}
+
+          <h3>댓글목록</h3>
+          <div className="comments-section">
+            {member.id ? (
+              comments.map((comment, index) => (
+                <div key={index} className="comment">
+                  <p>작성자: {comment.replyWriter}</p>
+                  <p>{comment.replyContent}</p>
+                </div>
+              ))
+            ) : (
+              <p>회원만 읽기가 가능합니다.</p>
+            )}
+          </div>
         </div>
       </div>
       <Footer />

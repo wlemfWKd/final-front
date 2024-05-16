@@ -75,4 +75,35 @@
   .board-view-container .button-group .button-delete:hover {
     opacity: 0.8;
   }
+  .board-view-container .comment-container {
+    margin: 50px;
+  }
   
+  .board-view-container .comment-container .comment-form{
+    margin-bottom: 50px;
+  }
+  
+  .board-view-container .comment-container .comment-form button{
+    float: right;
+    margin-bottom: 5px;
+    border: 1px solid #000;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 5px;
+  }
+  .board-view-container .comment-container .comment-form button:hover{
+    background-color: #64aee0;
+    border: none;
+    color: #fff;
+  }
+  .board-view-container .comment-container .comment-form textarea{
+    width: 100%;
+    resize: none;
+  }
+
+  .board-view-container .comment-container .comments-section .comment p:last-child{
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    padding: 10px;
+
+  }
