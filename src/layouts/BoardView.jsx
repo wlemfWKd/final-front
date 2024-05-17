@@ -136,13 +136,9 @@ const BoardView = () => {
 
   const handleCommentDelete = async (replySeq) => {
     try {
-      // 댓글 삭제 요청
       await axios.get(`/board/replyDelete`, { params: { replySeq } });
-
-      // 삭제 후 새로운 댓글 목록을 불러옴
-      const response = await axios.get(`/board/getComments/${boardSeq}`);
-      setComments(response.data);
-
+      // 삭제 후 댓글 목록 갱신
+      setComments(comments.filter((comment) => comment.replySeq !== replySeq));
       // 삭제 완료 메시지 표시
       alert("댓글이 성공적으로 삭제되었습니다.");
     } catch (error) {
