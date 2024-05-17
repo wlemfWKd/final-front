@@ -92,26 +92,30 @@ const BoardView = () => {
       formData.append("replyContent", newComment);
       formData.append("replyWriter", member.id);
 
+      // 댓글 작성 요청
       await axios.post(`/board/replyForm`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      // 새로 작성한 댓글 객체 생성
-      const newCommentObj = {
-        replyContent: newComment,
-        replyWriter: member.id,
-      };
+      // 댓글 작성 후 페이지 새로고침
+      window.location.reload();
 
-      // 기존 댓글 목록에 새로운 댓글을 추가하여 새로운 배열을 생성
-      const updatedComments = [newCommentObj, ...comments];
+      // // 새로 작성한 댓글 객체 생성
+      // const newCommentObj = {
+      //   replyContent: newComment,
+      //   replyWriter: member.id,
+      // };
 
-      // 새로운 댓글 목록으로 상태 업데이트
-      setComments(updatedComments);
+      // // 새로운 댓글을 목록에 추가하여 새로운 배열을 생성
+      // const updatedComments = [newCommentObj, ...comments];
 
-      // 새로 작성한 댓글 입력창 비우기
-      setNewComment("");
+      // // 새로운 댓글 목록으로 상태 업데이트
+      // setComments(updatedComments);
+
+      // // 새로 작성한 댓글 입력창 비우기
+      // setNewComment("");
     } catch (error) {
       console.error("Error adding comment", error);
     }
@@ -120,12 +124,29 @@ const BoardView = () => {
   if (!board) {
     return <div>Loading...</div>;
   }
+
   const handleDelete = async () => {
     try {
       await axios.get(`/board/board_delete/${boardSeq}`);
       window.location.href = "/community";
     } catch (error) {
       console.error("Error deleting board", error);
+    }
+  };
+
+  const handleCommentDelete = async (replySeq) => {
+    try {
+      // 댓글 삭제 요청
+      await axios.get(`/board/replyDelete`, { params: { replySeq } });
+
+      // 삭제 후 새로운 댓글 목록을 불러옴
+      const response = await axios.get(`/board/getComments/${boardSeq}`);
+      setComments(response.data);
+
+      // 삭제 완료 메시지 표시
+      alert("댓글이 성공적으로 삭제되었습니다.");
+    } catch (error) {
+      console.error("Error deleting comment", error);
     }
   };
 
@@ -224,7 +245,17 @@ const BoardView = () => {
             {member.id ? (
               comments.map((comment, index) => (
                 <div key={index} className="comment">
-                  <p>작성자: {comment.replyWriter}</p>
+                  <div className="comment-up">
+                    <p>작성자: {comment.replyWriter}</p>
+                    <div className="comment-button">
+                      <button>수정</button>
+                      <button
+                        onClick={() => handleCommentDelete(comment.replySeq)}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  </div>
                   <p>{comment.replyContent}</p>
                 </div>
               ))

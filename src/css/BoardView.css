@@ -101,9 +101,24 @@
     resize: none;
   }
 
+  .board-view-container .comment-container .comments-section .comment .comment-up {
+    display: flex;
+  }
+
+  .board-view-container .comment-container .comments-section .comment .comment-up .comment-button{
+    margin-left: auto;
+  }
+
+  .board-view-container .comment-container .comments-section .comment .comment-up .comment-button button{
+    border: none;
+    background-color: #fff;
+    font-size: 12px;
+    text-decoration: underline;
+    padding: 3px;
+  }
+
   .board-view-container .comment-container .comments-section .comment p:last-child{
     background-color: #f2f2f2;
     border-radius: 10px;
     padding: 10px;
-
   }

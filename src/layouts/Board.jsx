@@ -166,7 +166,7 @@ const Board = () => {
                 </Link>
               </div>
             )}
-            {selectedButton === "freeboard" && (
+            {selectedButton === "freeboard" && member.id && (
               <div className="button-container">
                 <Link to="/BoardWrite">
                   <button>글쓰기</button>
