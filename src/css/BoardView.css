@@ -96,20 +96,26 @@
     border: none;
     color: #fff;
   }
-  .board-view-container .comment-container .comment-form textarea{
-    width: 100%;
-    resize: none;
-  }
 
-  .board-view-container .comment-container .comments-section .comment .comment-up {
+  .board-view-container .comment-container .comments-section .comment {
+    margin-bottom: 20px;
+  }
+  
+  .board-view-container .comment-container .comments-section .comment .comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .board-view-container .comment-container .comments-section .comment .comment-header p {
+    margin: 0;
+  }
+  
+  .board-view-container .comment-container .comments-section .comment .comment-header .comment-button {
     display: flex;
   }
 
-  .board-view-container .comment-container .comments-section .comment .comment-up .comment-button{
-    margin-left: auto;
-  }
-
-  .board-view-container .comment-container .comments-section .comment .comment-up .comment-button button{
+  .board-view-container .comment-container .comments-section .comment .comment-header .comment-button button{
     border: none;
     background-color: #fff;
     font-size: 12px;
@@ -117,8 +123,27 @@
     padding: 3px;
   }
 
-  .board-view-container .comment-container .comments-section .comment p:last-child{
+  .board-view-container .comment-container .comments-section .comment .comment-header .comment-button button:hover{
+    color: red;
+  }
+  
+  .board-view-container .comment-container .comment-form textarea,
+  .board-view-container .comment-container .comments-section .comment textarea {
+    width: 100%;
+    resize: none;
+  }
+
+  .board-view-container .comment-container .comments-section .comment textarea{
+    margin-top: 10px;
     background-color: #f2f2f2;
     border-radius: 10px;
     padding: 10px;
+  }
+  
+  .board-view-container .comment-container .comments-section .comment p:last-child {
+    width: 100%;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px 0 0 0;
   }

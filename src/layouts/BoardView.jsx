@@ -14,6 +14,13 @@ const BoardView = () => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
 
+  //#####################################################################
+  //#####################################################################
+  const [editedComment, setEditedComment] = useState(null); // 수정된 댓글 내용 상태 추가
+  const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태 추가
+  //#####################################################################
+  //#####################################################################
+
   console.log(boardSeq);
 
   const [member, setMember] = useState({
@@ -146,6 +153,59 @@ const BoardView = () => {
     }
   };
 
+  //#####################################################################
+  //#####################################################################
+
+  const handleEdit = (replySeq) => {
+    const selectedComment = comments.find(
+      (comment) => comment.replySeq === replySeq
+    );
+    setEditedComment(selectedComment); // 선택한 댓글 객체를 상태로 설정
+    setIsEditing(true);
+  };
+
+  const handleSubmitEdit = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const formData = new FormData();
+      formData.append("replySeq", editedComment.replySeq);
+      formData.append("replyContent", editedComment.replyContent);
+
+      await axios.post(`/board/replyModifyForm`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // 수정 완료 후 수정 모드 종료
+      setIsEditing(false);
+      // 수정된 내용을 화면에 반영하기 위해 댓글 목록 다시 불러오기
+      const updatedComments = comments.map((comment) =>
+        comment.replySeq === editedComment.replySeq ? editedComment : comment
+      );
+      setComments(updatedComments);
+    } catch (error) {
+      console.error("Error updating comment", error);
+    }
+  };
+
+  // 댓글 수정 내용 변경
+  const handleChange = (e) => {
+    setEditedComment({
+      ...editedComment,
+      replyContent: e.target.value,
+    });
+  };
+  // 수정 취소 시
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditedComment(""); // 수정 취소 시 상태 초기화
+  };
+
+  //#####################################################################
+  //#####################################################################
+
   const isSameUser = member.id === board.boardUsername;
 
   return (
@@ -238,25 +298,52 @@ const BoardView = () => {
 
           <h3>댓글목록</h3>
           <div className="comments-section">
-            {member.id ? (
-              comments.map((comment, index) => (
-                <div key={index} className="comment">
-                  <div className="comment-up">
-                    <p>작성자: {comment.replyWriter}</p>
-                    <div className="comment-button">
-                      <button>수정</button>
-                      <button
-                        onClick={() => handleCommentDelete(comment.replySeq)}
-                      >
-                        삭제
-                      </button>
+            {!member.id && <p>회원만 읽기가 가능합니다.</p>}
+            {member.id && (
+              <>
+                {comments.map((comment, index) => (
+                  <div key={index} className="comment">
+                    <div className="comment-header">
+                      <p>작성자: {comment.replyWriter}</p>
+                      <div className="comment-button">
+                        {isEditing &&
+                        comment.replySeq === editedComment.replySeq ? (
+                          <>
+                            <button onClick={() => handleSubmitEdit(comment)}>
+                              저장
+                            </button>
+                            <button onClick={handleCancel}>취소</button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => handleEdit(comment.replySeq)}
+                            >
+                              수정
+                            </button>
+                            <button
+                              onClick={() =>
+                                handleCommentDelete(comment.replySeq)
+                              }
+                            >
+                              삭제
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </div>
+                    {isEditing &&
+                    comment.replySeq === editedComment.replySeq ? (
+                      <textarea
+                        value={editedComment.replyContent}
+                        onChange={handleChange}
+                      ></textarea>
+                    ) : (
+                      <p>{comment.replyContent}</p>
+                    )}
                   </div>
-                  <p>{comment.replyContent}</p>
-                </div>
-              ))
-            ) : (
-              <p>회원만 읽기가 가능합니다.</p>
+                ))}
+              </>
             )}
           </div>
         </div>
