@@ -3,25 +3,22 @@ import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import "../css/BoardView.css";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const BoardView = () => {
   const { boardSeq } = useParams();
   const [board, setBoard] = useState(null);
-  const [boardWriter, setBoardWriter] = useState(""); // 작성자 정보 상태 추가
+  const [boardWriter, setBoardWriter] = useState("");
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
 
-  //#####################################################################
-  //#####################################################################
-  const [editedComment, setEditedComment] = useState(null); // 수정된 댓글 내용 상태 추가
-  const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태 추가
-  //#####################################################################
-  //#####################################################################
+  const [editedComment, setEditedComment] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
-  console.log(boardSeq);
+  const [currentPage, setCurrentPage] = useState(1);
+  const commentsPerPage = 5;
+  const pagingBlock = 5;
 
   const [member, setMember] = useState({
     memberNum: "",
@@ -67,13 +64,11 @@ const BoardView = () => {
       try {
         const response = await axios.get(`/board/boardView/${boardSeq}`);
         setBoard(response.data);
-        // 게시글 작성자 정보 설정
         setBoardWriter(response.data.boardUsername);
       } catch (error) {
         console.error("Error fetching board details", error);
       }
     };
-
     fetchBoardDetails();
   }, [boardSeq]);
 
@@ -86,7 +81,6 @@ const BoardView = () => {
         console.error("Error fetching comments", error);
       }
     };
-
     fetchComments();
   }, [boardSeq]);
 
@@ -99,30 +93,13 @@ const BoardView = () => {
       formData.append("replyContent", newComment);
       formData.append("replyWriter", member.id);
 
-      // 댓글 작성 요청
       await axios.post(`/board/replyForm`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      // 댓글 작성 후 페이지 새로고침
       window.location.reload();
-
-      // // 새로 작성한 댓글 객체 생성
-      // const newCommentObj = {
-      //   replyContent: newComment,
-      //   replyWriter: member.id,
-      // };
-
-      // // 새로운 댓글을 목록에 추가하여 새로운 배열을 생성
-      // const updatedComments = [newCommentObj, ...comments];
-
-      // // 새로운 댓글 목록으로 상태 업데이트
-      // setComments(updatedComments);
-
-      // // 새로 작성한 댓글 입력창 비우기
-      // setNewComment("");
     } catch (error) {
       console.error("Error adding comment", error);
     }
@@ -136,7 +113,7 @@ const BoardView = () => {
     try {
       await axios.get(`/board/board_delete/${boardSeq}`);
       if (member.memberName === "관리자") {
-        window.location.href = "/board"; // 페이지 이동
+        window.location.href = "/board";
       } else {
         window.location.href = "/board/freeboard";
       }
@@ -148,23 +125,30 @@ const BoardView = () => {
   const handleCommentDelete = async (replySeq) => {
     try {
       await axios.get(`/board/replyDelete`, { params: { replySeq } });
-      // 삭제 후 댓글 목록 갱신
-      setComments(comments.filter((comment) => comment.replySeq !== replySeq));
-      // 삭제 완료 메시지 표시
+      const updatedComments = comments.filter(
+        (comment) => comment.replySeq !== replySeq
+      );
+      setComments(updatedComments);
+
+      // 현재 페이지가 마지막 페이지이고 삭제된 댓글이 마지막 페이지에 있는 경우 이전 페이지로 이동
+      if (
+        currentPage > 1 &&
+        (currentPage - 1) * commentsPerPage >= updatedComments.length
+      ) {
+        setCurrentPage(currentPage - 1);
+      }
+
       alert("댓글이 성공적으로 삭제되었습니다.");
     } catch (error) {
       console.error("Error deleting comment", error);
     }
   };
 
-  //#####################################################################
-  //#####################################################################
-
   const handleEdit = (replySeq) => {
     const selectedComment = comments.find(
       (comment) => comment.replySeq === replySeq
     );
-    setEditedComment(selectedComment); // 선택한 댓글 객체를 상태로 설정
+    setEditedComment(selectedComment);
     setIsEditing(true);
   };
 
@@ -182,9 +166,7 @@ const BoardView = () => {
         },
       });
 
-      // 수정 완료 후 수정 모드 종료
       setIsEditing(false);
-      // 수정된 내용을 화면에 반영하기 위해 댓글 목록 다시 불러오기
       const updatedComments = comments.map((comment) =>
         comment.replySeq === editedComment.replySeq ? editedComment : comment
       );
@@ -194,23 +176,48 @@ const BoardView = () => {
     }
   };
 
-  // 댓글 수정 내용 변경
   const handleChange = (e) => {
     setEditedComment({
       ...editedComment,
       replyContent: e.target.value,
     });
   };
-  // 수정 취소 시
+
   const handleCancel = () => {
     setIsEditing(false);
-    setEditedComment(""); // 수정 취소 시 상태 초기화
+    setEditedComment("");
   };
 
-  //#####################################################################
-  //#####################################################################
-
   const isSameUser = member.id === board.boardUsername;
+
+  //##############################################################
+  //##############################################################
+  const indexOfLastComment = currentPage * commentsPerPage;
+  const indexOfFirstComment = indexOfLastComment - commentsPerPage;
+  const currentComments = comments.slice(
+    indexOfFirstComment,
+    indexOfLastComment
+  );
+
+  const totalPages = Math.ceil(comments.length / commentsPerPage);
+
+  const visiblePages = Array.from(
+    { length: Math.min(pagingBlock, totalPages) },
+    (_, index) =>
+      index + Math.floor((currentPage - 1) / pagingBlock) * pagingBlock + 1
+  ).filter((page) => page <= totalPages);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handlePrev = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - pagingBlock, 1));
+  };
+
+  const handleNext = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + pagingBlock, totalPages));
+  };
 
   return (
     <>
@@ -311,10 +318,15 @@ const BoardView = () => {
             {!member.id && <p>회원만 읽기가 가능합니다.</p>}
             {member.id && (
               <>
-                {comments.map((comment, index) => (
+                {currentComments.map((comment, index) => (
                   <div key={index} className="comment">
                     <div className="comment-header">
-                      <p>작성자: {comment.replyWriter}</p>
+                      <p>
+                        작성자:{" "}
+                        {comment.replyWriter === "admin123"
+                          ? "관리자"
+                          : comment.replyWriter}
+                      </p>
                       <div className="comment-button">
                         {isEditing &&
                         comment.replySeq === editedComment.replySeq ? (
@@ -353,6 +365,36 @@ const BoardView = () => {
                     )}
                   </div>
                 ))}
+                <div className="pagination-container">
+                  <ul className="pagination">
+                    {currentPage > pagingBlock && (
+                      <li className="page-item">
+                        <button onClick={handlePrev} className="page-link">
+                          이전
+                        </button>
+                      </li>
+                    )}
+                    {visiblePages.map((page) => (
+                      <li key={page} className="page-item">
+                        <button
+                          onClick={() => handlePageChange(page)}
+                          className={`page-link ${
+                            currentPage === page ? "active" : ""
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      </li>
+                    ))}
+                    {totalPages > pagingBlock && (
+                      <li className="page-item">
+                        <button onClick={handleNext} className="page-link">
+                          다음
+                        </button>
+                      </li>
+                    )}
+                  </ul>
+                </div>
               </>
             )}
           </div>

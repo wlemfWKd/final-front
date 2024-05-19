@@ -13,6 +13,7 @@ const Board = () => {
   const [selectedButton, setSelectedButton] = useState("notice");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // 한 페이지당 보여줄 아이템 수
+  const pagingBlock = 5;
   const [boardList, setBoardList] = useState([]);
   const [member, setMember] = useState({
     memberNum: "",
@@ -53,23 +54,6 @@ const Board = () => {
     fetchMemberInfo();
   }, []);
 
-  useEffect(() => {
-    const fetchBoardList = async () => {
-      try {
-        const response = await axios.get("/board/boardList");
-        // 게시글을 내림차순으로 정렬하여 가져오기
-        const sortedBoardList = response.data.sort(
-          (a, b) => new Date(b.boardDate) - new Date(a.boardDate)
-        );
-        setBoardList(sortedBoardList);
-      } catch (error) {
-        console.error("Error fetching board list:", error);
-      }
-    };
-
-    fetchBoardList();
-  }, []);
-
   const filteredDatas = boardList.filter((board) => {
     switch (selectedButton) {
       case "notice":
@@ -86,47 +70,6 @@ const Board = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentData = filteredDatas.slice(indexOfFirstItem, indexOfLastItem);
 
-  // 총 페이지 수 계산
-  const totalPages = Math.ceil(filteredDatas.length / itemsPerPage);
-
-  // 페이지 변경 시 호출되는 함수
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  // 이전 페이지로 이동
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  // 다음 페이지로 이동
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  // 페이지 번호 배열 생성 (최대 10개)
-  const generatePageNumbers = () => {
-    const maxPages = 5;
-    const halfMaxPages = Math.floor(maxPages / 2);
-    let startPage = Math.max(currentPage - halfMaxPages, 1);
-    let endPage = Math.min(startPage + maxPages - 1, totalPages);
-
-    if (endPage - startPage < maxPages - 1) {
-      startPage = Math.max(endPage - maxPages + 1, 1);
-    }
-
-    return Array.from(
-      { length: endPage - startPage + 1 },
-      (_, index) => startPage + index
-    );
-  };
-
-  const pageNumbers = generatePageNumbers();
-
   const formatDate = (rawDate) => {
     const date = new Date(rawDate);
     const year = date.getFullYear();
@@ -138,6 +81,45 @@ const Board = () => {
   const handleButtonClick = (buttonName) => {
     setSelectedButton(buttonName);
     setCurrentPage(1); // 버튼이 변경되면 페이지를 1로 초기화
+  };
+
+  //##############################################################
+  //##############################################################
+
+  useEffect(() => {
+    const fetchBoardList = async () => {
+      try {
+        const response = await axios.get("/board/boardList");
+        // 게시글을 내림차순으로 정렬하여 가져오기
+        const sortedBoardList = response.data.sort(
+          (a, b) => new Date(b.boardDate) - new Date(a.boardDate)
+        );
+        setBoardList(sortedBoardList);
+      } catch (error) {
+        console.error("Error fetching board list:", error);
+      }
+    };
+
+    fetchBoardList();
+  }, []);
+  const totalPages = Math.ceil(filteredDatas.length / itemsPerPage);
+
+  const visiblePages = Array.from(
+    { length: Math.min(pagingBlock, totalPages) },
+    (_, index) =>
+      index + Math.floor((currentPage - 1) / pagingBlock) * pagingBlock + 1
+  ).filter((page) => page <= totalPages);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handlePrev = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - pagingBlock, 1));
+  };
+
+  const handleNext = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + pagingBlock, totalPages));
   };
 
   return (
@@ -223,28 +205,26 @@ const Board = () => {
       </div>
       <div className="pagination-container">
         <ul className="pagination">
-          {currentPage > 1 && (
+          {currentPage > pagingBlock && (
             <li className="page-item">
-              <button onClick={handlePreviousPage} className="page-link">
+              <button onClick={handlePrev} className="page-link">
                 이전
               </button>
             </li>
           )}
-          {pageNumbers.map((number) => (
-            <li key={number} className="page-item">
+          {visiblePages.map((page) => (
+            <li key={page} className="page-item">
               <button
-                onClick={() => handlePageChange(number)}
-                className={`page-link ${
-                  currentPage === number ? "active" : ""
-                }`}
+                onClick={() => handlePageChange(page)}
+                className={`page-link ${currentPage === page ? "active" : ""}`}
               >
-                {number}
+                {page}
               </button>
             </li>
           ))}
-          {currentPage < totalPages && (
+          {totalPages > pagingBlock && (
             <li className="page-item">
-              <button onClick={handleNextPage} className="page-link">
+              <button onClick={handleNext} className="page-link">
                 다음
               </button>
             </li>

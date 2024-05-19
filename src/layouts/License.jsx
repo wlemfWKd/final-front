@@ -9,8 +9,8 @@ const License = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [appliedSearchTerm, setAppliedSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
-  const pagingBlock = 10;
+  const itemsPerPage = 10;
+  const pagingBlock = 5;
   const serviceKey =
     "8RQmmNMbqQKZO06m6d44ZNTJv55aWC7ld4cj5de9n14a6o3tbFOrn/F3Aa5cVQzRVlpUr2nt2J9sjnqrnD2KLA==";
 
@@ -242,21 +242,34 @@ const License = () => {
                 <p>검색 결과가 없습니다.</p>
               )}
               <div className="page-container">
-                {currentPage > pagingBlock && (
-                  <button onClick={handlePrev}>이전</button>
-                )}
-                {visiblePages.map((page) => (
-                  <button
-                    key={page}
-                    onClick={() => handlePageChange(page)}
-                    disabled={page === currentPage}
-                  >
-                    {page}
-                  </button>
-                ))}
-                {totalPages > pagingBlock && (
-                  <button onClick={handleNext}>다음</button>
-                )}
+                <ul className="pagination">
+                  {currentPage > pagingBlock && (
+                    <li className="page-item">
+                      <button onClick={handlePrev} className="page-link">
+                        이전
+                      </button>
+                    </li>
+                  )}
+                  {visiblePages.map((page) => (
+                    <li key={page} className="page-item">
+                      <button
+                        onClick={() => handlePageChange(page)}
+                        className={`page-link ${
+                          currentPage === page ? "active" : ""
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    </li>
+                  ))}
+                  {totalPages > pagingBlock && (
+                    <li className="page-item">
+                      <button onClick={handleNext} className="page-link">
+                        다음
+                      </button>
+                    </li>
+                  )}
+                </ul>
               </div>
             </>
           ) : (

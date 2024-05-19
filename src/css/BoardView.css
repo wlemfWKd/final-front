@@ -147,3 +147,44 @@
     padding: 10px;
     margin: 10px 0 0 0;
   }
+
+  .board-view-container .comment-container .comments-section .pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  
+  .board-view-container .comment-container .comments-section .pagination-container .pagination {
+    display: inline-block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .board-view-container .comment-container .comments-section .pagination-container .page-item {
+    display: inline-block;
+    padding: 0px 5px;
+  }
+  
+  .board-view-container .comment-container .comments-section .pagination-container .page-link {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .board-view-container .comment-container .comments-section .pagination-container .page-link.active {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .board-view-container .comment-container .comments-section .pagination-container li.page-item button {
+    border: none;
+    font-size: 12px;
+  }
+  
+  .board-view-container .comment-container .comments-section .pagination-container .pagination li{
+    border: none;
+  }
