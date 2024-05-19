@@ -19,6 +19,7 @@ const BoardView = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const commentsPerPage = 5;
   const pagingBlock = 5;
+  const shouldDisplayPaging = comments.length >= 6;
 
   const [member, setMember] = useState({
     memberNum: "",
@@ -365,36 +366,38 @@ const BoardView = () => {
                     )}
                   </div>
                 ))}
-                <div className="pagination-container">
-                  <ul className="pagination">
-                    {currentPage > pagingBlock && (
-                      <li className="page-item">
-                        <button onClick={handlePrev} className="page-link">
-                          이전
-                        </button>
-                      </li>
-                    )}
-                    {visiblePages.map((page) => (
-                      <li key={page} className="page-item">
-                        <button
-                          onClick={() => handlePageChange(page)}
-                          className={`page-link ${
-                            currentPage === page ? "active" : ""
-                          }`}
-                        >
-                          {page}
-                        </button>
-                      </li>
-                    ))}
-                    {totalPages > pagingBlock && (
-                      <li className="page-item">
-                        <button onClick={handleNext} className="page-link">
-                          다음
-                        </button>
-                      </li>
-                    )}
-                  </ul>
-                </div>
+                {shouldDisplayPaging && (
+                  <div className="pagination-container">
+                    <ul className="pagination">
+                      {currentPage > pagingBlock && (
+                        <li className="page-item">
+                          <button onClick={handlePrev} className="page-link">
+                            이전
+                          </button>
+                        </li>
+                      )}
+                      {visiblePages.map((page) => (
+                        <li key={page} className="page-item">
+                          <button
+                            onClick={() => handlePageChange(page)}
+                            className={`page-link ${
+                              currentPage === page ? "active" : ""
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        </li>
+                      ))}
+                      {totalPages > pagingBlock && (
+                        <li className="page-item">
+                          <button onClick={handleNext} className="page-link">
+                            다음
+                          </button>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                )}
               </>
             )}
           </div>

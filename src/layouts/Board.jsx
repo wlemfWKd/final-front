@@ -103,6 +103,7 @@ const Board = () => {
     fetchBoardList();
   }, []);
   const totalPages = Math.ceil(filteredDatas.length / itemsPerPage);
+  const shouldDisplayPaging = filteredDatas.length >= 11;
 
   const visiblePages = Array.from(
     { length: Math.min(pagingBlock, totalPages) },
@@ -203,34 +204,38 @@ const Board = () => {
           </div>
         </div>
       </div>
-      <div className="pagination-container">
-        <ul className="pagination">
-          {currentPage > pagingBlock && (
-            <li className="page-item">
-              <button onClick={handlePrev} className="page-link">
-                이전
-              </button>
-            </li>
-          )}
-          {visiblePages.map((page) => (
-            <li key={page} className="page-item">
-              <button
-                onClick={() => handlePageChange(page)}
-                className={`page-link ${currentPage === page ? "active" : ""}`}
-              >
-                {page}
-              </button>
-            </li>
-          ))}
-          {totalPages > pagingBlock && (
-            <li className="page-item">
-              <button onClick={handleNext} className="page-link">
-                다음
-              </button>
-            </li>
-          )}
-        </ul>
-      </div>
+      {shouldDisplayPaging && (
+        <div className="pagination-container">
+          <ul className="pagination">
+            {currentPage > pagingBlock && (
+              <li className="page-item">
+                <button onClick={handlePrev} className="page-link">
+                  이전
+                </button>
+              </li>
+            )}
+            {visiblePages.map((page) => (
+              <li key={page} className="page-item">
+                <button
+                  onClick={() => handlePageChange(page)}
+                  className={`page-link ${
+                    currentPage === page ? "active" : ""
+                  }`}
+                >
+                  {page}
+                </button>
+              </li>
+            ))}
+            {totalPages > pagingBlock && (
+              <li className="page-item">
+                <button onClick={handleNext} className="page-link">
+                  다음
+                </button>
+              </li>
+            )}
+          </ul>
+        </div>
+      )}
       <Quick />
       <Footer />
     </>
