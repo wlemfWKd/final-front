@@ -104,8 +104,15 @@ const Main = () => {
         return true;
     }
   });
+
   const noticeData = filteredDatas.filter(
     (board) => board.defaultValue === "notice"
+  );
+
+  // noticeData 중에서 boardSeq가 가장 높은 값을 가진 요소 찾기
+  const latestNotice = noticeData.reduce(
+    (max, board) => (board.boardSeq > max.boardSeq ? board : max),
+    noticeData[0] || {}
   );
 
   return (
@@ -169,17 +176,17 @@ const Main = () => {
                   <FontAwesomeIcon icon={faChevronRight} />
                 </a>
               </div>
-              {noticeData.slice(-1).map((board) => (
-                <React.Fragment key={board.boardSeq}>
+              {latestNotice && latestNotice.boardSeq && (
+                <React.Fragment key={latestNotice.boardSeq}>
                   <li className="list_container">
                     <div className="text-container">
-                      <Link to={`/BoardView/${board.boardSeq}`}>
-                        <span>{board.boardTitle}</span>
+                      <Link to={`/BoardView/${latestNotice.boardSeq}`}>
+                        <span>{latestNotice.boardTitle}</span>
                       </Link>
                     </div>
                   </li>
                 </React.Fragment>
-              ))}
+              )}
             </div>
           </div>
         </div>
