@@ -271,12 +271,15 @@ const BoardView = () => {
           </div>
         </form>
         <div className="button-group">
-          <Link
+          {/* <Link
             to={
               member.memberName === "관리자" || !member.id
                 ? "/board"
                 : "/board/freeboard"
             }
+          > */}
+          <Link
+            to={board.defaultValue === "notice" ? "/board" : "/board/freeboard"}
           >
             <button type="button" className="button-cancel">
               이전으로

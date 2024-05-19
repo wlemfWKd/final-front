@@ -144,16 +144,21 @@ const Board2 = () => {
     <>
       <Header />
       <hr className="comu_hr" />
-      <div id="Board">
-        <div id="community_header">
+      <div className="Board">
+        <div className="community_header">
           <h1>커뮤니티</h1>
         </div>
         <div className="custom_line">
           <hr className="custom-line" />
         </div>
         <div className="container">
-          <div id="community-buttons" className="mb-2">
+          <div className="community-buttons mb-2">
             <Button
+              as={Link}
+              to={{
+                pathname: "/board",
+                state: { selectedButton: "notice" },
+              }}
               variant="secondary"
               className={`custom-lg-button ${
                 selectedButton === "notice" ? "active" : ""
@@ -194,27 +199,32 @@ const Board2 = () => {
               </div>
             )}
             <ul className="your-component">
-              {currentData.map((board) => (
-                <React.Fragment key={board.boardSeq}>
-                  <li className="list_container">
-                    <div className="text-container">
-                      <Link to={`/BoardView/${board.boardSeq}`}>
-                        <span style={{ fontSize: "18px", color: "black" }}>
-                          {board.boardSeq}
-                        </span>
-                        <span>&nbsp;</span>
-                        <span style={{ fontSize: "20px", color: "#060e7b" }}>
-                          {board.boardTitle}
-                        </span>
-                      </Link>
-                    </div>
-                    <div className="boardDate">
-                      <span>{formatDate(board.boardDate)}</span>
-                    </div>
-                  </li>
-                  <hr />
-                </React.Fragment>
-              ))}
+              <div>
+                {currentData.map((board, index) => (
+                  <React.Fragment key={board.boardSeq}>
+                    <li className="list_container">
+                      <div className="text-container">
+                        <Link to={`/BoardView/${board.boardSeq}`}>
+                          <span style={{ fontSize: "18px", color: "black" }}>
+                            {/* 아래 코드로 수정 */}
+                            {filteredDatas.length -
+                              (currentPage - 1) * itemsPerPage -
+                              index}
+                          </span>
+                          <span>&nbsp;</span>
+                          <span className="board-title">
+                            {board.boardTitle}
+                          </span>
+                        </Link>
+                      </div>
+                      <div className="boardDate">
+                        <span>{formatDate(board.boardDate)}</span>
+                      </div>
+                    </li>
+                    <hr />
+                  </React.Fragment>
+                ))}
+              </div>
             </ul>
           </div>
         </div>

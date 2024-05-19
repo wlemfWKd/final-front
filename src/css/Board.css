@@ -1,5 +1,5 @@
 /* 전체 컨테이너 스타일링 */
-#Board {
+.Board {
   padding: 0 108px;
 }
 
@@ -7,7 +7,7 @@
   margin-bottom: 30px;
 }
 
-#Board .container {
+.Board .container {
   margin-bottom: 20px;
   display: flex;
   justify-content: center;
@@ -15,17 +15,17 @@
 }
 
 
-#Board #community_header {
+.Board .community_header {
   padding: 0 180px;
   text-align: center;
 }
 
-#Board #community_header span{
+.Board .community_header span{
   text-align: center;
 }
 
 /* 커뮤니티 버튼 스타일링 */
-#Board .container #community-buttons {
+.Board .container .community-buttons {
   margin-top: 20px;
   display: flex;
   justify-content: center;
@@ -33,7 +33,11 @@
   
 }
 
-#Board .custom-lg-button {
+.Board .container .community-buttons a{
+  padding-top: 30px;
+}
+
+.Board .custom-lg-button {
   width: 230px;
   height: 100px;
   margin-right: 20px;
@@ -48,66 +52,82 @@
   
 }
 
-#Board .custom-lg-button.active {
+.Board .custom-lg-button.active {
   background-color: #64aee0;
   border: 3px solid #64aee0;
   color: white;
 }
 
-#Board .custom-lg-button:hover {
+.Board .custom-lg-button:hover {
   background-color: #64aee0;
   border: 3px solid #64aee0;
   color: white;
 }
 
-#Board .icon_btn {
+.Board .icon_btn {
   margin-right: 10px;
 }
 
 /* 커스텀 라인 스타일링 */
-#Board .custom-line {
+.Board .custom-line {
   border: 2px solid #0056b3;
   padding: 0 110px;
 }
 
 /* 리스트 스타일링 */
-.Board-bottom .your-component {
+.board-title {
+  font-size: 20px;
+  color: #060e7b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 1000px; /* Adjust as needed */
+}
+
+.Board .Board-bottom .your-component {
   margin-bottom: 50px;
 }
 
-.Board-bottom .list_container {
+.Board .Board-bottom .list_container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.Board-bottom .text-container h3 {
+.Board .Board-bottom .text-container h3 {
   font-size: 20px;
   margin: 0;
   color: black;
 }
-.Board-bottom .text-container h3:hover {
-text-decoration: underline;
+
+.Board .Board-bottom .text-container h3:hover {
+  text-decoration: underline;
 }
-.Board-bottom .boardDate {
+
+.Board .Board-bottom .text-container span{
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Board .Board-bottom .boardDate {
   color: #757df6;
   text-decoration: none;
   font-weight: bold;
-  /* margin-left: 700px; 버튼과의 간격 조절 */
 }
 
-.Board-bottom .custom-detail-link:hover {
+.Board .Board-bottom .custom-detail-link:hover {
   text-decoration: underline;
   color: #0d005f;
 }
 
-.Board-bottom .button-container {
-  
+.Board .Board-bottom .button-container {
   margin-bottom: 30px;
 }
 
-.Board-bottom .button-container button{
+.Board .Board-bottom .button-container button {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
