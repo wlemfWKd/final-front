@@ -9,8 +9,8 @@ import { Link } from "react-router-dom";
 import Quick from "../components/Quick/Quick";
 import axios from "axios";
 
-const Board = () => {
-  const [selectedButton, setSelectedButton] = useState("notice");
+const Board2 = () => {
+  const [selectedButton, setSelectedButton] = useState("freeboard");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // 한 페이지당 보여줄 아이템 수
   const [boardList, setBoardList] = useState([]);
@@ -110,7 +110,7 @@ const Board = () => {
 
   // 페이지 번호 배열 생성 (최대 10개)
   const generatePageNumbers = () => {
-    const maxPages = 5;
+    const maxPages = 10;
     const halfMaxPages = Math.floor(maxPages / 2);
     let startPage = Math.max(currentPage - halfMaxPages, 1);
     let endPage = Math.min(startPage + maxPages - 1, totalPages);
@@ -186,15 +186,13 @@ const Board = () => {
                 </Link>
               </div>
             )}
-            {selectedButton === "freeboard" &&
-              member.id &&
-              member.id !== "admin123" && (
-                <div className="button-container">
-                  <Link to="/BoardWrite">
-                    <button>글쓰기</button>
-                  </Link>
-                </div>
-              )}
+            {selectedButton === "freeboard" && member.id && (
+              <div className="button-container">
+                <Link to="/BoardWrite">
+                  <button>글쓰기</button>
+                </Link>
+              </div>
+            )}
             <ul className="your-component">
               {currentData.map((board) => (
                 <React.Fragment key={board.boardSeq}>
@@ -257,4 +255,4 @@ const Board = () => {
   );
 };
 
-export default Board;
+export default Board2;

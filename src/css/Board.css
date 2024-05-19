@@ -131,7 +131,7 @@ text-decoration: underline;
 
 .pagination-container .page-item {
   display: inline-block;
-  margin: 0 5px;
+  padding: 0px 5px;
 }
 
 .pagination-container .page-link {

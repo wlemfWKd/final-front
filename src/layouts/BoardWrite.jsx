@@ -41,7 +41,12 @@ const BoardWrite = () => {
         },
       });
 
-      window.location.href = "/community"; // 페이지 이동
+      if (member.memberName === "관리자") {
+        window.location.href = "/board"; // 페이지 이동
+      } else {
+        window.location.href = "/board/freeboard";
+      }
+
       // 성공 시 처리
       console.log("Board write success:", response.data);
     } catch (error) {
@@ -56,7 +61,7 @@ const BoardWrite = () => {
     setContent("");
     setFile(null);
 
-    window.location.href = "/community";
+    window.location.href = "/board";
   };
 
   //멤버정보 불러오기

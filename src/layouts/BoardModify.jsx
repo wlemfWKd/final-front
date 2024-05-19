@@ -112,7 +112,11 @@ const BoardModify = () => {
     setContent("");
     setFile(null);
 
-    window.location.href = "/community";
+    if (member.memberName === "관리자") {
+      window.location.href = "/board"; // 페이지 이동
+    } else {
+      window.location.href = "/board/freeboard";
+    }
   };
 
   return (

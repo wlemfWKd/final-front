@@ -155,7 +155,7 @@ const Main = () => {
                 </Link>
               </li>
               <li>
-                <a href="/community">
+                <a href="/board/freeboard">
                   <FontAwesomeIcon id="icon" icon={faComments} />
                   자유게시판
                 </a>
@@ -164,20 +164,17 @@ const Main = () => {
             <div id="notice">
               <div>
                 <h3>공지사항</h3>
-                <a href="/community">
+                <a href="/board">
                   더보기
                   <FontAwesomeIcon icon={faChevronRight} />
                 </a>
               </div>
-              {noticeData.slice(0, 1).map((board) => (
+              {noticeData.slice(-1).map((board) => (
                 <React.Fragment key={board.boardSeq}>
                   <li className="list_container">
                     <div className="text-container">
                       <Link to={`/BoardView/${board.boardSeq}`}>
-                        <span>{board.boardSeq}</span>
-                        <span style={{ fontSize: "15px" }}>
-                          {board.boardTitle}
-                        </span>
+                        <span>{board.boardTitle}</span>
                       </Link>
                     </div>
                   </li>

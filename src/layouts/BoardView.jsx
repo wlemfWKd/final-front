@@ -135,7 +135,11 @@ const BoardView = () => {
   const handleDelete = async () => {
     try {
       await axios.get(`/board/board_delete/${boardSeq}`);
-      window.location.href = "/community";
+      if (member.memberName === "관리자") {
+        window.location.href = "/board"; // 페이지 이동
+      } else {
+        window.location.href = "/board/freeboard";
+      }
     } catch (error) {
       console.error("Error deleting board", error);
     }
@@ -259,7 +263,13 @@ const BoardView = () => {
           </div>
         </form>
         <div className="button-group">
-          <Link to="/community">
+          <Link
+            to={
+              member.memberName === "관리자" || !member.id
+                ? "/board"
+                : "/board/freeboard"
+            }
+          >
             <button type="button" className="button-cancel">
               이전으로
             </button>
