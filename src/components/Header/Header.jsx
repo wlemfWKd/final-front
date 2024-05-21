@@ -1,18 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Header.css";
-import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode"; // Correct import
 
 const Header = () => {
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
+  const checkTokenExpiry = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+
+      if (decodedToken.exp < currentTime) {
+        // 토큰이 만료되었으므로 로그아웃 처리
+        handleLogout();
+      }
+    }
+  };
+
   useEffect(() => {
     // localStorage에서 토큰을 가져와 isLoggedIn 상태를 업데이트합니다.
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
+
+    // 페이지 경로가 변경될 때마다 토큰 만료 여부 확인
+    checkTokenExpiry();
   }, [location.pathname]); // 페이지 경로가 변경될 때마다 실행
 
   const handleLogout = () => {
@@ -21,14 +37,10 @@ const Header = () => {
     localStorage.removeItem("token"); // 엑세스 토큰
     localStorage.removeItem("refreshToken"); // 리프레시 토큰
     setIsLoggedIn(false);
-    toHome();
-  };
-
-  const toHome = () => {
     navigate("/");
   };
 
-  //멤버정보 불러오기
+  // 멤버 정보 불러오기
   const [member, setMember] = useState({
     memberNum: "",
     memberName: "",
