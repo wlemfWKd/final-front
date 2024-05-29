@@ -4,64 +4,36 @@ import { Link } from "react-router-dom";
 import "../css/License.css";
 
 const License = () => {
-  const [data, setData] = useState(null);
-  const [filteredData, setFilteredData] = useState(null);
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [appliedSearchTerm, setAppliedSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const pagingBlock = 5;
-  const serviceKey =
-    "8RQmmNMbqQKZO06m6d44ZNTJv55aWC7ld4cj5de9n14a6o3tbFOrn/F3Aa5cVQzRVlpUr2nt2J9sjnqrnD2KLA==";
 
   const [categories, setCategories] = useState({
     largeCategory: "",
     mediumCategory: "",
+    grade: "",
   });
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchlist = async () => {
       try {
-        const apiUrl =
-          "/api/service/rest/InquiryListNationalQualifcationSVC/getList";
-        const response = await axios.get(apiUrl, {
-          params: {
-            serviceKey: serviceKey,
-          },
-        });
-        setData(response.data);
+        const responseList = await axios.get("/license/list");
+        setData(responseList.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching info:", error);
       }
     };
-    fetchData();
-  }, [serviceKey]);
+
+    fetchlist();
+  }, []);
 
   useEffect(() => {
-    if (
-      data &&
-      data.response &&
-      data.response.body &&
-      data.response.body.items
-    ) {
-      const largeCategories = Array.from(
-        new Set(data.response.body.items.item.map((item) => item.obligfldnm))
-      );
-      setCategories((prevCategories) => ({
-        ...prevCategories,
-        largeCategories,
-      }));
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (
-      data &&
-      data.response &&
-      data.response.body &&
-      data.response.body.items
-    ) {
-      const filteredItems = data.response.body.items.item.filter(
+    if (data.length > 0) {
+      const filteredItems = data.filter(
         (item) =>
           (appliedSearchTerm.trim() === "" ||
             appliedSearchTerm
@@ -76,6 +48,33 @@ const License = () => {
       setFilteredData(filteredItems);
     }
   }, [data, appliedSearchTerm, categories]);
+
+  const filterData = () => {
+    const filteredItems = data.filter((item) => {
+      const matchesSearchTerm =
+        appliedSearchTerm.trim() === "" ||
+        item.jmfldnm.includes(appliedSearchTerm);
+
+      const matchesLargeCategory =
+        !categories.largeCategory ||
+        item.obligfldnm === categories.largeCategory;
+
+      const matchesMediumCategory =
+        !categories.mediumCategory ||
+        item.mdobligfldnm === categories.mediumCategory;
+
+      const matchesGrade =
+        !categories.grade || item.seriesnm === categories.grade;
+
+      return (
+        matchesSearchTerm &&
+        matchesLargeCategory &&
+        matchesMediumCategory &&
+        matchesGrade
+      );
+    });
+    setFilteredData(filteredItems);
+  };
 
   const handleSearchTermChange = (event) => {
     setSearchTerm(event.target.value);
@@ -93,13 +92,12 @@ const License = () => {
   };
 
   const getCurrentPageData = () => {
-    if (!filteredData) return [];
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     return filteredData.slice(startIndex, endIndex);
   };
 
-  const totalPages = Math.ceil((filteredData?.length || 0) / itemsPerPage);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   const visiblePages = Array.from(
     { length: Math.min(pagingBlock, totalPages) },
@@ -148,14 +146,13 @@ const License = () => {
               }
             >
               <option value="">대분류 선택</option>
-              {categories.largeCategories &&
-                Array.from(new Set(categories.largeCategories)).map(
-                  (category) => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  )
-                )}
+              {Array.from(new Set(data.map((item) => item.obligfldnm))).map(
+                (category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                )
+              )}
             </select>
 
             <select
@@ -163,12 +160,10 @@ const License = () => {
               onChange={(e) =>
                 setCategories({ ...categories, mediumCategory: e.target.value })
               }
-              disabled={
-                !categories.largeCategory || categories.largeCategory === ""
-              } // 대분류 선택 전이거나 빈 값인 경우 비활성화
+              disabled={!categories.largeCategory}
             >
               <option value="">중분류 선택</option>
-              {data?.response?.body?.items?.item
+              {data
                 .filter((item) => item.obligfldnm === categories.largeCategory)
                 .map((item) => item.mdobligfldnm)
                 .filter((value, index, self) => self.indexOf(value) === index)
@@ -187,14 +182,14 @@ const License = () => {
               disabled={!categories.largeCategory || !categories.mediumCategory}
             >
               <option value="">등급</option>
-              {data?.response?.body?.items?.item
+              {data
                 .filter(
                   (item) =>
                     item.obligfldnm === categories.largeCategory &&
                     item.mdobligfldnm === categories.mediumCategory
                 )
                 .map((item) => item.seriesnm)
-                .filter((value, index, self) => self.indexOf(value) === index) // 중복 제거
+                .filter((value, index, self) => self.indexOf(value) === index)
                 .map((seriesnm) => (
                   <option key={seriesnm} value={seriesnm}>
                     {seriesnm}
@@ -204,43 +199,37 @@ const License = () => {
           </div>
         </div>
         <div className="LicenseList">
-          {filteredData ? (
+          {filteredData.length > 0 ? (
             <>
-              {filteredData.length > 0 ? (
-                <ul>
-                  {getCurrentPageData().map((item) => (
-                    <li key={item.jmcd}>
-                      <Link
-                        to={{
-                          pathname: `/detail/${encodeURIComponent(
-                            item.jmfldnm
-                          )}`,
-                          state: {
-                            jmcd: item.jmcd,
-                            seriescd: item.seriescd,
-                          },
-                        }}
-                      >
-                        <span className="link-text">
-                          {item.jmfldnm} &nbsp;
-                          {item.jmcd && (
-                            <span className="company">한국산업인력공단</span>
-                          )}
-                        </span>
-                        <br />
-                        {item.jmcd && <p>{item.qualgbnm}</p>}
+              <ul>
+                {getCurrentPageData().map((item) => (
+                  <li key={item.jmcd}>
+                    <Link
+                      to={{
+                        pathname: `/detail/${encodeURIComponent(item.jmfldnm)}`,
+                        state: {
+                          jmcd: item.jmcd,
+                          seriescd: item.seriescd,
+                        },
+                      }}
+                    >
+                      <span className="link-text">
+                        {item.jmfldnm} &nbsp;
                         {item.jmcd && (
-                          <p>
-                            {item.obligfldnm}, {item.mdobligfldnm}
-                          </p>
+                          <span className="company">한국산업인력공단</span>
                         )}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>검색 결과가 없습니다.</p>
-              )}
+                      </span>
+                      <br />
+                      {item.jmcd && <p>{item.qualgbnm}</p>}
+                      {item.jmcd && (
+                        <p>
+                          {item.obligfldnm}, {item.mdobligfldnm}
+                        </p>
+                      )}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
               <div className="page-container">
                 <ul className="pagination">
                   {currentPage > pagingBlock && (
@@ -273,7 +262,7 @@ const License = () => {
               </div>
             </>
           ) : (
-            <p>Loading...</p>
+            <p>검색 결과가 없습니다.</p>
           )}
         </div>
       </div>
