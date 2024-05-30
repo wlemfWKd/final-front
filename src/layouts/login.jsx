@@ -95,13 +95,13 @@ const Login = () => {
           <Link to="/register">회원가입</Link>
         </div>
         <div className="social">
-          <a href="http://localhost:8080/oauth2/authorization/kakao">
+          <a href="http://localhost:8081/oauth2/authorization/kakao">
             <img src={kakao} alt="카카오" />
           </a>
-          <a href="http://localhost:8080/oauth2/authorization/naver">
+          <a href="http://localhost:8081/oauth2/authorization/naver">
             <img src={naver} alt="네이버" />
           </a>
-          <a href="http://localhost:8080/oauth2/authorization/google">
+          <a href="http://localhost:8081/oauth2/authorization/google">
             <img src={google} alt="구글" />
           </a>
         </div>
