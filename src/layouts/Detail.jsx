@@ -688,6 +688,7 @@ const Detail = () => {
             <div className="chart-container">
               {isWrittenChart
                 ? eventYearPiList &&
+                  eventYearPiList.length > 0 &&
                   eventYearPiList.map((event, index) => (
                     <div key={index} className="chart-box">
                       {event && event.jmnm && (
@@ -743,6 +744,7 @@ const Detail = () => {
                     </div>
                   ))
                 : eventYearSiList &&
+                  eventYearSiList.length > 0 &&
                   eventYearSiList.map((event, index) => (
                     <div key={index} className="chart-box">
                       {event && event.jmnm && (
@@ -798,10 +800,13 @@ const Detail = () => {
                       <br />
                     </div>
                   ))}
-              <div className="chart-toggle-buttons">
-                <button onClick={() => setIsWrittenChart(true)}>필기</button>
-                <button onClick={() => setIsWrittenChart(false)}>실기</button>
-              </div>
+              {(eventYearPiList && eventYearPiList.length > 0) ||
+              (eventYearSiList && eventYearSiList.length > 0) ? (
+                <div className="chart-toggle-buttons">
+                  <button onClick={() => setIsWrittenChart(true)}>필기</button>
+                  <button onClick={() => setIsWrittenChart(false)}>실기</button>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
