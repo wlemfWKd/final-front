@@ -2,10 +2,10 @@
     position: fixed;
     width: 90px;
     top: 50%;
-    margin-top: -50px;
+    margin-top: -200px;
     right: 10px;
     background: #fff;
-    transform: translateY(-50%);
+    transform: translateY(-8%);
     transition: top 0.3s ease-in-out;
     border-radius: 5px;
     padding: 5px;

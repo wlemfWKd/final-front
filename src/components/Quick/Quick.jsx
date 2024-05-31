@@ -14,7 +14,7 @@ const Quick = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const handleScroll = () => {
-    setIsScrolled(window.scrollY > 2000);
+    setIsScrolled(window.scrollY > 6200);
   };
 
   const scrollToTop = () => {
