@@ -99,15 +99,9 @@ const Detail = () => {
     const fetchData = async () => {
       try {
         // 국가자격 정보 가져오기
-        const qualificationApiUrl =
-          "/api/service/rest/InquiryListNationalQualifcationSVC/getList";
-        const qualificationResponse = await axios.get(qualificationApiUrl, {
-          params: {
-            serviceKey: serviceKey,
-          },
-        });
+        const response = await axios.get("/license/list");
+        const items = response.data;
 
-        const items = qualificationResponse.data.response.body.items.item;
         const selectedItem = items.find(
           (item) => item.jmfldnm === decodeURIComponent(jmfldnm)
         );
