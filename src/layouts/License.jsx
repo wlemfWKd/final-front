@@ -94,33 +94,6 @@ const License = () => {
     }
   }, [data, appliedSearchTerm, categories]);
 
-  const filterData = () => {
-    const filteredItems = data.filter((item) => {
-      const matchesSearchTerm =
-        appliedSearchTerm.trim() === "" ||
-        item.jmfldnm.includes(appliedSearchTerm);
-
-      const matchesLargeCategory =
-        !categories.largeCategory ||
-        item.obligfldnm === categories.largeCategory;
-
-      const matchesMediumCategory =
-        !categories.mediumCategory ||
-        item.mdobligfldnm === categories.mediumCategory;
-
-      const matchesGrade =
-        !categories.grade || item.seriesnm === categories.grade;
-
-      return (
-        matchesSearchTerm &&
-        matchesLargeCategory &&
-        matchesMediumCategory &&
-        matchesGrade
-      );
-    });
-    setFilteredData(filteredItems);
-  };
-
   const handleSearchTermChange = (event) => {
     setSearchTerm(event.target.value);
   };
