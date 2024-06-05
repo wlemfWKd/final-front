@@ -136,23 +136,16 @@ const Detail = () => {
             serviceKey: serviceKey,
           },
         });
-        const testDatesItems = testDatesResponse.data.response.body.items.item;
+        let testDatesItems = testDatesResponse.data.response.body.items.item;
+
+        // testDatesItems가 객체일 경우 배열로 변환
+        if (!Array.isArray(testDatesItems)) {
+          testDatesItems = [testDatesItems];
+        }
+
+        console.log(testDatesItems);
         setTestDates(testDatesItems);
         setSelectedTestIndex(testDatesItems.length > 0 ? 0 : null);
-
-        // 시험일정2 정보 가져오기
-        const testDates2Url =
-          "/api/service/rest/InquiryTestDatesNationalProfessionalQualificationSVC/getList";
-        const testDates2Response = await axios.get(testDates2Url, {
-          params: {
-            serviceKey:
-              "0OhBU7ZCGIobDVKDeBJDpmDRqK3IRNF6jlf/JB2diFAf/fR2czYO9A4UTGcsOwppV6W2HVUeho/FPwXoL6DwqA==",
-            seriesCd: selectedItem.seriescd, // 계열코드를 이용해서 가져옴
-          },
-        });
-        const testDates2Items =
-          testDates2Response.data.response.body.items.item;
-        setTestDates2(testDates2Items);
 
         // 종목코드에 맞는 필기 연도 통계 데이터 가져오기
         const jmcd = selectedItem.jmcd;
@@ -163,7 +156,7 @@ const Detail = () => {
             baseYY: 2022,
             jmCd: jmcd,
             ServiceKey:
-              "0OhBU7ZCGIobDVKDeBJDpmDRqK3IRNF6jlf/JB2diFAf/fR2czYO9A4UTGcsOwppV6W2HVUeho/FPwXoL6DwqA==",
+              "8RQmmNMbqQKZO06m6d44ZNTJv55aWC7ld4cj5de9n14a6o3tbFOrn/F3Aa5cVQzRVlpUr2nt2J9sjnqrnD2KLA==",
           },
         });
 
@@ -183,7 +176,7 @@ const Detail = () => {
         const eventYearSiListResponse = await axios.get(eventYearSiListApiUrl, {
           params: {
             serviceKey:
-              "0OhBU7ZCGIobDVKDeBJDpmDRqK3IRNF6jlf/JB2diFAf/fR2czYO9A4UTGcsOwppV6W2HVUeho/FPwXoL6DwqA==",
+              "8RQmmNMbqQKZO06m6d44ZNTJv55aWC7ld4cj5de9n14a6o3tbFOrn/F3Aa5cVQzRVlpUr2nt2J9sjnqrnD2KLA==",
             baseYY: 2022,
             jmCd: jmcd,
           },
@@ -368,7 +361,7 @@ const Detail = () => {
             {isTestDatesOpen && (
               <>
                 <br />
-                {Array.isArray(testDates2) && testDates2.length > 0 ? (
+                {Array.isArray(testDates) && testDates.length > 0 ? (
                   <div>
                     <select
                       value={
@@ -382,9 +375,9 @@ const Detail = () => {
                       <option value="" disabled hidden>
                         ----- 선택 -----
                       </option>
-                      {testDates2.map((test, index) => (
+                      {testDates.map((test, index) => (
                         <option key={index} value={index}>
-                          {test.description || `Option ${index + 1}`}
+                          {test.implplannm || `Option ${index + 1}`}
                         </option>
                       ))}
                     </select>
@@ -392,58 +385,92 @@ const Detail = () => {
                     <br />
                     {selectedTestIndex !== null ? (
                       <div key={selectedTestIndex} className="test-dates-box">
-                        {testDates2[selectedTestIndex].description && (
-                          <h4>{testDates2[selectedTestIndex].description}</h4>
+                        {testDates[selectedTestIndex].implplannm && (
+                          <h4>{testDates[selectedTestIndex].implplannm}</h4>
                         )}
                         <table>
-                          <tr>
-                            <td>원서접수 시작일</td>
-                            <td>
-                              {formatDate(
-                                testDates2[selectedTestIndex].examregstartdt
-                              )}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>원서접수 종료일</td>
-                            <td>
-                              {formatDate(
-                                testDates2[selectedTestIndex].examregenddt
-                              )}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>시험 시작일</td>
-                            <td>
-                              {formatDate(
-                                testDates2[selectedTestIndex].examstartdt
-                              )}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>시험 종료일</td>
-                            <td>
-                              {formatDate(
-                                testDates2[selectedTestIndex].examenddt
-                              )}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>합격자 발표일</td>
-                            <td>
-                              {formatDate(
-                                testDates2[selectedTestIndex].passstartdt
-                              )}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>합격자 발표 종료일</td>
-                            <td>
-                              {formatDate(
-                                testDates2[selectedTestIndex].passenddt
-                              )}
-                            </td>
-                          </tr>
+                          <tbody>
+                            <tr>
+                              <td>필기 원서접수 시작일</td>
+                              <td>
+                                {formatDate(
+                                  testDates[selectedTestIndex].docregstartdt
+                                )}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>필기 원서접수 종료일</td>
+                              <td>
+                                {formatDate(
+                                  testDates[selectedTestIndex].docregenddt
+                                )}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>필기 시험 시작일</td>
+                              <td>
+                                {formatDate(
+                                  testDates[selectedTestIndex].docexamstartdt
+                                )}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>필기 시험 종료일</td>
+                              <td>
+                                {formatDate(
+                                  testDates[selectedTestIndex].docexamenddt
+                                )}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>필기 합격자 발표일</td>
+                              <td>
+                                {formatDate(
+                                  testDates[selectedTestIndex].docpassdt
+                                )}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>실기 원서접수 시작일</td>
+                              <td>
+                                {formatDate(
+                                  testDates[selectedTestIndex].pracregstartdt
+                                )}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>실기 원서접수 종료일</td>
+                              <td>
+                                {formatDate(
+                                  testDates[selectedTestIndex].pracregenddt
+                                )}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>실기 시험 시작일</td>
+                              <td>
+                                {formatDate(
+                                  testDates[selectedTestIndex].pracexamstartdt
+                                )}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>실기 시험 종료일</td>
+                              <td>
+                                {formatDate(
+                                  testDates[selectedTestIndex].pracexamenddt
+                                )}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>실기 합격자 발표일</td>
+                              <td>
+                                {formatDate(
+                                  testDates[selectedTestIndex].pracpassstartdt
+                                )}
+                              </td>
+                            </tr>
+                          </tbody>
                         </table>
                       </div>
                     ) : (

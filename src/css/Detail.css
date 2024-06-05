@@ -157,8 +157,12 @@
   background-color: #ffffff;
 }
 
-.test-dates-box tr:nth-child(even) td {
-  background-color: #d1c9c9;
+.test-dates-box tr:nth-child(5) td, 
+/* .test-dates-box tr:nth-child(2) td, 
+.test-dates-box tr:nth-child(3) td, 
+.test-dates-box tr:nth-child(4) td,  */
+.test-dates-box tr:last-child td {
+  background-color: #d4e6f2;
 }
 
 .test-dates-box td{
