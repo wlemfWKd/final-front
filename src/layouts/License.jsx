@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "../css/License.css";
+import { PulseLoader } from "react-spinners";
 
 const License = () => {
   const [data, setData] = useState([]);
@@ -11,6 +12,7 @@ const License = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const pagingBlock = 5;
+  const [isLoading, setIsLoading] = useState(true);
 
   const [categories, setCategories] = useState({
     largeCategory: "",
@@ -18,22 +20,22 @@ const License = () => {
     grade: "",
   });
 
-  useEffect(() => {
-    const fetchlist = async () => {
-      try {
-        const responseList = await axios.get("/license/list");
-        // 데이터를 jmfldnm 기준으로 오름차순 정렬
-        const sortedData = responseList.data.sort((a, b) =>
-          a.jmfldnm.localeCompare(b.jmfldnm)
-        );
-        setData(sortedData);
-      } catch (error) {
-        console.error("Error fetching info:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchlist = async () => {
+  //     try {
+  //       const responseList = await axios.get("/license/list");
+  //       // 데이터를 jmfldnm 기준으로 오름차순 정렬
+  //       const sortedData = responseList.data.sort((a, b) =>
+  //         a.jmfldnm.localeCompare(b.jmfldnm)
+  //       );
+  //       setData(sortedData);
+  //     } catch (error) {
+  //       console.error("Error fetching info:", error);
+  //     }
+  //   };
 
-    fetchlist();
-  }, []);
+  //   fetchlist();
+  // }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,8 +71,10 @@ const License = () => {
 
         // 정렬된 데이터를 state로 설정
         setData(sortedData);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsLoading(false);
       }
     };
 
@@ -216,73 +220,89 @@ const License = () => {
             </select>
           </div>
         </div>
-        <div className="LicenseList">
-          {filteredData.length > 0 ? (
-            <>
-              <ul>
-                {getCurrentPageData().map((item) => (
-                  <li key={item.jmcd}>
-                    <Link
-                      to={{
-                        pathname: `/detail/${encodeURIComponent(item.jmfldnm)}`,
-                        state: {
-                          jmcd: item.jmcd,
-                          seriescd: item.seriescd,
-                        },
-                      }}
-                    >
-                      <span className="link-text">
-                        {item.jmfldnm} &nbsp;
-                        {item.jmcd && (
-                          <span className="company">
-                            {item.implnm || "한국산업인력공단"}
-                          </span>
-                        )}
-                      </span>
-                      <br />
-                      {item.jmcd && <p>{item.qualgbnm}</p>}
-                      {item.jmcd && (
-                        <p>
-                          {item.obligfldnm}, {item.mdobligfldnm}
-                        </p>
-                      )}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <div className="page-container">
-                <ul className="pagination">
-                  {currentPage > pagingBlock && (
-                    <li className="page-item">
-                      <button onClick={handlePrev} className="page-link">
-                        이전
-                      </button>
-                    </li>
-                  )}
-                  {visiblePages.map((page) => (
-                    <li key={page} className="page-item">
-                      <button
-                        onClick={() => handlePageChange(page)}
-                        className={`page-link ${
-                          currentPage === page ? "active" : ""
-                        }`}
-                      >
-                        {page}
-                      </button>
-                    </li>
-                  ))}
-                  {totalPages > pagingBlock && (
-                    <li className="page-item">
-                      <button onClick={handleNext} className="page-link">
-                        다음
-                      </button>
-                    </li>
-                  )}
-                </ul>
-              </div>
-            </>
+        <div>
+          {isLoading ? (
+            <div className="spinner-container">
+              <PulseLoader
+                cssOverride={{
+                  margin: "auto",
+                }}
+                color="#64aee0"
+                size={25}
+              />
+            </div>
           ) : (
-            <p>검색 결과가 없습니다.</p>
+            <div className="LicenseList">
+              {filteredData.length > 0 ? (
+                <>
+                  <ul>
+                    {getCurrentPageData().map((item) => (
+                      <li key={item.jmcd}>
+                        <Link
+                          to={{
+                            pathname: `/detail/${encodeURIComponent(
+                              item.jmfldnm
+                            )}`,
+                            state: {
+                              jmcd: item.jmcd,
+                              seriescd: item.seriescd,
+                            },
+                          }}
+                        >
+                          <span className="link-text">
+                            {item.jmfldnm} &nbsp;
+                            {item.jmcd && (
+                              <span className="company">
+                                {item.implnm || "한국산업인력공단"}
+                              </span>
+                            )}
+                          </span>
+                          <br />
+                          {item.jmcd && <p>{item.qualgbnm}</p>}
+                          {item.jmcd && (
+                            <p>
+                              {item.obligfldnm}, {item.mdobligfldnm}
+                            </p>
+                          )}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="page-container">
+                    <ul className="pagination">
+                      {currentPage > pagingBlock && (
+                        <li className="page-item">
+                          <button onClick={handlePrev} className="page-link">
+                            이전
+                          </button>
+                        </li>
+                      )}
+                      {visiblePages.map((page) => (
+                        <li key={page} className="page-item">
+                          <button
+                            onClick={() => handlePageChange(page)}
+                            className={`page-link ${
+                              currentPage === page ? "active" : ""
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        </li>
+                      ))}
+                      {totalPages > pagingBlock && (
+                        <li className="page-item">
+                          <button onClick={handleNext} className="page-link">
+                            다음
+                          </button>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                </>
+              ) : (
+                <p>검색 결과가 없습니다.</p>
+              )}
+            </div>
           )}
         </div>
       </div>

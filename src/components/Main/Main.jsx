@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import imageData from "./data";
 import "./Main.css";
 import axios from "axios";
+import { PacmanLoader } from "react-spinners";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -69,8 +70,10 @@ const Main = () => {
         const responseListData = responseList.data;
         setListData(responseListData);
         console.log(responseListData);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching info:", error);
+        setIsLoading(false);
       }
     };
 
@@ -114,6 +117,8 @@ const Main = () => {
     (max, board) => (board.boardSeq > max.boardSeq ? board : max),
     noticeData[0] || {}
   );
+
+  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <>
@@ -211,135 +216,158 @@ const Main = () => {
               </Link>
             </div>
           </div>
-          <div id="section2">
-            {listData
-              .filter((item) => item.jmcd === "1320")
-              .map((item, index) => (
-                <div key={index}>
-                  <Card key={item.jmcd}>
-                    {dateList
-                      .filter(
-                        (date) =>
-                          date.description.includes(item.seriesnm) &&
-                          new Date(date.docregstartdt) > currentDate
-                      )
-                      .sort(
-                        (a, b) =>
-                          new Date(a.docregstartdt) - new Date(b.docregstartdt)
-                      )
-                      .slice(0, 1) // 가장 가까운 데이터 하나만 가져오기
-                      .map((date, index) => (
-                        <div key={index}>
-                          <Card.Body>
-                            <Card.Title>{item.jmfldnm}</Card.Title>
-                            <Card.Text>시험명 | {date.description}</Card.Text>
-                            <Card.Text>
-                              접수일 | {formatDate(date.docregstartdt)} ~{" "}
-                              {formatDate(date.docregenddt)}
-                            </Card.Text>
-                            <Card.Text>
-                              시험일 | {formatDate(date.docexamdt)}
-                            </Card.Text>
-                            <Card.Link
-                              href={`/detail/${encodeURIComponent(
-                                item.jmfldnm
-                              )}`}
-                              id="border"
-                            >
-                              <span>상세보기</span>
-                            </Card.Link>
-                          </Card.Body>
-                        </div>
-                      ))}
-                  </Card>
-                </div>
-              ))}
+          <div>
+            {isLoading ? (
+              <div className="spinner-container">
+                <PacmanLoader
+                  cssOverride={{
+                    margin: "auto",
+                  }}
+                  color="#64aee0"
+                  size={25}
+                />
+              </div>
+            ) : (
+              <div id="section2">
+                {listData
+                  .filter((item) => item.jmcd === "1320")
+                  .map((item, index) => (
+                    <div key={index}>
+                      <Card key={item.jmcd}>
+                        {dateList
+                          .filter(
+                            (date) =>
+                              date.description.includes(item.seriesnm) &&
+                              new Date(date.docregstartdt) > currentDate
+                          )
+                          .sort(
+                            (a, b) =>
+                              new Date(a.docregstartdt) -
+                              new Date(b.docregstartdt)
+                          )
+                          .slice(0, 1) // 가장 가까운 데이터 하나만 가져오기
+                          .map((date, index) => (
+                            <div key={index}>
+                              <Card.Body>
+                                <Card.Title>{item.jmfldnm}</Card.Title>
+                                <Card.Text>
+                                  시험명 | {date.description}
+                                </Card.Text>
+                                <Card.Text>
+                                  접수일 | {formatDate(date.docregstartdt)} ~{" "}
+                                  {formatDate(date.docregenddt)}
+                                </Card.Text>
+                                <Card.Text>
+                                  시험일 | {formatDate(date.docexamdt)}
+                                </Card.Text>
+                                <Card.Link
+                                  href={`/detail/${encodeURIComponent(
+                                    item.jmfldnm
+                                  )}`}
+                                  id="border"
+                                >
+                                  <span>상세보기</span>
+                                </Card.Link>
+                              </Card.Body>
+                            </div>
+                          ))}
+                      </Card>
+                    </div>
+                  ))}
 
-            {listData
-              .filter((item) => item.jmcd === "0752")
-              .map((item, index) => (
-                <div key={index}>
-                  <Card key={item.jmcd}>
-                    {dateList
-                      .filter(
-                        (date) =>
-                          date.description.includes(item.seriesnm) &&
-                          new Date(date.docregstartdt) > currentDate
-                      )
-                      .sort(
-                        (a, b) =>
-                          new Date(a.docregstartdt) - new Date(b.docregstartdt)
-                      )
-                      .slice(0, 1) // 가장 가까운 데이터 하나만 가져오기
-                      .map((date, index) => (
-                        <div key={index}>
-                          <Card.Body>
-                            <Card.Title>{item.jmfldnm}</Card.Title>
-                            <Card.Text>시험명 | {date.description}</Card.Text>
-                            <Card.Text>
-                              접수일 | {formatDate(date.docregstartdt)} ~{" "}
-                              {formatDate(date.docregenddt)}
-                            </Card.Text>
-                            <Card.Text>
-                              시험일 | {formatDate(date.docexamdt)}
-                            </Card.Text>
-                            <Card.Link
-                              href={`/detail/${encodeURIComponent(
-                                item.jmfldnm
-                              )}`}
-                              id="border"
-                            >
-                              <span>상세보기</span>
-                            </Card.Link>
-                          </Card.Body>
-                        </div>
-                      ))}
-                  </Card>
-                </div>
-              ))}
+                {listData
+                  .filter((item) => item.jmcd === "0752")
+                  .map((item, index) => (
+                    <div key={index}>
+                      <Card key={item.jmcd}>
+                        {dateList
+                          .filter(
+                            (date) =>
+                              date.description.includes(item.seriesnm) &&
+                              new Date(date.docregstartdt) > currentDate
+                          )
+                          .sort(
+                            (a, b) =>
+                              new Date(a.docregstartdt) -
+                              new Date(b.docregstartdt)
+                          )
+                          .slice(0, 1) // 가장 가까운 데이터 하나만 가져오기
+                          .map((date, index) => (
+                            <div key={index}>
+                              <Card.Body>
+                                <Card.Title>{item.jmfldnm}</Card.Title>
+                                <Card.Text>
+                                  시험명 | {date.description}
+                                </Card.Text>
+                                <Card.Text>
+                                  접수일 | {formatDate(date.docregstartdt)} ~{" "}
+                                  {formatDate(date.docregenddt)}
+                                </Card.Text>
+                                <Card.Text>
+                                  시험일 | {formatDate(date.docexamdt)}
+                                </Card.Text>
+                                <Card.Link
+                                  href={`/detail/${encodeURIComponent(
+                                    item.jmfldnm
+                                  )}`}
+                                  id="border"
+                                >
+                                  <span>상세보기</span>
+                                </Card.Link>
+                              </Card.Body>
+                            </div>
+                          ))}
+                      </Card>
+                    </div>
+                  ))}
 
-            {listData
-              .filter((item) => item.jmcd === "7780")
-              .map((item, index) => (
-                <div key={index}>
-                  <Card key={item.jmcd}>
-                    {dateList
-                      .filter(
-                        (date) =>
-                          date.description.includes(item.seriesnm) &&
-                          new Date(date.docregstartdt) > currentDate
-                      )
-                      .sort(
-                        (a, b) =>
-                          new Date(a.docregstartdt) - new Date(b.docregstartdt)
-                      )
-                      .slice(0, 1) // 가장 가까운 데이터 하나만 가져오기
-                      .map((date, index) => (
-                        <div key={index}>
-                          <Card.Body>
-                            <Card.Title>{item.jmfldnm}</Card.Title>
-                            <Card.Text>시험명 | {date.description}</Card.Text>
-                            <Card.Text>
-                              접수일 | {formatDate(date.docregstartdt)} ~{" "}
-                              {formatDate(date.docregenddt)}
-                            </Card.Text>
-                            <Card.Text>
-                              시험일 | {formatDate(date.docexamdt)}
-                            </Card.Text>
-                            <Card.Link
-                              href={`/detail/${encodeURIComponent(
-                                item.jmfldnm
-                              )}`}
-                              id="border"
-                            >
-                              <span>상세보기</span>
-                            </Card.Link>
-                          </Card.Body>
-                        </div>
-                      ))}
-                  </Card>
-                </div>
-              ))}
+                {listData
+                  .filter((item) => item.jmcd === "7780")
+                  .map((item, index) => (
+                    <div key={index}>
+                      <Card key={item.jmcd}>
+                        {dateList
+                          .filter(
+                            (date) =>
+                              date.description.includes(item.seriesnm) &&
+                              new Date(date.docregstartdt) > currentDate
+                          )
+                          .sort(
+                            (a, b) =>
+                              new Date(a.docregstartdt) -
+                              new Date(b.docregstartdt)
+                          )
+                          .slice(0, 1) // 가장 가까운 데이터 하나만 가져오기
+                          .map((date, index) => (
+                            <div key={index}>
+                              <Card.Body>
+                                <Card.Title>{item.jmfldnm}</Card.Title>
+                                <Card.Text>
+                                  시험명 | {date.description}
+                                </Card.Text>
+                                <Card.Text>
+                                  접수일 | {formatDate(date.docregstartdt)} ~{" "}
+                                  {formatDate(date.docregenddt)}
+                                </Card.Text>
+                                <Card.Text>
+                                  시험일 | {formatDate(date.docexamdt)}
+                                </Card.Text>
+                                <Card.Link
+                                  href={`/detail/${encodeURIComponent(
+                                    item.jmfldnm
+                                  )}`}
+                                  id="border"
+                                >
+                                  <span>상세보기</span>
+                                </Card.Link>
+                              </Card.Body>
+                            </div>
+                          ))}
+                      </Card>
+                    </div>
+                  ))}
+              </div>
+            )}
           </div>
 
           <div id="section3">

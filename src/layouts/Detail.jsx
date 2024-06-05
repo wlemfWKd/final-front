@@ -12,6 +12,7 @@ import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { PulseLoader } from "react-spinners";
 
 const Detail = () => {
   const [item, setItem] = useState(null);
@@ -31,6 +32,7 @@ const Detail = () => {
   const [originalData, setOriginalData] = useState(null);
   const [originalACData, setOriginalACData] = useState(null);
   const { jmfldnm } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
   const serviceKey =
     "8RQmmNMbqQKZO06m6d44ZNTJv55aWC7ld4cj5de9n14a6o3tbFOrn/F3Aa5cVQzRVlpUr2nt2J9sjnqrnD2KLA==";
   const boxStyle = {
@@ -225,8 +227,10 @@ const Detail = () => {
           (book) => book.defaultColumn === "ALADIN"
         );
         setAladinData(aladinBooks);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching book data:", error);
+        setIsLoading(false);
       }
     };
 
@@ -563,143 +567,159 @@ const Detail = () => {
               <FontAwesomeIcon id="icon" icon={faAngleRight} />
             </button>{" "}
           </div>
-          <div id="rank">
-            {/* YES24 도서 목록의 첫 번째 도서 출력 */}
-            {yes24Data.length > 0 && (
-              <div className="card-container">
-                <Card
-                  key={1}
-                  style={{
-                    width: "18rem",
-                    backgroundColor: "#a8cfeb",
-                    borderColor: "#7a95a8",
+          <div>
+            {isLoading ? (
+              <div className="spinner-container">
+                <PulseLoader
+                  cssOverride={{
+                    margin: "auto",
                   }}
-                >
-                  <Card.Title className="card-category">YES24</Card.Title>
-                  <Card.Img
-                    variant="top"
-                    src={yes24Data[0].imageName}
-                    style={{ width: "180px", height: "200px" }}
-                  />
-                  <Card.Body>
-                    <Card.Title>
-                      <span>{yes24Data[0].bookName}</span>
-                    </Card.Title>
-                    <Card.Text className="card-text-custom">
-                      {yes24Data[0].bookPrice} <span className="small">원</span>
-                    </Card.Text>
-                    <a
-                      href={yes24Data[0].viewDetail}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <button
-                        style={{
-                          backgroundColor: "#7a95a8",
-                          border: "none",
-                          color: "#fff",
-                          padding: "10px",
-                          borderRadius: "5px",
-                        }}
-                      >
-                        자세히보기
-                      </button>
-                    </a>
-                  </Card.Body>
-                </Card>
+                  color="#64aee0"
+                  size={15}
+                />
               </div>
-            )}
-
-            {/* Kyobo 도서 목록의 첫 번째 도서 출력 */}
-            {kyoboData.length > 0 && (
-              <div className="card-container">
-                <Card
-                  key={2}
-                  style={{
-                    width: "18rem",
-                    backgroundColor: "#a8cfeb",
-                    borderColor: "#7a95a8",
-                  }}
-                >
-                  <Card.Title className="card-category">KYOBO</Card.Title>
-                  <Card.Img
-                    variant="top"
-                    src={kyoboData[0].imageName}
-                    style={{ width: "180px", height: "200px" }}
-                  />
-                  <Card.Body>
-                    <Card.Title>
-                      <span>{kyoboData[0].bookName}</span>
-                    </Card.Title>
-                    <Card.Text className="card-text-custom">
-                      {kyoboData[0].bookPrice} <span className="small">원</span>
-                    </Card.Text>
-                    <a
-                      href={kyoboData[0].viewDetail}
-                      target="_blank"
-                      rel="noopener noreferrer"
+            ) : (
+              <div id="rank">
+                {/* YES24 도서 목록의 첫 번째 도서 출력 */}
+                {yes24Data.length > 0 && (
+                  <div className="card-container">
+                    <Card
+                      key={1}
+                      style={{
+                        width: "18rem",
+                        backgroundColor: "#a8cfeb",
+                        borderColor: "#7a95a8",
+                      }}
                     >
-                      <button
-                        style={{
-                          backgroundColor: "#7a95a8",
-                          border: "none",
-                          color: "#fff",
-                          padding: "10px",
-                          borderRadius: "5px",
-                        }}
-                      >
-                        자세히보기
-                      </button>
-                    </a>
-                  </Card.Body>
-                </Card>
-              </div>
-            )}
+                      <Card.Title className="card-category">YES24</Card.Title>
+                      <Card.Img
+                        variant="top"
+                        src={yes24Data[0].imageName}
+                        style={{ width: "180px", height: "200px" }}
+                      />
+                      <Card.Body>
+                        <Card.Title>
+                          <span>{yes24Data[0].bookName}</span>
+                        </Card.Title>
+                        <Card.Text className="card-text-custom">
+                          {yes24Data[0].bookPrice}{" "}
+                          <span className="small">원</span>
+                        </Card.Text>
+                        <a
+                          href={yes24Data[0].viewDetail}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <button
+                            style={{
+                              backgroundColor: "#7a95a8",
+                              border: "none",
+                              color: "#fff",
+                              padding: "10px",
+                              borderRadius: "5px",
+                            }}
+                          >
+                            자세히보기
+                          </button>
+                        </a>
+                      </Card.Body>
+                    </Card>
+                  </div>
+                )}
 
-            {/* Aladin 도서 목록의 첫 번째 도서 출력 */}
-            {aladinData.length > 0 && (
-              <div className="card-container">
-                <Card
-                  key={3}
-                  style={{
-                    width: "18rem",
-                    backgroundColor: "#a8cfeb",
-                    borderColor: "#7a95a8",
-                  }}
-                >
-                  <Card.Title className="card-category">ALADIN</Card.Title>
-                  <Card.Img
-                    variant="top"
-                    src={aladinData[0].imageName}
-                    style={{ width: "180px", height: "200px" }}
-                  />
-                  <Card.Body>
-                    <Card.Title>
-                      <span>{aladinData[0].bookName}</span>
-                    </Card.Title>
-                    <Card.Text className="card-text-custom">
-                      {aladinData[0].bookPrice}{" "}
-                      <span className="small">원</span>
-                    </Card.Text>
-                    <a
-                      href={aladinData[0].viewDetail}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                {/* Kyobo 도서 목록의 첫 번째 도서 출력 */}
+                {kyoboData.length > 0 && (
+                  <div className="card-container">
+                    <Card
+                      key={2}
+                      style={{
+                        width: "18rem",
+                        backgroundColor: "#a8cfeb",
+                        borderColor: "#7a95a8",
+                      }}
                     >
-                      <button
-                        style={{
-                          backgroundColor: "#7a95a8",
-                          border: "none",
-                          color: "#fff",
-                          padding: "10px",
-                          borderRadius: "5px",
-                        }}
-                      >
-                        자세히보기
-                      </button>
-                    </a>
-                  </Card.Body>
-                </Card>
+                      <Card.Title className="card-category">KYOBO</Card.Title>
+                      <Card.Img
+                        variant="top"
+                        src={kyoboData[0].imageName}
+                        style={{ width: "180px", height: "200px" }}
+                      />
+                      <Card.Body>
+                        <Card.Title>
+                          <span>{kyoboData[0].bookName}</span>
+                        </Card.Title>
+                        <Card.Text className="card-text-custom">
+                          {kyoboData[0].bookPrice}{" "}
+                          <span className="small">원</span>
+                        </Card.Text>
+                        <a
+                          href={kyoboData[0].viewDetail}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <button
+                            style={{
+                              backgroundColor: "#7a95a8",
+                              border: "none",
+                              color: "#fff",
+                              padding: "10px",
+                              borderRadius: "5px",
+                            }}
+                          >
+                            자세히보기
+                          </button>
+                        </a>
+                      </Card.Body>
+                    </Card>
+                  </div>
+                )}
+
+                {/* Aladin 도서 목록의 첫 번째 도서 출력 */}
+                {aladinData.length > 0 && (
+                  <div className="card-container">
+                    <Card
+                      key={3}
+                      style={{
+                        width: "18rem",
+                        backgroundColor: "#a8cfeb",
+                        borderColor: "#7a95a8",
+                      }}
+                    >
+                      <Card.Title className="card-category">ALADIN</Card.Title>
+                      <Card.Img
+                        variant="top"
+                        src={aladinData[0].imageName}
+                        style={{ width: "180px", height: "200px" }}
+                      />
+                      <Card.Body>
+                        <Card.Title>
+                          <span>{aladinData[0].bookName}</span>
+                        </Card.Title>
+                        <Card.Text className="card-text-custom">
+                          {aladinData[0].bookPrice}{" "}
+                          <span className="small">원</span>
+                        </Card.Text>
+                        <a
+                          href={aladinData[0].viewDetail}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <button
+                            style={{
+                              backgroundColor: "#7a95a8",
+                              border: "none",
+                              color: "#fff",
+                              padding: "10px",
+                              borderRadius: "5px",
+                            }}
+                          >
+                            자세히보기
+                          </button>
+                        </a>
+                      </Card.Body>
+                    </Card>
+                  </div>
+                )}
               </div>
             )}
           </div>
