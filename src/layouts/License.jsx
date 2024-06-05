@@ -22,7 +22,11 @@ const License = () => {
     const fetchlist = async () => {
       try {
         const responseList = await axios.get("/license/list");
-        setData(responseList.data);
+        // 데이터를 jmfldnm 기준으로 오름차순 정렬
+        const sortedData = responseList.data.sort((a, b) =>
+          a.jmfldnm.localeCompare(b.jmfldnm)
+        );
+        setData(sortedData);
       } catch (error) {
         console.error("Error fetching info:", error);
       }
@@ -31,6 +35,47 @@ const License = () => {
     fetchlist();
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // list 데이터 가져오기
+        const listResponse = await axios.get("/license/list");
+        const listData = listResponse.data;
+
+        // info 데이터 가져오기
+        const infoResponse = await axios.get("/license/info");
+        const infoData = infoResponse.data;
+
+        // list 데이터의 각 항목에 대해 매칭되는 info 데이터 찾기
+        const matchedItems = listData.map((listItem) => {
+          // info 데이터에서 jmfldnm과 list 데이터의 jmfldnm이 일치하는 항목 찾기
+          const matchedInfoItem = infoData.find(
+            (infoItem) => infoItem.jmnm === listItem.jmfldnm
+          );
+
+          // info 데이터가 있으면 해당 항목을 사용하고, 없으면 list 데이터 그대로 사용
+          return matchedInfoItem
+            ? {
+                ...listItem,
+                implnm: matchedInfoItem.implnm,
+              }
+            : listItem;
+        });
+
+        // 데이터를 jmfldnm 기준으로 오름차순 정렬
+        const sortedData = matchedItems.sort((a, b) =>
+          a.jmfldnm.localeCompare(b.jmfldnm)
+        );
+
+        // 정렬된 데이터를 state로 설정
+        setData(sortedData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
   useEffect(() => {
     if (data.length > 0) {
       const filteredItems = data.filter(
@@ -216,7 +261,9 @@ const License = () => {
                       <span className="link-text">
                         {item.jmfldnm} &nbsp;
                         {item.jmcd && (
-                          <span className="company">한국산업인력공단</span>
+                          <span className="company">
+                            {item.implnm || "한국산업인력공단"}
+                          </span>
                         )}
                       </span>
                       <br />
