@@ -145,8 +145,8 @@ const Detail = () => {
           testDatesItems = [testDatesItems];
         }
 
-        console.log(testDatesItems);
         setTestDates(testDatesItems);
+        console.log(testDatesItems);
         setSelectedTestIndex(testDatesItems.length > 0 ? 0 : null);
 
         // 종목코드에 맞는 필기 연도 통계 데이터 가져오기
@@ -193,6 +193,7 @@ const Detail = () => {
           : [eventYearSiListData];
 
         setEventYearSiList(formattedEventYearSiList);
+        console.log(eventYearSiListResponse.data.response.body.items.item);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -365,7 +366,9 @@ const Detail = () => {
             {isTestDatesOpen && (
               <>
                 <br />
-                {Array.isArray(testDates) && testDates.length > 0 ? (
+                {Array.isArray(testDates) &&
+                testDates.length > 0 &&
+                !testDates.some((item) => item === undefined) ? (
                   <div>
                     <select
                       value={
@@ -387,7 +390,10 @@ const Detail = () => {
                     </select>
                     <br />
                     <br />
-                    {selectedTestIndex !== null ? (
+                    {selectedTestIndex !== null &&
+                    selectedTestIndex >= 0 &&
+                    selectedTestIndex < testDates.length &&
+                    testDates[selectedTestIndex] ? (
                       <div key={selectedTestIndex} className="test-dates-box">
                         {testDates[selectedTestIndex].implplannm && (
                           <h4>{testDates[selectedTestIndex].implplannm}</h4>
@@ -786,6 +792,7 @@ const Detail = () => {
                   ))
                 : eventYearSiList &&
                   eventYearSiList.length > 0 &&
+                  eventYearSiList != undefined &&
                   eventYearSiList.map((event, index) => (
                     <div key={index} className="chart-box">
                       {event && event.jmnm && (
