@@ -736,120 +736,106 @@ const Detail = () => {
               {isWrittenChart
                 ? eventYearPiList &&
                   eventYearPiList.length > 0 &&
-                  eventYearPiList.map((event, index) => (
-                    <div key={index} className="chart-box">
-                      {event && event.jmnm && (
+                  eventYearPiList.map((event, index) =>
+                    event && event.jmnm ? (
+                      <div key={index} className="chart-box">
                         <h4>
                           {event.jmnm} 필기시험 연도별 통계
                           <br />
                         </h4>
-                      )}
-                      {event && event.ilrcnt1 !== undefined && (
-                        <>
-                          <br />
-                          <br />
-                          <div className="chart-inner-box">
-                            {event.ilrcnt1 !== undefined && (
-                              <ChartComponent
-                                data={[
-                                  {
-                                    name: "2022년",
-                                    "접수자 수": event.ilrcnt1,
-                                    "응시자 수": event.ilecnt1,
-                                    "합격자 수": event.ilpcnt1,
-                                  },
-                                  {
-                                    name: "2021년",
-                                    "접수자 수": event.ilrcnt2,
-                                    "응시자 수": event.ilecnt2,
-                                    "합격자 수": event.ilpcnt2,
-                                  },
-                                  {
-                                    name: "2020년",
-                                    "접수자 수": event.ilrcnt3,
-                                    "응시자 수": event.ilecnt3,
-                                    "합격자 수": event.ilpcnt3,
-                                  },
-                                  {
-                                    name: "2019년",
-                                    "접수자 수": event.ilrcnt4,
-                                    "응시자 수": event.ilecnt4,
-                                    "합격자 수": event.ilpcnt4,
-                                  },
-                                  {
-                                    name: "2018년",
-                                    "접수자 수": event.ilrcnt5,
-                                    "응시자 수": event.ilecnt5,
-                                    "합격자 수": event.ilpcnt5,
-                                  },
-                                ]}
-                              />
-                            )}
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  ))
+                        <div className="chart-inner-box">
+                          <ChartComponent
+                            data={[
+                              {
+                                name: "2022년",
+                                "접수자 수": event.ilrcnt1,
+                                "응시자 수": event.ilecnt1,
+                                "합격자 수": event.ilpcnt1,
+                              },
+                              {
+                                name: "2021년",
+                                "접수자 수": event.ilrcnt2,
+                                "응시자 수": event.ilecnt2,
+                                "합격자 수": event.ilpcnt2,
+                              },
+                              {
+                                name: "2020년",
+                                "접수자 수": event.ilrcnt3,
+                                "응시자 수": event.ilecnt3,
+                                "합격자 수": event.ilpcnt3,
+                              },
+                              {
+                                name: "2019년",
+                                "접수자 수": event.ilrcnt4,
+                                "응시자 수": event.ilecnt4,
+                                "합격자 수": event.ilpcnt4,
+                              },
+                              {
+                                name: "2018년",
+                                "접수자 수": event.ilrcnt5,
+                                "응시자 수": event.ilecnt5,
+                                "합격자 수": event.ilpcnt5,
+                              },
+                            ]}
+                          />
+                        </div>
+                      </div>
+                    ) : null
+                  )
                 : eventYearSiList &&
                   eventYearSiList.length > 0 &&
-                  eventYearSiList != undefined &&
-                  eventYearSiList.map((event, index) => (
-                    <div key={index} className="chart-box">
-                      {event && event.jmnm && (
+                  eventYearSiList.map((event, index) =>
+                    event && event.jmnm ? (
+                      <div key={index} className="chart-box">
                         <h4>
                           {event.jmnm} 실기시험 연도별 통계
                           <br />
                         </h4>
-                      )}
-                      {event && event.ilrcnt1 !== undefined && (
-                        <div>
-                          <br />
-                          <br />
-                          <div className="chart-inner-box">
-                            {event.ilrcnt1 !== undefined && (
-                              <ChartComponent
-                                data={[
-                                  {
-                                    name: "2022년",
-                                    "접수자 수": event.ilrcnt1,
-                                    "응시자 수": event.ilecnt1,
-                                    "합격자 수": event.ilpcnt1,
-                                  },
-                                  {
-                                    name: "2021년",
-                                    "접수자 수": event.ilrcnt2,
-                                    "응시자 수": event.ilecnt2,
-                                    "합격자 수": event.ilpcnt2,
-                                  },
-                                  {
-                                    name: "2020년",
-                                    "접수자 수": event.ilrcnt3,
-                                    "응시자 수": event.ilecnt3,
-                                    "합격자 수": event.ilpcnt3,
-                                  },
-                                  {
-                                    name: "2019년",
-                                    "접수자 수": event.ilrcnt4,
-                                    "응시자 수": event.ilecnt4,
-                                    "합격자 수": event.ilpcnt4,
-                                  },
-                                  {
-                                    name: "2018년",
-                                    "접수자 수": event.ilrcnt5,
-                                    "응시자 수": event.ilecnt5,
-                                    "합격자 수": event.ilpcnt5,
-                                  },
-                                ]}
-                              />
-                            )}
-                          </div>
+                        <div className="chart-inner-box">
+                          <ChartComponent
+                            data={[
+                              {
+                                name: "2022년",
+                                "접수자 수": event.ilrcnt1,
+                                "응시자 수": event.ilecnt1,
+                                "합격자 수": event.ilpcnt1,
+                              },
+                              {
+                                name: "2021년",
+                                "접수자 수": event.ilrcnt2,
+                                "응시자 수": event.ilecnt2,
+                                "합격자 수": event.ilpcnt2,
+                              },
+                              {
+                                name: "2020년",
+                                "접수자 수": event.ilrcnt3,
+                                "응시자 수": event.ilecnt3,
+                                "합격자 수": event.ilpcnt3,
+                              },
+                              {
+                                name: "2019년",
+                                "접수자 수": event.ilrcnt4,
+                                "응시자 수": event.ilecnt4,
+                                "합격자 수": event.ilpcnt4,
+                              },
+                              {
+                                name: "2018년",
+                                "접수자 수": event.ilrcnt5,
+                                "응시자 수": event.ilecnt5,
+                                "합격자 수": event.ilpcnt5,
+                              },
+                            ]}
+                          />
                         </div>
-                      )}
-                      <br />
-                    </div>
-                  ))}
-              {(eventYearPiList && eventYearPiList.length > 0) ||
-              (eventYearSiList && eventYearSiList.length > 0) ? (
+                      </div>
+                    ) : null
+                  )}
+              {(eventYearPiList &&
+                eventYearPiList.length > 0 &&
+                !eventYearPiList.some((item) => item === undefined)) ||
+              (eventYearSiList &&
+                eventYearSiList.length > 0 &&
+                !eventYearSiList.some((item) => item === undefined)) ? (
                 <div className="chart-toggle-buttons">
                   <button onClick={() => setIsWrittenChart(true)}>필기</button>
                   <button onClick={() => setIsWrittenChart(false)}>실기</button>
