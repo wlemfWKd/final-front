@@ -158,9 +158,6 @@
 }
 
 .test-dates-box tr:nth-child(5) td, 
-/* .test-dates-box tr:nth-child(2) td, 
-.test-dates-box tr:nth-child(3) td, 
-.test-dates-box tr:nth-child(4) td,  */
 .test-dates-box tr:last-child td {
   background-color: #d4e6f2;
 }
@@ -192,8 +189,8 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.test-accessn p {
-  margin-top: 30px; /* 원하는 값으로 조정 */
+.test-accessn li {
+  margin-top: 10px; /* 원하는 값으로 조정 */
   margin-bottom: 10px; /* 원하는 값으로 조정 */
 }
 
@@ -217,6 +214,10 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 800px;
     margin-bottom: 30px;
+}
+
+.chart-toggle-buttons{
+  text-align: center;
 }
 
 .chart-toggle-buttons button {

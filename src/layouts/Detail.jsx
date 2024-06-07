@@ -155,7 +155,7 @@ const Detail = () => {
           "/api/service/rest/InquiryStatSVC/getEventYearPiList";
         const eventYearPiListResponse = await axios.get(eventYearPiListApiUrl, {
           params: {
-            baseYY: 2022,
+            baseYY: 2023,
             jmCd: jmcd,
             ServiceKey:
               "8RQmmNMbqQKZO06m6d44ZNTJv55aWC7ld4cj5de9n14a6o3tbFOrn/F3Aa5cVQzRVlpUr2nt2J9sjnqrnD2KLA==",
@@ -179,7 +179,7 @@ const Detail = () => {
           params: {
             serviceKey:
               "8RQmmNMbqQKZO06m6d44ZNTJv55aWC7ld4cj5de9n14a6o3tbFOrn/F3Aa5cVQzRVlpUr2nt2J9sjnqrnD2KLA==",
-            baseYY: 2022,
+            baseYY: 2023,
             jmCd: jmcd,
           },
         });
@@ -350,8 +350,21 @@ const Detail = () => {
         </div>
 
         <div className="detail-box">
-          <p>{infoData && infoData.summary}</p>
+          {isLoading ? (
+            <div className="spinner-container">
+              <PulseLoader
+                cssOverride={{
+                  margin: "auto",
+                }}
+                color="#64aee0"
+                size={10}
+              />
+            </div>
+          ) : (
+            <p>{infoData && infoData.summary}</p>
+          )}
         </div>
+
         <div className="detail-content">
           <div className="detail-intro">
             <p>자격증 상세정보</p>
@@ -505,7 +518,7 @@ const Detail = () => {
                 <div className="test-accessn">
                   {acData &&
                     acData.map((item, index) => (
-                      <p key={index}>{item.emqualdispnm}</p>
+                      <li key={index}>{item.emqualdispnm}</li>
                     ))}
                 </div>
               </>
@@ -747,31 +760,31 @@ const Detail = () => {
                           <ChartComponent
                             data={[
                               {
-                                name: "2022년",
+                                name: "2023년",
                                 "접수자 수": event.ilrcnt1,
                                 "응시자 수": event.ilecnt1,
                                 "합격자 수": event.ilpcnt1,
                               },
                               {
-                                name: "2021년",
+                                name: "2022년",
                                 "접수자 수": event.ilrcnt2,
                                 "응시자 수": event.ilecnt2,
                                 "합격자 수": event.ilpcnt2,
                               },
                               {
-                                name: "2020년",
+                                name: "2021년",
                                 "접수자 수": event.ilrcnt3,
                                 "응시자 수": event.ilecnt3,
                                 "합격자 수": event.ilpcnt3,
                               },
                               {
-                                name: "2019년",
+                                name: "2020년",
                                 "접수자 수": event.ilrcnt4,
                                 "응시자 수": event.ilecnt4,
                                 "합격자 수": event.ilpcnt4,
                               },
                               {
-                                name: "2018년",
+                                name: "2019년",
                                 "접수자 수": event.ilrcnt5,
                                 "응시자 수": event.ilecnt5,
                                 "합격자 수": event.ilpcnt5,
@@ -795,31 +808,31 @@ const Detail = () => {
                           <ChartComponent
                             data={[
                               {
-                                name: "2022년",
+                                name: "2023년",
                                 "접수자 수": event.ilrcnt1,
                                 "응시자 수": event.ilecnt1,
                                 "합격자 수": event.ilpcnt1,
                               },
                               {
-                                name: "2021년",
+                                name: "2022년",
                                 "접수자 수": event.ilrcnt2,
                                 "응시자 수": event.ilecnt2,
                                 "합격자 수": event.ilpcnt2,
                               },
                               {
-                                name: "2020년",
+                                name: "2021년",
                                 "접수자 수": event.ilrcnt3,
                                 "응시자 수": event.ilecnt3,
                                 "합격자 수": event.ilpcnt3,
                               },
                               {
-                                name: "2019년",
+                                name: "2020년",
                                 "접수자 수": event.ilrcnt4,
                                 "응시자 수": event.ilecnt4,
                                 "합격자 수": event.ilpcnt4,
                               },
                               {
-                                name: "2018년",
+                                name: "2019년",
                                 "접수자 수": event.ilrcnt5,
                                 "응시자 수": event.ilecnt5,
                                 "합격자 수": event.ilpcnt5,
